@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * > EnableTransactionManagement - tells Spring to perform annotation driven transactions
  */
 
-@Configuration
-@EnableAutoConfiguration
 @EntityScan(basePackages = {"com.zpi2016.model"})
 @EnableJpaRepositories(basePackages = {"com.zpi2016.repository"})
 @SpringBootApplication
