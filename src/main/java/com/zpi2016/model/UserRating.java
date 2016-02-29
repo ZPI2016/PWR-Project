@@ -9,11 +9,23 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USERS_RATINGS")
 public class UserRating extends Rating {
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    private User author;
+	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+	
+	public User getAuthor() {
+        return author;
+    }
 
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+	
     public User getUser() {
         return user;
     }

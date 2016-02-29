@@ -32,6 +32,9 @@ public class Event extends GenericEntity<Event> {
     @JoinTable(name = "EVENT_USER", joinColumns = { @JoinColumn(name = "EVENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private final Set<User> participants = new HashSet<User>(0);
 
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    private final Set<EventRating> ratings = new HashSet<EventRating>(0);
+	
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DEADLINE")
     private Date deadline;
@@ -100,5 +103,9 @@ public class Event extends GenericEntity<Event> {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public Set<EventRating> getRatings() {
+        return ratings;
     }
 }

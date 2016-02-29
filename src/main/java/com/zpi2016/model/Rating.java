@@ -18,19 +18,19 @@ public class Rating extends GenericEntity<Rating> {
     @Column(name = "DESCR", length = 500, nullable = false)
     private String descr;
 
-    public String getDescr() {
-        return descr;
-    }
-
-    public void setDescr(String descr) {
-        this.descr = descr;
-    }
-
     public Rate getOverall() {
         return overall;
     }
 
     public void setOverall(Rate overall) {
         this.overall = overall;
+    }
+
+    public String getDescr() {
+        return descr;
+    }
+
+    public void setDescr(String descr) {
+        this.descr = descr;
     }
 }

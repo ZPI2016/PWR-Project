@@ -28,6 +28,15 @@ public class User extends GenericEntity<User> {
     @Cascade(CascadeType.SAVE_UPDATE)
     private final Set<Event> createdEvents = new HashSet<Event>(0);
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private final Set<UserRating> ratings = new HashSet<UserRating>(0);
+	
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private final Set<UserRating> givenUserRatings = new HashSet<UserRating>(0);
+
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private final Set<EventRating> givenEventRatings = new HashSet<EventRating>(0);
+	
     @ManyToMany(fetch = FetchType.LAZY, cascade = javax.persistence.CascadeType.ALL, mappedBy = "participants")
     private final Set<Event> attendedEvents = new HashSet<Event>(0);
 
@@ -44,6 +53,9 @@ public class User extends GenericEntity<User> {
     @OneToOne
     @JoinColumn(name="LOCATION_ID", nullable = false)
     private Location address;
+	
+	@Column(name = "RADIUS", nullable = false)
+	private Float radius = 10.0f;
 
     public String getUsername() {
         return username;
@@ -100,12 +112,32 @@ public class User extends GenericEntity<User> {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+	
+	public Float getRadius() {
+		return radius;
+	}
+	
+	public void setRadius(Float radius) {
+		this.radius = radius;
+	}
+	
     public Set<Event> getAttendedEvents() {
         return attendedEvents;
     }
 
     public Set<Event> getCreatedEvents() {
         return createdEvents;
+    }
+
+    public Set<UserRating> getRatings() {
+        return ratings;
+    }
+
+    public Set<UserRating> getGivenUserRatings() {
+        return givenUserRatings;
+    }
+
+    public Set<EventRating> getGivenEventRatings() {
+        return givenEventRatings;
     }
 }
