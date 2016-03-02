@@ -15,13 +15,13 @@ import java.util.Set;
 @Table(name = "USERS")
 public class User extends GenericEntity<User> {
 
-    @Column(name = "USERNAME", length = 50, nullable = false)
+    @Column(name = "USERNAME", length = 50, nullable = false, unique = true)
     private String username;
 
     @Column(name = "PASSWORD", length = 50, nullable = false)
     private String password;
 
-    @Column(name = "EMAIL", length = 80, nullable = false)
+    @Column(name = "EMAIL", length = 80, nullable = false, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
@@ -48,7 +48,7 @@ public class User extends GenericEntity<User> {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "DOB", nullable = false)
-    private Date DOB;
+    private Date dob;
 
     @OneToOne
     @JoinColumn(name="LOCATION_ID", nullable = false)
@@ -73,12 +73,12 @@ public class User extends GenericEntity<User> {
         this.address = address;
     }
 
-    public Date getDOB() {
-        return DOB;
+    public Date getDob() {
+        return dob;
     }
 
-    public void setDOB(Date DOB) {
-        this.DOB = DOB;
+    public void setDOB(Date dob) {
+        this.dob = dob;
     }
 
     public String getPassword() {

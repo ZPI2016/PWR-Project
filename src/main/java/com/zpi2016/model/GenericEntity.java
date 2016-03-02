@@ -1,16 +1,11 @@
 package com.zpi2016.model;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Generic entity class.
@@ -38,7 +33,7 @@ public class GenericEntity<T extends GenericEntity<T>> {
 
 	@Version
 	@Column(name = "VERSION", nullable = false)
-	private Integer version;
+	private Long version;
 
 	public Integer getId() {
 		return this.id;
@@ -84,7 +79,7 @@ public class GenericEntity<T extends GenericEntity<T>> {
 		this.updateDate = updateDate;
 	}
 
-	public Integer getVersion() {
+	public Long getVersion() {
 		return this.version;
 	}
 
@@ -94,7 +89,7 @@ public class GenericEntity<T extends GenericEntity<T>> {
 	 * @param version
 	 *            Version value to be assigned to the current entity
 	 */
-	public void setVersion(final Integer version) {
+	public void setVersion(final Long version) {
 		this.version = version;
 	}
 
