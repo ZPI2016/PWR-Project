@@ -156,9 +156,7 @@ public class UserRepositoryTest {
         List<User> usersBetweenInvalid = userRepository.findByDobBetween(after, before);
         Assert.assertEquals(0, usersBetweenInvalid.size());
 
-        Location wroclaw = new Location();
-        wroclaw.setGeoLatitude(51.107885f);
-        wroclaw.setGeoLongitude(17.038538f);
+        Location wroclaw = user.getAddress();
         List<User> usersByAddress = userRepository.findByAddress(wroclaw);
         Assert.assertEquals(1, usersByAddress.size());
         Assert.assertEquals(user.getId(), usersByAddress.get(0).getId());
