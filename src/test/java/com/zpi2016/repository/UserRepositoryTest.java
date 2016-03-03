@@ -59,7 +59,7 @@ public class UserRepositoryTest {
     @After
     public void clean(){
         Location userLocation = locationRepository.findOne(user.getAddress().getId());
-        userRepository.delete(user);
+        userRepository.delete(user.getId());
         locationRepository.delete(userLocation);
     }
 
