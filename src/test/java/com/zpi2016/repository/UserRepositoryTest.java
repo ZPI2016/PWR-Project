@@ -56,9 +56,11 @@ public class UserRepositoryTest {
         user.setAddress(wroclaw);
     }
 
+
     @After
     public void clean(){
         Location userLocation = locationRepository.findOne(user.getAddress().getId());
+        // ZAWSZE USUWAJCIE W TEN SPOSÓB!!! Jeśli ppodamy obiekt, to mamy wyścig i dostaniemy błąd
         userRepository.delete(user.getId());
         locationRepository.delete(userLocation);
     }
