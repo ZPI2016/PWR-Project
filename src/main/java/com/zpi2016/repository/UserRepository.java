@@ -33,5 +33,4 @@ public interface UserRepository extends CrudRepository <User, Integer> {
     public List<User> findByDobBetween(Date start, Date end);
 
     public List<User> findByAddress(Location address);
-
 }

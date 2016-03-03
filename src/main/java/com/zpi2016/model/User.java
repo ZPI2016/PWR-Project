@@ -77,7 +77,7 @@ public class User extends GenericEntity<User> {
         return dob;
     }
 
-    public void setDOB(Date dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 

@@ -45,9 +45,8 @@ public class UserRepositoryTest {
         user.setEmail("jan.nowak@dummy.com");
         Date dob = new Date();
         dob.setTime(1005260400000l);
-        user.setDOB(dob);
+        user.setDob(dob);
 
-        // setup the location
         Location wroclaw = new Location();
         wroclaw.setGeoLatitude(51.107885f);
         wroclaw.setGeoLongitude(17.038538f);
@@ -62,14 +61,15 @@ public class UserRepositoryTest {
         Location userLocation = locationRepository.findOne(user.getAddress().getId());
         // ZAWSZE USUWAJCIE W TEN SPOSÓB!!! Jeśli ppodamy obiekt, to mamy wyścig i dostaniemy błąd
         userRepository.delete(user.getId());
-        locationRepository.delete(userLocation);
+        locationRepository.delete(userLocation.getId());
     }
 
     /**
-     * Basic test of saving functionality of UserRepository
+     * Basic test of functionality of UserRepository
+     * provided by CrudRepository interface
      */
     @Test
-    public void saveUserTest() {
+    public void basicUserTest() {
 
         // the id should be null before saving the object to db
         Assert.assertNull(user.getId());
@@ -156,6 +156,12 @@ public class UserRepositoryTest {
         List<User> usersBetweenInvalid = userRepository.findByDobBetween(after, before);
         Assert.assertEquals(0, usersBetweenInvalid.size());
 
+        Location wroclaw = new Location();
+        wroclaw.setGeoLatitude(51.107885f);
+        wroclaw.setGeoLongitude(17.038538f);
+        List<User> usersByAddress = userRepository.findByAddress(wroclaw);
+        Assert.assertEquals(1, usersByAddress.size());
+        Assert.assertEquals(user.getId(), usersByAddress.get(0).getId());
     }
 
 }
