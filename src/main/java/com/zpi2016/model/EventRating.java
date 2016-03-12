@@ -14,7 +14,7 @@ public class EventRating extends Rating {
     @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private User author;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EVENT_ID", nullable = false)
     private Event event;
 	

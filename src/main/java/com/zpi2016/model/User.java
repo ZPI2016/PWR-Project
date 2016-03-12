@@ -1,8 +1,5 @@
 package com.zpi2016.model;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -24,20 +21,19 @@ public class User extends GenericEntity<User> {
     @Column(name = "EMAIL", length = 80, nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<Event> createdEvents = new HashSet<Event>(0);
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<UserRating> ratings = new HashSet<UserRating>(0);
 	
-	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<UserRating> givenUserRatings = new HashSet<UserRating>(0);
 
-	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<EventRating> givenEventRatings = new HashSet<EventRating>(0);
 	
-    @ManyToMany(fetch = FetchType.LAZY, cascade = javax.persistence.CascadeType.ALL, mappedBy = "participants")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "participants")
     private final Set<Event> attendedEvents = new HashSet<Event>(0);
 
     @Column(name = "FIRSTNAME", length = 50)
@@ -50,7 +46,7 @@ public class User extends GenericEntity<User> {
     @Column(name = "DOB", nullable = false)
     private Date dob;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="LOCATION_ID", nullable = false)
     private Location address;
 	

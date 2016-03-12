@@ -1,12 +1,12 @@
 package com.zpi2016.model;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 /**
  * Created by filip on 26.02.2016.
  */
+@Entity
+@Table(name = "CATEGORIES_DETAILS")
 public class CategoryDetails extends GenericEntity<CategoryDetails> {
 
     @Enumerated(EnumType.STRING)

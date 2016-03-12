@@ -14,7 +14,7 @@ public class UserRating extends Rating {
     @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private User author;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 	

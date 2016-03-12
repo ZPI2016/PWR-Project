@@ -20,7 +20,7 @@ public class Event extends GenericEntity<Event> {
     @Column(name = "STARTTIME", nullable = false)
     private Date startTime;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="LOCATION_ID", nullable = false)
     private Location place;
 
@@ -28,7 +28,7 @@ public class Event extends GenericEntity<Event> {
     @JoinColumn(name = "CREATOR_ID", nullable = false)
     private User creator;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "EVENT_USER", joinColumns = { @JoinColumn(name = "EVENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private final Set<User> participants = new HashSet<User>(0);
 
