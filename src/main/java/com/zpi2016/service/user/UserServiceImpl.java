@@ -1,11 +1,15 @@
 package com.zpi2016.service.user;
 
+import com.zpi2016.model.Location;
 import com.zpi2016.model.User;
 import com.zpi2016.repository.UserRepository;
+import com.zpi2016.utils.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by aman on 13.03.16.
@@ -22,8 +26,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User save(final User enitity) {
-        return repository.save(enitity);
+    public User save(final User user) {
+        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        if(existing != null){
+            throw new UserAlreadyExistsException(String.format(
+                    "There already exists a user with username = %s or mail = %s",
+                    user.getUsername(), user.getEmail()));
+        }
+        user.setAddress(new Location(1f,1f));
+        user.setDob(new Date());
+        return repository.save(user);
     }
 
     @Override
@@ -33,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Iterable<User> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override

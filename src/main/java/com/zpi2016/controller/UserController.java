@@ -2,13 +2,14 @@ package com.zpi2016.controller;
 
 import com.zpi2016.model.User;
 import com.zpi2016.service.user.UserService;
+import com.zpi2016.utils.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by aman on 13.03.16.
@@ -26,6 +27,17 @@ public class UserController {
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public User createUser(@RequestBody @Valid final User user) {
         return userService.save(user);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public Iterable<User> getUsers() {
+        return userService.findAll();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        return e.getMessage();
     }
 
 }
