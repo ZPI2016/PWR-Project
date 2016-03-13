@@ -45,6 +45,18 @@ public class Event extends GenericEntity<Event> {
     @Column(name = "MAXPARTICIPANTS")
     private Integer maxParticipants;
 
+    public Event() {}
+
+    private Event(Builder builder) {
+        this.category = builder.category;
+        this.startTime = builder.startTime;
+        this.place = builder.place;
+        this.creator = builder.creator;
+        this.deadline = builder.deadline;
+        this.maxParticipants = builder.maxParticipants;
+        this.minParticipants = builder.minParticipants;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -107,5 +119,43 @@ public class Event extends GenericEntity<Event> {
 
     public Set<EventRating> getRatings() {
         return ratings;
+    }
+
+    public static class Builder {
+
+        private final Category category;
+        private final Date startTime;
+        private final Location place;
+        private final User creator;
+        private Date deadline;
+        private Integer minParticipants;
+        private Integer maxParticipants;
+
+        public Builder(Category category, Date startTime, Location place, User creator) {
+            this.category = category;
+            this.startTime = startTime;
+            this.place = place;
+            this.creator = creator;
+        }
+
+        public Builder withDeadline(Date deadline) {
+            this.deadline = deadline;
+            return this;
+        }
+
+        public Builder withMinParticipants(Integer minParticipants) {
+            this.minParticipants = minParticipants;
+            return this;
+        }
+
+        public Builder withMaxParticipants(Integer maxParticipants) {
+            this.maxParticipants = maxParticipants;
+            return this;
+        }
+
+        public Event build() {
+            return new Event(this);
+        }
+
     }
 }

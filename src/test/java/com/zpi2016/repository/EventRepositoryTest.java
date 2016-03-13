@@ -5,17 +5,15 @@ import com.zpi2016.model.Category;
 import com.zpi2016.model.Event;
 import com.zpi2016.model.Location;
 import com.zpi2016.model.User;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by kuba on 03.03.16.
@@ -25,185 +23,279 @@ import java.util.List;
 @SpringApplicationConfiguration(classes = {Application.class})
 public class EventRepositoryTest {
 
-    Event event;
-    EventRepository eventRepository;
-    UserRepository userRepository;
-    LocationRepository locationRepository;
+    @Autowired
+    private EventRepository eventRepository;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Autowired
-    void setEventRepository(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
+    private LocationRepository locationRepository;
 
-    @Autowired
-    void setLocationRepository(LocationRepository locationRepository) {
-        this.locationRepository = locationRepository;
+    private static final String USERNAME = "USERNAME";
+    private static final String FOO = "FOO";
+    private static final String PASSWORD = "p@55w0rd";
+    private static final String FIRST_NAME = "Tyler";
+    private static final String LAST_NAME = "Durden";
+    private static final String EMAIL = "mail@example.com";
+    private static final Date START_TIME = new Date();;
+    private static final Date AFTER_START_TIME = new Date();
+    private static final Date BEFORE_START_TIME = new Date();
+    private static final Date DEADLINE = new Date();
+    private static final Date AFTER_DEADLINE = new Date();
+    private static final Date BEFORE_DEADLINE = new Date();
+    private static final Location ADDRESS = new Location(50.0f, 45.0f);
+    private static final Category CATEGORY = Category.DANCING;
+    private static final Category WRONG_CATEGORY = Category.SPORTS;
+    private static final Integer MIN_PARTICIPANTS = new Integer(5);
+    private static final Integer MAX_PARTICIPANTS = new Integer(7);
+    private static final Float RADIUS = 23.0f;
+
+    @BeforeClass
+    public static void setThingsUp() {
+        AFTER_DEADLINE.setTime(DEADLINE.getTime() + 100000000l);
+        BEFORE_DEADLINE.setTime(DEADLINE.getTime() - 100000000l);
+        AFTER_START_TIME.setTime(START_TIME.getTime() + 100000000l);
+        BEFORE_START_TIME.setTime(START_TIME.getTime() - 100000000l);
     }
 
     @Before
-    public void init(){
-        event = new Event();
-        event.setCategory(Category.SPORTS);
-        event.setStartTime(new Date(1005260400000l));
-
-        Location wroclaw = new Location();
-        wroclaw.setGeoLatitude(51.107885f);
-        wroclaw.setGeoLongitude(17.038538f);
-        locationRepository.save(wroclaw);
-        event.setPlace(wroclaw);
-
-        User eventCreator = new User();
-        eventCreator.setUsername("username");
-        eventCreator.setPassword("password");
-        eventCreator.setEmail("email@email.com");
-        eventCreator.setAddress(wroclaw);
-        eventCreator.setDob(new Date());
-        userRepository.save(eventCreator);
-        event.setCreator(eventCreator);
-
-        event.setDeadline(new Date(952036630000l));
-        event.setMinParticipants(0);
-        event.setMaxParticipants(10);
+    public void setUp(){
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        User user = new User.Builder(USERNAME, PASSWORD, EMAIL, DEADLINE, address, RADIUS)
+                .withFirstName(FIRST_NAME).withLastName(LAST_NAME).build();
+        Event event = new Event.Builder(CATEGORY, START_TIME, address, user).withDeadline(DEADLINE)
+                .withMinParticipants(MIN_PARTICIPANTS).withMaxParticipants(MAX_PARTICIPANTS).build();
+        user.getCreatedEvents().add(event);
+        userRepository.save(user);
     }
 
     @After
-    public void clean(){
-        Location eventLocation = locationRepository.findOne(event.getPlace().getId());
-        User eventCreator = userRepository.findOne(event.getCreator().getId());
-        eventRepository.delete(event.getId());
-        userRepository.delete(eventCreator.getId());
-        locationRepository.delete(eventLocation.getId());
-    }
-
-    /**
-     * Basic test of functionality of EventRespository
-     * provided by CrudRepository interface
-     */
-    @Test
-    public void basicEventTest(){
-
-        // the id should be null before saving the object to db
-        Assert.assertNull(event.getId());
-
-        eventRepository.save(event);
-
-        // the id should be now initialized
-        Assert.assertNotNull(event.getId());
-
-        // fetching product from db
-        Event fetchedEvent = eventRepository.findOne(event.getId());
-
-        // checking if fetching was succesfull
-        Assert.assertNotNull(fetchedEvent);
-
-        // checking the equality
-        Assert.assertEquals(event.getId(), fetchedEvent.getId());
-
-        // checking the updating functionality
-        fetchedEvent.setCategory(Category.DANCING);
-        eventRepository.save(fetchedEvent);
-        Event fetchedUpdatedEvent = eventRepository.findOne(fetchedEvent.getId());
-        Assert.assertEquals(event.getId(), fetchedUpdatedEvent.getId());
-        Assert.assertNotEquals(event.getCategory(), fetchedUpdatedEvent.getCategory());
-
-        // checking if the entries are not duplicated
-        Iterable<Event> fetchedEvents = eventRepository.findAll();
-        int eventsCount = 0;
-        for (Event e : fetchedEvents)
-            eventsCount++;
-        Assert.assertEquals(1, eventsCount);
-
+    public void tearDown(){
+        eventRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
-    public void variousEventQueriesTest(){
-        eventRepository.save(event);
+    public void shouldSaveEvent() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        User user = userRepository.findAll().iterator().next();
+        eventRepository.save(new Event.Builder(CATEGORY, START_TIME, address, user).build());
+    }
 
-        List<Event> eventsByCategory = eventRepository.findByCategory(Category.SPORTS);
-        Assert.assertEquals(1, eventsByCategory.size());
-        Assert.assertEquals(event.getId(), eventsByCategory.get(0).getId());
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveEventWithoutCategory() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        User user = userRepository.findAll().iterator().next();
+        eventRepository.save(new Event.Builder(null, START_TIME, address, user).build());
+    }
 
-        Date startTime = new Date(1005260400000l);
-        Date deadline = new Date(952036630000l);
-        Date after = new Date(1267569430000l);
-        Date before = new Date(852036630000l);
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveEventWithoutStartTime() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        User user = userRepository.findAll().iterator().next();
+        eventRepository.save(new Event.Builder(CATEGORY, null, address, user).build());
+    }
 
-        List<Event> eventsByStartTime = eventRepository.findByStartTime(startTime);
-        Assert.assertEquals(1, eventsByStartTime.size());
-        Assert.assertEquals(event.getId(), eventsByStartTime.get(0).getId());
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveEventWithoutPlace() {
+        User user = userRepository.findAll().iterator().next();
+        eventRepository.save(new Event.Builder(CATEGORY, START_TIME, null, user).build());
+    }
 
-        List<Event> eventsBeforeStartTimeValid = eventRepository.findByStartTimeBefore(after);
-        Assert.assertEquals(1, eventsBeforeStartTimeValid.size());
-        Assert.assertEquals(event.getId(), eventsBeforeStartTimeValid.get(0).getId());
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveEventWithoutCreator() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        eventRepository.save(new Event.Builder(CATEGORY, START_TIME, address, null).build());
+    }
 
-        List<Event> eventsBeforeStartTimeInvalid = eventRepository.findByStartTimeBefore(before);
-        Assert.assertEquals(0, eventsBeforeStartTimeInvalid.size());
+    @Test
+    public void shouldDeleteEvent() {
+        eventRepository.delete(eventRepository.findAll().iterator().next());
+        Assert.assertFalse(eventRepository.findAll().iterator().hasNext());
+    }
 
-        List<Event> eventsAfterStartTimeValid = eventRepository.findByStartTimeAfter(before);
-        Assert.assertEquals(1, eventsAfterStartTimeValid.size());
-        Assert.assertEquals(event.getId(), eventsAfterStartTimeValid.get(0).getId());
+    @Test
+    public void shouldNotDeleteEvent() {
+        eventRepository.delete(new Event.Builder(CATEGORY, START_TIME, ADDRESS, userRepository.findAll().iterator().next()).build());
+        Assert.assertTrue(eventRepository.findAll().iterator().hasNext());
+    }
 
-        List<Event> eventsAfterStartTimeInvalid = eventRepository.findByStartTimeAfter(after);
-        Assert.assertEquals(0, eventsAfterStartTimeInvalid.size());
+    @Test
+    public void shouldDeleteEventById() {
+        eventRepository.delete(eventRepository.findAll().iterator().next().getId());
+        Assert.assertFalse(eventRepository.findAll().iterator().hasNext());
+    }
 
-        List<Event> eventsBetweenStartTimeValid = eventRepository.findByStartTimeBetween(before, after);
-        Assert.assertEquals(1, eventsBetweenStartTimeValid.size());
-        Assert.assertEquals(event.getId(), eventsBetweenStartTimeValid.get(0).getId());
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void shouldNotDeleteEventById() throws Exception {
+        eventRepository.delete(eventRepository.findAll().iterator().next().getId() + 1);
+    }
 
-        List<Event> eventsBetweenStartTimeInvalid = eventRepository.findByStartTimeBetween(after, before);
-        Assert.assertEquals(0, eventsBetweenStartTimeInvalid.size());
+    @Test
+    public void shouldFindEvents() {
+        Assert.assertTrue(eventRepository.findAll().iterator().hasNext());
+    }
 
-        List<Event> eventsByDeadline = eventRepository.findByDeadline(deadline);
-        Assert.assertEquals(1, eventsByDeadline.size());
-        Assert.assertEquals(event.getId(), eventsByDeadline.get(0).getId());
+    @Test
+    public void shouldNotFindEvents() {
+        eventRepository.deleteAll();
+        Assert.assertFalse(eventRepository.findAll().iterator().hasNext());
+    }
 
-        List<Event> eventsBeforeDeadlineValid = eventRepository.findByDeadlineBefore(after);
-        Assert.assertEquals(1, eventsBeforeDeadlineValid.size());
-        Assert.assertEquals(event.getId(), eventsBeforeDeadlineValid.get(0).getId());
+    @Test
+    public void shouldFindEvent() {
+        Assert.assertNotNull(eventRepository.findOne(eventRepository.findAll().iterator().next().getId()));
+    }
 
-        List<Event> eventsBeforeDeadlineInvalid = eventRepository.findByDeadlineBefore(before);
-        Assert.assertEquals(0, eventsBeforeDeadlineInvalid.size());
+    @Test
+    public void shouldNotFindEvent() {
+        Assert.assertNull(eventRepository.findOne(eventRepository.findAll().iterator().next().getId() + 1));
+    }
 
-        List<Event> eventsAfterDeadlineValid = eventRepository.findByDeadlineAfter(before);
-        Assert.assertEquals(1, eventsAfterDeadlineValid.size());
-        Assert.assertEquals(event.getId(), eventsAfterDeadlineValid.get(0).getId());
+    @Test
+    public void shouldFindEventByCategory() {
+        Assert.assertFalse(eventRepository.findByCategory(CATEGORY).isEmpty());
+    }
 
-        List<Event> eventsAfterDeadlineInvalid = eventRepository.findByDeadlineAfter(after);
-        Assert.assertEquals(0, eventsAfterDeadlineInvalid.size());
+    @Test
+    public void shouldNotFindEventByCategory() {
+        Assert.assertTrue(eventRepository.findByCategory(WRONG_CATEGORY).isEmpty());
+    }
 
-        List<Event> eventsBetweenDeadlineValid = eventRepository.findByDeadlineBetween(before, after);
-        Assert.assertEquals(1, eventsBetweenDeadlineValid.size());
-        Assert.assertEquals(event.getId(), eventsBetweenDeadlineValid.get(0).getId());
+    @Test
+    public void shouldFindEventByStartTime() {
+        Assert.assertFalse(eventRepository.findByStartTime(START_TIME).isEmpty());
+    }
 
-        List<Event> eventsBetweenDeadlineInvalid = eventRepository.findByDeadlineBetween(after, before);
-        Assert.assertEquals(0, eventsBetweenDeadlineInvalid.size());
+    @Test
+    public void shouldNotFindEventByStartTime() {
+        Assert.assertTrue(eventRepository.findByStartTime(BEFORE_START_TIME).isEmpty());
+    }
 
-        Location wroclaw = event.getPlace();
-        List<Event> eventsByPlace = eventRepository.findByPlace(wroclaw);
-        Assert.assertEquals(1, eventsByPlace.size());
-        Assert.assertEquals(event.getId(), eventsByPlace.get(0).getId());
+    @Test
+    public void shouldFindEventByStartTimeBefore() {
+        Assert.assertFalse(eventRepository.findByStartTimeBefore(AFTER_START_TIME).isEmpty());
+    }
 
-        User userCreator = event.getCreator();
-        List<Event> eventsByCreatorValid = eventRepository.findByCreator(userCreator);
-        Assert.assertEquals(1, eventsByCreatorValid.size());
-        Assert.assertEquals(event.getId(), eventsByCreatorValid.get(0).getId());
+    @Test
+    public void shouldNotFindEventByStartTimeBefore() {
+        Assert.assertTrue(eventRepository.findByStartTimeBefore(BEFORE_START_TIME).isEmpty());
+    }
 
-        List<Event> eventsByMinParticipants = eventRepository.findByMinParticipants(0);
-        Assert.assertEquals(1, eventsByMinParticipants.size());
-        Assert.assertEquals(event.getId(), eventsByMinParticipants.get(0).getId());
+    @Test
+    public void shouldFindEventByStartTimeAfter() {
+        Assert.assertFalse(eventRepository.findByStartTimeAfter(BEFORE_START_TIME).isEmpty());
+    }
 
-        List<Event> eventsByMaxParticipants = eventRepository.findByMaxParticipants(10);
-        Assert.assertEquals(1, eventsByMaxParticipants.size());
-        Assert.assertEquals(event.getId(), eventsByMaxParticipants.get(0).getId());
+    @Test
+    public void shouldNotFindEventByStartTimeAfter() {
+        Assert.assertTrue(eventRepository.findByStartTimeAfter(AFTER_START_TIME).isEmpty());
+    }
 
-        List<Event> eventsByParticipantsBetween = eventRepository.findByParticipantsBetween(0, 10);
-        Assert.assertEquals(1, eventsByParticipantsBetween.size());
-        Assert.assertEquals(event.getId(), eventsByParticipantsBetween.get(0).getId());
+    @Test
+    public void shouldFindEventByStartTimeBetween() {
+        Assert.assertFalse(eventRepository.findByStartTimeBetween(BEFORE_START_TIME, AFTER_START_TIME).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByStartTimeBetween() {
+        Assert.assertTrue(eventRepository.findByStartTimeBetween(BEFORE_START_TIME, BEFORE_START_TIME).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByCreator() {
+        User creator = eventRepository.findAll().iterator().next().getCreator();
+        Assert.assertFalse(eventRepository.findByCreator(creator).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByCreator() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        User creator = userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DEADLINE, address, RADIUS).build());
+        Assert.assertTrue(eventRepository.findByCreator(creator).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByPlace() {
+        Location place = eventRepository.findAll().iterator().next().getPlace();
+        Assert.assertFalse(eventRepository.findByPlace(place).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByPlace() {
+        Location place = locationRepository.save(new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude()));
+        Assert.assertTrue(eventRepository.findByPlace(place).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByDeadline() {
+        Assert.assertFalse(eventRepository.findByDeadline(DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByDeadline() {
+        Assert.assertTrue(eventRepository.findByDeadline(BEFORE_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByDeadlineBefore() {
+        Assert.assertFalse(eventRepository.findByDeadlineBefore(AFTER_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByDeadlineBefore() {
+        Assert.assertTrue(eventRepository.findByDeadlineBefore(BEFORE_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByDeadlineAfter() {
+        Assert.assertFalse(eventRepository.findByDeadlineAfter(BEFORE_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByDeadlineAfter() {
+        Assert.assertTrue(eventRepository.findByDeadlineAfter(AFTER_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByDeadlineBetween() {
+        Assert.assertFalse(eventRepository.findByDeadlineBetween(BEFORE_DEADLINE, AFTER_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByDeadlineBetween() {
+        Assert.assertTrue(eventRepository.findByDeadlineBetween(BEFORE_DEADLINE, BEFORE_DEADLINE).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByMinParticipants() {
+        Assert.assertFalse(eventRepository.findByMinParticipants(MIN_PARTICIPANTS).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByMinParticipants() {
+        Assert.assertTrue(eventRepository.findByMinParticipants(MIN_PARTICIPANTS - 1).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByMaxParticipants() {
+        Assert.assertFalse(eventRepository.findByMaxParticipants(MAX_PARTICIPANTS).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByMaxParticipants() {
+        Assert.assertTrue(eventRepository.findByMaxParticipants(MAX_PARTICIPANTS + 1).isEmpty());
+    }
+
+    @Test
+    public void shouldFindEventByParticipantsBetween() {
+        Assert.assertFalse(eventRepository.findByParticipantsBetween(MIN_PARTICIPANTS, MAX_PARTICIPANTS).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindEventByParticipantsBetween() {
+        Assert.assertTrue(eventRepository.findByParticipantsBetween(MIN_PARTICIPANTS, MAX_PARTICIPANTS - 1).isEmpty());
     }
 
 }

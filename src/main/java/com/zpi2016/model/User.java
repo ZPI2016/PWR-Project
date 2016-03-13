@@ -151,6 +151,7 @@ public class User extends GenericEntity<User> {
     }
 
     public static class Builder {
+
         private final String username;
         private final String password;
         private final String email;
@@ -182,5 +183,6 @@ public class User extends GenericEntity<User> {
         public User build() {
             return new User(this);
         }
+
     }
 }

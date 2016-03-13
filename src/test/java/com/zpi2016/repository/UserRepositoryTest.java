@@ -118,9 +118,9 @@ public class UserRepositoryTest {
         Assert.assertFalse(userRepository.findAll().iterator().hasNext());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test
     public void shouldNotDeleteUser() {
-        userRepository.delete(new User.Builder(USERNAME, PASSWORD, EMAIL, DOB, ADDRESS, RADIUS).build());
+        userRepository.delete(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DOB, ADDRESS, RADIUS).build());
     }
 
     @Test
