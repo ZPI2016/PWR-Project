@@ -4,13 +4,13 @@ package com.zpi2016.repository;
 import com.zpi2016.Application;
 import com.zpi2016.model.Location;
 import com.zpi2016.model.User;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
@@ -20,146 +20,251 @@ import java.util.List;
 @SpringApplicationConfiguration(classes = {Application.class})
 public class UserRepositoryTest {
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private LocationRepository locationRepository;
-    private User user;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private static final String USERNAME = "USERNAME";
+    private static final String FOO = "FOO";
+    private static final String PASSWORD = "p@55w0rd";
+    private static final String FIRST_NAME = "Tyler";
+    private static final String LAST_NAME = "Durden";
+    private static final String EMAIL = "mail@example.com";
+    private static final Date DOB = new Date();
+    private static final Date AFTER_DOB = new Date();
+    private static final Date BEFORE_DOB = new Date();
+    private static final Location ADDRESS = new Location(50.0f, 45.0f);
+    private static final Location WRONG_ADDRESS = new Location(45.0f, 50.0f);
+    private static final Float RADIUS = 23.0f;
 
-    @Autowired
-    void setLocationRepository(LocationRepository locationRepository) {
-        this.locationRepository = locationRepository;
+    @BeforeClass
+    public static void setThingsUp() {
+        AFTER_DOB.setTime(DOB.getTime() + 100000000l);
+        BEFORE_DOB.setTime(DOB.getTime() - 100000000l);
     }
 
     @Before
-    public void init(){
-        // setup the user
-        user = new User();
-        user.setFirstName("Jan");
-        user.setLastName("Nowak");
-        user.setUsername("jurny_jan");
-        user.setPassword("haslo");
-        user.setEmail("jan.nowak@dummy.com");
-        Date dob = new Date();
-        dob.setTime(1005260400000l);
-        user.setDob(dob);
-
-        Location wroclaw = new Location();
-        wroclaw.setGeoLatitude(51.107885f);
-        wroclaw.setGeoLongitude(17.038538f);
-        locationRepository.save(wroclaw);
-
-        user.setAddress(wroclaw);
+    public void setUp(){
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        User user = new User.Builder(USERNAME, PASSWORD, EMAIL, DOB, address, RADIUS)
+                .withFirstName(FIRST_NAME).withLastName(LAST_NAME).build();
+        userRepository.save(user);
     }
-
 
     @After
-    public void clean(){
-        Location userLocation = locationRepository.findOne(user.getAddress().getId());
-        // ZAWSZE USUWAJCIE W TEN SPOSÓB!!! Jeśli ppodamy obiekt, to mamy wyścig i dostaniemy błąd
-        userRepository.delete(user.getId());
-        locationRepository.delete(userLocation.getId());
+    public void tearDown(){
+        userRepository.deleteAll();
     }
 
-    /**
-     * Basic test of functionality of UserRepository
-     * provided by CrudRepository interface
-     */
     @Test
-    public void basicUserTest() {
-
-        // the id should be null before saving the object to db
-        Assert.assertNull(user.getId());
-
-        userRepository.save(user);
-
-        // the id should be now initialized
-        Assert.assertNotNull(user.getId());
-
-        // fetching product from db
-        User fetchedUser = userRepository.findOne(user.getId());
-
-        // checking if fetching was succesfull
-        Assert.assertNotNull(fetchedUser);
-
-        // checking the equality
-        Assert.assertEquals(user.getId(), fetchedUser.getId());
-
-        // checking the updating functionality
-        fetchedUser.setEmail("jan.nowak@gmail.com");
-        userRepository.save(fetchedUser);
-        User fetchedUpdatedUser = userRepository.findOne(fetchedUser.getId());
-        Assert.assertEquals(user.getId(), fetchedUpdatedUser.getId());
-        Assert.assertNotEquals(user.getEmail(), fetchedUpdatedUser.getEmail());
-
-        // checking if the entries are not duplicated
-        Iterable<User> fetchedUsers = userRepository.findAll();
-        int usersCount = 0;
-        for (User u : fetchedUsers)
-            usersCount++;
-        Assert.assertEquals(1, usersCount);
+    public void shouldSaveUser() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DOB, address, RADIUS)
+                .withFirstName(FIRST_NAME).withLastName(LAST_NAME).build());
     }
 
-    /**
-     * Test of different queries in user's repo
-     */
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutUsername() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+       userRepository.save(new User.Builder(null, PASSWORD, EMAIL + FOO, DOB, address, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutUniqueUsername() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME, PASSWORD, EMAIL + FOO, DOB, address, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutPassword() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME + FOO, null, EMAIL + FOO, DOB, address, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutEmail() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, null, DOB, address, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutUniqueEmail() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL, DOB, address, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutDob() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, null, address, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutAddress() {
+        userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DOB, null, RADIUS).build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveUserWithoutRadius() {
+        Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
+        userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DOB, address, null).build());
+    }
+
     @Test
-    public void variousUserQueriesTest(){
-        userRepository.save(user);
+    public void shouldDeleteUser() {
+        userRepository.delete(userRepository.findAll().iterator().next());
+        Assert.assertFalse(userRepository.findAll().iterator().hasNext());
+    }
 
-        User userByUsername = userRepository.findByUsername("jurny_jan");
-        Assert.assertEquals(user.getId(), userByUsername.getId());
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotDeleteUser() {
+        userRepository.delete(new User.Builder(USERNAME, PASSWORD, EMAIL, DOB, ADDRESS, RADIUS).build());
+    }
 
-        User userByEmail = userRepository.findByEmail("jan.nowak@dummy.com");
-        Assert.assertEquals(user.getId(), userByEmail.getId());
+    @Test
+    public void shouldDeleteUserById() {
+        userRepository.delete(userRepository.findAll().iterator().next().getId());
+        Assert.assertFalse(userRepository.findAll().iterator().hasNext());
+    }
 
-        List<User> usersByFirstName = userRepository.findByFirstName("Jan");
-        Assert.assertEquals(1, usersByFirstName.size());
-        Assert.assertEquals(user.getId(), usersByFirstName.get(0).getId());
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void shouldNotDeleteUserById() throws Exception {
+        userRepository.delete(userRepository.findAll().iterator().next().getId() + 1);
+    }
 
-        List<User> usersByLastName = userRepository.findByLastName("Nowak");
-        Assert.assertEquals(1, usersByLastName.size());
-        Assert.assertEquals(user.getId(), usersByLastName.get(0).getId());
+    @Test
+    public void shouldFindUsers() {
+        Assert.assertTrue(userRepository.findAll().iterator().hasNext());
+    }
 
-        List<User> usersByFirstAndLast = userRepository.findByFirstNameAndLastName("Jan", "Nowak");
-        Assert.assertEquals(1, usersByFirstAndLast.size());
-        Assert.assertEquals(user.getId(), usersByFirstAndLast.get(0).getId());
-        List<User> usersByFirstAndLast2 = userRepository.findByFirstNameAndLastName("Janek", "Nowak");
-        Assert.assertEquals(0, usersByFirstAndLast2.size());
+    @Test
+    public void shouldNotFindUsers() {
+        userRepository.deleteAll();
+        Assert.assertFalse(userRepository.findAll().iterator().hasNext());
+    }
 
-        List<User> usersByFirstOrLast = userRepository.findByFirstNameOrLastName("Janek", "Nowak");
-        Assert.assertEquals(1, usersByFirstOrLast.size());
-        Assert.assertEquals(user.getId(), usersByFirstOrLast.get(0).getId());
+    @Test
+    public void shouldFindUser() {
+        Assert.assertNotNull(userRepository.findOne(userRepository.findAll().iterator().next().getId()));
+    }
 
-        Date dob = new Date(1005260400000l);
-        List<User> usersByDOB = userRepository.findByDob(dob);
-        Assert.assertEquals(1, usersByDOB.size());
-        Assert.assertEquals(user.getId(), usersByDOB.get(0).getId());
-        Date after = new Date(1267569430000l);
-        Date before = new Date(952036630000l);
-        List<User> usersBeforeInvalid = userRepository.findByDobBefore(before);
-        Assert.assertEquals(0, usersBeforeInvalid.size());
-        List<User> usersAfterInvalid = userRepository.findByDobAfter(after);
-        Assert.assertEquals(0, usersAfterInvalid.size());
-        List<User> usersBeforeValid = userRepository.findByDobBefore(after);
-        Assert.assertEquals(1, usersBeforeValid.size());
-        Assert.assertEquals(user.getId(), usersBeforeValid.get(0).getId());
-        List<User> usersAfterValid = userRepository.findByDobAfter(before);
-        Assert.assertEquals(1, usersAfterValid.size());
-        Assert.assertEquals(user.getId(), usersAfterValid.get(0).getId());
-        List<User> usersBetween = userRepository.findByDobBetween(before, after);
-        Assert.assertEquals(1, usersBetween.size());
-        Assert.assertEquals(user.getId(), usersBetween.get(0).getId());
-        List<User> usersBetweenInvalid = userRepository.findByDobBetween(after, before);
-        Assert.assertEquals(0, usersBetweenInvalid.size());
+    @Test
+    public void shouldNotFindUser() {
+        Assert.assertNull(userRepository.findOne(userRepository.findAll().iterator().next().getId() + 1));
+    }
 
-        Location wroclaw = user.getAddress();
-        List<User> usersByAddress = userRepository.findByAddress(wroclaw);
-        Assert.assertEquals(1, usersByAddress.size());
-        Assert.assertEquals(user.getId(), usersByAddress.get(0).getId());
+    @Test
+    public void shouldFindUserByUsername() {
+        Assert.assertNotNull(userRepository.findByUsername(USERNAME));
+    }
+
+    @Test
+    public void shouldNotFindUserByUsername() {
+        Assert.assertNull(userRepository.findByUsername(FOO));
+    }
+
+    @Test
+    public void shouldFindUserByEmail() {
+        Assert.assertNotNull(userRepository.findByEmail(EMAIL));
+    }
+
+    @Test
+    public void shouldNotFindUserByEmail() {
+        Assert.assertNull(userRepository.findByEmail(FOO));
+    }
+
+    @Test
+    public void shouldFindUserByFirstName() {
+        Assert.assertFalse(userRepository.findByFirstName(FIRST_NAME).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByFirstName() {
+        Assert.assertTrue(userRepository.findByFirstName(FOO).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByLastName() {
+        Assert.assertFalse(userRepository.findByLastName(LAST_NAME).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByLastName() {
+        Assert.assertTrue(userRepository.findByLastName(FOO).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByFirstNameAndLastName() {
+        Assert.assertFalse(userRepository.findByFirstNameAndLastName(FIRST_NAME, LAST_NAME).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByFirstNameAndLastName() {
+        Assert.assertTrue(userRepository.findByFirstNameAndLastName(FIRST_NAME, FOO).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByFirstNameOrLastName() {
+        Assert.assertFalse(userRepository.findByFirstNameOrLastName(FIRST_NAME, FOO).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByFirstNameOrLastName() {
+        Assert.assertTrue(userRepository.findByFirstNameAndLastName(FOO, FOO).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByDob() {
+        Assert.assertFalse(userRepository.findByDob(DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByDob() {
+        Assert.assertTrue(userRepository.findByDob(AFTER_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByDobAfter() {
+        Assert.assertFalse(userRepository.findByDobAfter(BEFORE_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByDobAfter() {
+        Assert.assertTrue(userRepository.findByDobAfter(AFTER_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByDobBefore() {
+        Assert.assertFalse(userRepository.findByDobBefore(AFTER_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByDobBefore() {
+        Assert.assertTrue(userRepository.findByDobBefore(BEFORE_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByDobBetween() {
+        Assert.assertFalse(userRepository.findByDobBetween(BEFORE_DOB, AFTER_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByDobBetween() {
+        Assert.assertTrue(userRepository.findByDobBetween(BEFORE_DOB, BEFORE_DOB).isEmpty());
+    }
+
+    @Test
+    public void shouldFindUserByAddress() {
+        Location address = userRepository.findAll().iterator().next().getAddress();
+        Assert.assertFalse(userRepository.findByAddress(address).isEmpty());
+    }
+
+    @Test
+    public void shouldNotFindUserByAddress() {
+        Location address = locationRepository.save(new Location(WRONG_ADDRESS.getGeoLongitude(), WRONG_ADDRESS.getGeoLatitude()));
+        Assert.assertTrue(userRepository.findByAddress(address).isEmpty());
     }
 
 }

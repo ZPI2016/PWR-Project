@@ -18,6 +18,13 @@ public class Location extends GenericEntity<Location> {
     @Column(name = "GEOLATITUDE", nullable = false)
     private Float geoLatitude;
 
+    public Location() {}
+
+    public Location(Float geoLongitude, Float geoLatitude) {
+        this.geoLatitude =  geoLatitude;
+        this.geoLongitude = geoLongitude;
+    }
+
     public Float getGeoLatitude() {
         return geoLatitude;
     }

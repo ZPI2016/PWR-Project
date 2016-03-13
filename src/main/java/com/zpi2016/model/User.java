@@ -53,6 +53,19 @@ public class User extends GenericEntity<User> {
 	@Column(name = "RADIUS", nullable = false)
 	private Float radius = 10.0f;
 
+    public User() {}
+
+    private User(Builder builder) {
+        this.username = builder.username;
+        this.password = builder.password;
+        this.email = builder.email;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.dob = builder.dob;
+        this.address = builder.address;
+        this.radius = builder.radius;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -135,5 +148,39 @@ public class User extends GenericEntity<User> {
 
     public Set<EventRating> getGivenEventRatings() {
         return givenEventRatings;
+    }
+
+    public static class Builder {
+        private final String username;
+        private final String password;
+        private final String email;
+        private String firstName;
+        private String lastName;
+        private final Date dob;
+        private final Location address;
+        private final Float radius;
+
+        public Builder(String username, String password, String email, Date dob, Location address, Float radius) {
+            this.username = username;
+            this.password = password;
+            this.email = email;
+            this.dob = dob;
+            this.address = address;
+            this.radius = radius;
+        }
+
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }
