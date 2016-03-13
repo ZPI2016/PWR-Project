@@ -176,6 +176,26 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void shouldFindUserByUsernameOrEmail() {
+        Assert.assertNotNull(userRepository.findByUsernameOrEmail(USERNAME,EMAIL));
+    }
+
+    @Test
+    public void shouldFindUserByUsernameOrEmailInvalidUsername() {
+        Assert.assertNotNull(userRepository.findByUsernameOrEmail(FOO,EMAIL));
+    }
+
+    @Test
+    public void shouldFindUserByUsernameOrEmailInvalidEmail() {
+        Assert.assertNotNull(userRepository.findByUsernameOrEmail(USERNAME,FOO));
+    }
+
+    @Test
+    public void shouldNotFindUserByUsernameOrEmail() {
+        Assert.assertNull(userRepository.findByUsernameOrEmail(FOO,FOO));
+    }
+
+    @Test
     public void shouldFindUserByFirstName() {
         Assert.assertFalse(userRepository.findByFirstName(FIRST_NAME).isEmpty());
     }
