@@ -17,8 +17,9 @@ public interface GenericService<T> {
 
     void delete(final T entity);
 
+    void delete(Integer id);
+
     boolean exists(final Integer id);
 
     Long count();
-
 }

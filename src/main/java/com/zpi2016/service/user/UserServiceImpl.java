@@ -55,9 +55,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void delete(final User user) {
         repository.delete(user);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        if (exists(id)) {
+            delete(findOne(id));
+        }
     }
 
     @Override
