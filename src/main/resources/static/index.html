@@ -3,10 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>ZPI 2016</title>
+    <script src="http://code.jquery.com/jquery-1.12.2.min.js"></script>
 </head>
 <body>
 <h1>
     Hello, handsome :)
 </h1>
+<form id="regForm" action="/user" method="post" onSubmit="return false;">
+    Username:<br>
+    <input type="text" name="username"><br>
+    Password:<br>
+    <input type="password" name="password"><br>
+    Email:<br>
+    <input type="email" name="email"><br>
+     DOB:<br>
+     <input type="date" name="dob"><br>
+    <input type="submit" value="Submit">
+</form>
+<form id="addressForm">
+    geoLongitude:<br>
+    <input type="text" name="geoLongitude"><br>
+    geoLatitude:<br>
+    <input type="text" name="geoLatitude"><br>
+</form>
+<script>
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    var getFormData = function() {
+        var form = $('#regForm').serializeObject();
+        form['address'] = $('#addressForm').serializeObject();
+        return form;
+    };
+
+    $('#regForm').on('submit',function () {
+        $.ajax({
+            url: '/users',
+            method: 'POST',
+            data : JSON.stringify(getFormData()),
+            contentType: "application/json"
+        });
+    });
+</script>
 </body>
 </html>

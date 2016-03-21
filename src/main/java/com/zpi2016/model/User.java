@@ -66,6 +66,18 @@ public class User extends GenericEntity<User> {
         this.radius = builder.radius;
     }
 
+    public void copy(User user) {
+        this.username = user.username;
+        this.password = user.password;
+        this.email = user.email;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.dob = user.dob;
+        this.address.setGeoLongitude(user.getAddress().getGeoLongitude());
+        this.address.setGeoLatitude(user.getAddress().getGeoLatitude());
+        this.radius = user.radius;
+    }
+
     public String getUsername() {
         return username;
     }
