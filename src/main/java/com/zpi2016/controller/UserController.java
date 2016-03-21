@@ -5,6 +5,7 @@ import com.zpi2016.service.user.UserService;
 import com.zpi2016.utils.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody @Valid final User user) {
         return userService.save(user);
     }
