@@ -25,6 +25,11 @@ public class Location extends GenericEntity<Location> {
         this.geoLongitude = geoLongitude;
     }
 
+    public void copy(Location other) {
+        this.geoLatitude =  other.geoLatitude;
+        this.geoLongitude = other.geoLongitude;
+    }
+
     public Float getGeoLatitude() {
         return geoLatitude;
     }

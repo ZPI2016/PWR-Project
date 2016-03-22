@@ -1,5 +1,6 @@
 package com.zpi2016.controller;
 
+import com.zpi2016.model.Location;
 import com.zpi2016.model.User;
 import com.zpi2016.service.user.UserService;
 import com.zpi2016.utils.UserAlreadyExistsException;
@@ -44,6 +45,17 @@ public class UserController {
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
     public void deleteUserWithId(@PathVariable Integer id) {
         userService.delete(id);
+    }
+
+
+    @RequestMapping(value = "/users/{id}/address", method = RequestMethod.GET)
+    public Location getAddressOfUserWithId(@PathVariable Integer id) {
+        return userService.findAddress(id);
+    }
+
+    @RequestMapping(value = "/users/{id}/address", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Location updateAddressOfUserWithId(@RequestBody @Valid final Location address, @PathVariable Integer id) {
+        return userService.updateAddress(address, id);
     }
 
     @ExceptionHandler

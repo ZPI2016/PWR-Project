@@ -23,12 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(final User user) {
-        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
-        if (existing != null) {
-            throw new UserAlreadyExistsException(String.format(
-                    "There already exists a user with username = %s or mail = %s",
-                    user.getUsername(), user.getEmail()));
-        }
+        checkUniqueConstraints(user);
         return repository.save(user);
     }
 
@@ -45,12 +40,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(User user, Integer id) {
+        checkUniqueConstraints(user);
         if (exists(id)) {
             User existing = findOne(id);
             existing.copy(user);
             return existing;
         } else {
-            return save(user);
+            return null;
         }
     }
 
@@ -77,4 +73,35 @@ public class UserServiceImpl implements UserService {
         return repository.count();
     }
 
+
+    @Override
+    @Transactional
+    public Location findAddress(Integer id) {
+        if (exists(id)) {
+            return findOne(id).getAddress();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public Location updateAddress(Location newAddress, Integer id) {
+        if (exists(id)) {
+            Location currentAddress = findOne(id).getAddress();
+            currentAddress.copy(newAddress);
+            return currentAddress;
+        } else {
+            return null;
+        }
+    }
+
+    private void checkUniqueConstraints(User user) {
+        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        if (existing != null) {
+            throw new UserAlreadyExistsException(String.format(
+                    "There already exists a user with username = %s or mail = %s",
+                    user.getUsername(), user.getEmail()));
+        }
+    }
 }
