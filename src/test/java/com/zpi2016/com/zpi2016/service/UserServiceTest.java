@@ -4,10 +4,12 @@ import com.zpi2016.model.User;
 import com.zpi2016.repository.UserRepository;
 import com.zpi2016.service.user.UserService;
 import com.zpi2016.service.user.UserServiceImpl;
+import org.hibernate.service.spi.InjectService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -18,15 +20,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
+    @InjectMocks
+    private UserServiceImpl userService;
+
     @Mock
     private UserRepository userRepository;
-
-    private UserService userService;
-
-    @Before
-    public void setUp() {
-        userService = new UserServiceImpl(userRepository);
-    }
 
     @Test
     public void shouldSaveNewUser() {

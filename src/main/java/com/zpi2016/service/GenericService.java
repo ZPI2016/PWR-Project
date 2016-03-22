@@ -7,16 +7,19 @@ import java.util.List;
  */
 public interface GenericService<T> {
 
-    T save(final T enitity);
+    T save(final T entity);
 
-    T findOne(int ID);
+    T findOne(final Integer id);
 
     Iterable<T> findAll();
 
-    Long count();
+    T update(T entity, Integer id);
 
     void delete(final T entity);
 
-    boolean exists(int ID);
+    void delete(Integer id);
 
+    boolean exists(final Integer id);
+
+    Long count();
 }

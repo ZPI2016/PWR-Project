@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -17,15 +18,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
-    @Mock
-    private UserService userService;
-
+    @InjectMocks
     private UserController userController;
 
-    @Before
-    public void setUp() {
-        userController = new UserController(userService);
-    }
+    @Mock
+    private UserService userService;
 
     @Test
     public void shouldCreateUser() throws Exception {

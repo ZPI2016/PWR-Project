@@ -17,30 +17,19 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repository;
-
     @Autowired
-    public UserServiceImpl(final UserRepository userRepository) {
-        repository = userRepository;
-    }
+    private UserRepository repository;
 
     @Override
     @Transactional
     public User save(final User user) {
-        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
-        if(existing != null){
-            throw new UserAlreadyExistsException(String.format(
-                    "There already exists a user with username = %s or mail = %s",
-                    user.getUsername(), user.getEmail()));
-        }
-        user.setAddress(new Location(1f,1f));
-        user.setDob(new Date());
+        checkUniqueConstraints(user);
         return repository.save(user);
     }
 
     @Override
-    public User findOne(int ID) {
-        return null;
+    public User findOne(final Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
@@ -49,17 +38,70 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public User update(User user, Integer id) {
+        checkUniqueConstraints(user);
+        if (exists(id)) {
+            User existing = findOne(id);
+            existing.copy(user);
+            return existing;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void delete(final User user) {
+        repository.delete(user);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        if (exists(id)) {
+            delete(findOne(id));
+        }
+    }
+
+    @Override
+    public boolean exists(final Integer id) {
+        return repository.exists(id);
+    }
+
+    @Override
     public Long count() {
-        return null;
+        return repository.count();
+    }
+
+
+    @Override
+    @Transactional
+    public Location findAddress(Integer id) {
+        if (exists(id)) {
+            return findOne(id).getAddress();
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void delete(final User entity) {
+    @Transactional
+    public Location updateAddress(Location newAddress, Integer id) {
+        if (exists(id)) {
+            Location currentAddress = findOne(id).getAddress();
+            currentAddress.copy(newAddress);
+            return currentAddress;
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public boolean exists(int ID) {
-        return false;
+    private void checkUniqueConstraints(User user) {
+        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        if (existing != null) {
+            throw new UserAlreadyExistsException(String.format(
+                    "There already exists a user with username = %s or mail = %s",
+                    user.getUsername(), user.getEmail()));
+        }
     }
-
 }

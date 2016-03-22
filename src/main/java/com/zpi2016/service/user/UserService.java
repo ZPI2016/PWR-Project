@@ -1,5 +1,6 @@
 package com.zpi2016.service.user;
 
+import com.zpi2016.model.Location;
 import com.zpi2016.model.User;
 import com.zpi2016.service.GenericService;
 
@@ -8,4 +9,7 @@ import com.zpi2016.service.GenericService;
  */
 public interface UserService extends GenericService<User>{
 
+    Location findAddress(Integer id);
+
+    Location updateAddress(Location newAddress, Integer id);
 }
