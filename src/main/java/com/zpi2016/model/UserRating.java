@@ -1,21 +1,23 @@
 package com.zpi2016.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by filip on 27.02.2016.
  */
 
 @Entity
-@Table(name = "USERS_RATINGS")
 public class UserRating extends Rating {
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    @NotNull
     private User author;
-	
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @NotNull
     private User user;
 	
 	public User getAuthor() {

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by kuba on 28.02.16.
  */
-public interface EventRepository extends CrudRepository<Event, Integer> {
+public interface EventRepository extends CrudRepository<Event, String> {
 
     public List<Event> findByCategory(Category category);
 

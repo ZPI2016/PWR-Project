@@ -1,6 +1,10 @@
 package com.zpi2016.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,48 +13,52 @@ import java.util.Set;
  * Created by filip on 26.02.2016.
  */
 @Entity
-@Table(name = "USERS")
 public class User extends GenericEntity<User> {
 
-    @Column(name = "USERNAME", length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "PASSWORD", length = 50, nullable = false)
+    @Column(length = 50, nullable = false)
     private String password;
 
-    @Column(name = "EMAIL", length = 80, nullable = false, unique = true)
+    @Column(length = 80, nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<Event> createdEvents = new HashSet<Event>(0);
 
+    @JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<UserRating> ratings = new HashSet<UserRating>(0);
-	
+
+    @JsonIgnore
 	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<UserRating> givenUserRatings = new HashSet<UserRating>(0);
 
+    @JsonIgnore
 	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<EventRating> givenEventRatings = new HashSet<EventRating>(0);
-	
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "participants")
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private final Set<Event> attendedEvents = new HashSet<Event>(0);
 
-    @Column(name = "FIRSTNAME", length = 50)
+    @Size(max = 50)
     private String firstName;
 
-    @Column(name = "LASTNAME", length = 50)
+    @Size(max = 50)
     private String lastName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "DOB", nullable = false)
+    @NotNull
     private Date dob;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="LOCATION_ID", nullable = false)
+    @NotNull
     private Location address;
-	
-	@Column(name = "RADIUS", nullable = false)
+
+    @NotNull
 	private Float radius = 10.0f;
 
     public User() {}

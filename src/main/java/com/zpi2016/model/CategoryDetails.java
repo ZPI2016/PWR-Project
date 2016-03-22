@@ -1,19 +1,20 @@
 package com.zpi2016.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by filip on 26.02.2016.
  */
 @Entity
-@Table(name = "CATEGORIES_DETAILS")
 public class CategoryDetails extends GenericEntity<CategoryDetails> {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CATEGORY", nullable = false)
+    @NotNull
     private Category category;
 
-    @Column(name = "DESCR", length = 500, nullable = false)
+    @Column(length = 500, nullable = false)
     private String descr;
 
     public Category getCategory() {

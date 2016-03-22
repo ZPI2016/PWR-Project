@@ -5,10 +5,6 @@ package com.zpi2016.utils;
  */
 public class UserAlreadyExistsException extends RuntimeException {
 
-    public UserAlreadyExistsException(){
-        super();
-    }
-
     public UserAlreadyExistsException(String msg){
         super(msg);
     }

@@ -15,9 +15,6 @@ get user: curl http://localhost:8080/users/{id}
 
 delete user: curl -X DELETE http://localhost:8080/users/{id}
 
-update user curl -X PUT -H "Content-Type: application/json" -d '{ "username": "test_user", "password": "test_password", "email":"test@gmail.com", "address":{"geoLongitude":1.0,"geoLatitude":1.0}, "dob":"2016-03-21" }' http://localhost:8080/users/{id}
+update user: curl -X PUT -H "Content-Type: application/json" -d '{ "username": "test_user", "password": "test_password", "email":"test@gmail.com", "address":{"geoLongitude":1.0,"geoLatitude":1.0}, "dob":"2016-03-21" }' http://localhost:8080/users/{id}
 
-f.e. 	curl http://localhost:8080/users/1
-		curl -X DELETE http://localhost:8080/users/1
-	 
 Zespołowy Projekt Inżynierski - Politechnika Wrocławska, WIZ

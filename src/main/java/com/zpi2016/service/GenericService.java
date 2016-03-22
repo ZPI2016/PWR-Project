@@ -9,17 +9,17 @@ public interface GenericService<T> {
 
     T save(final T entity);
 
-    T findOne(final Integer id);
+    T findOne(final String id);
 
     Iterable<T> findAll();
 
-    T update(T entity, Integer id);
+    T update(final T entity, final String id);
 
     void delete(final T entity);
 
-    void delete(Integer id);
+    void delete(final String id);
 
-    boolean exists(final Integer id);
+    boolean exists(final String id);
 
     Long count();
 }

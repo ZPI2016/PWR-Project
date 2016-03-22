@@ -4,12 +4,10 @@ import com.zpi2016.model.Location;
 import com.zpi2016.model.User;
 import com.zpi2016.repository.UserRepository;
 import com.zpi2016.utils.UserAlreadyExistsException;
+import com.zpi2016.utils.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by aman on 13.03.16.
@@ -28,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findOne(final Integer id) {
+    public User findOne(final String id) {
         return repository.findOne(id);
     }
 
@@ -39,15 +37,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User update(User user, Integer id) {
+    public User update(User user, String id) {
+        checkIfUserExists(id);
         checkUniqueConstraints(user);
-        if (exists(id)) {
-            User existing = findOne(id);
-            existing.copy(user);
-            return existing;
-        } else {
-            return null;
-        }
+        User existing = findOne(id);
+        existing.copy(user);
+        return existing;
     }
 
     @Override
@@ -57,14 +52,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(Integer id) {
-        if (exists(id)) {
-            delete(findOne(id));
-        }
+    public void delete(String id) {
+        checkIfUserExists(id);
+        delete(findOne(id));
     }
 
     @Override
-    public boolean exists(final Integer id) {
+    public boolean exists(final String id) {
         return repository.exists(id);
     }
 
@@ -73,35 +67,34 @@ public class UserServiceImpl implements UserService {
         return repository.count();
     }
 
-
     @Override
     @Transactional
-    public Location findAddress(Integer id) {
-        if (exists(id)) {
-            return findOne(id).getAddress();
-        } else {
-            return null;
-        }
+    public Location findAddress(String id) {
+        checkIfUserExists(id);
+        return findOne(id).getAddress();
     }
 
     @Override
     @Transactional
-    public Location updateAddress(Location newAddress, Integer id) {
-        if (exists(id)) {
-            Location currentAddress = findOne(id).getAddress();
-            currentAddress.copy(newAddress);
-            return currentAddress;
-        } else {
-            return null;
-        }
+    public Location updateAddress(Location newAddress, String id) {
+        checkIfUserExists(id);
+        Location currentAddress = findOne(id).getAddress();
+        currentAddress.copy(newAddress);
+        return currentAddress;
     }
 
     private void checkUniqueConstraints(User user) {
         User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
         if (existing != null) {
             throw new UserAlreadyExistsException(String.format(
-                    "There already exists a user with username = %s or mail = %s",
+                    "There already exists a user with username: %s or email: %s",
                     user.getUsername(), user.getEmail()));
+        }
+    }
+
+    private void checkIfUserExists(String id) {
+        if (!exists(id)) {
+            throw new UserNotFoundException(String.format("Could not find user with id: %s", id));
         }
     }
 }

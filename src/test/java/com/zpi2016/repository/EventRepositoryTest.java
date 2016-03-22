@@ -12,6 +12,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.TransactionSystemException;
 
 import java.util.Date;
 
@@ -83,27 +84,27 @@ public class EventRepositoryTest {
         eventRepository.save(new Event.Builder(CATEGORY, START_TIME, address, user).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutCategory() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         User user = userRepository.findAll().iterator().next();
         eventRepository.save(new Event.Builder(null, START_TIME, address, user).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutStartTime() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         User user = userRepository.findAll().iterator().next();
         eventRepository.save(new Event.Builder(CATEGORY, null, address, user).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutPlace() {
         User user = userRepository.findAll().iterator().next();
         eventRepository.save(new Event.Builder(CATEGORY, START_TIME, null, user).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutCreator() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         eventRepository.save(new Event.Builder(CATEGORY, START_TIME, address, null).build());
