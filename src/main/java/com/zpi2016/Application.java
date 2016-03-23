@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan(basePackages = {"com.zpi2016.model"})
 @EnableJpaRepositories(basePackages = {"com.zpi2016.repository"})
 @SpringBootApplication
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 public class Application{
 
 	/**

@@ -68,4 +68,5 @@ public class UserController {
     public String handleUserNotFoundException(UserNotFoundException e) {
         return e.getMessage();
     }
+
 }

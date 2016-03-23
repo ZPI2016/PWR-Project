@@ -1,9 +1,8 @@
-package com.zpi2016.com.zpi2016.service;
+package com.zpi2016.service;
 
 import com.zpi2016.model.User;
 import com.zpi2016.repository.UserRepository;
 import com.zpi2016.service.user.UserService;
-import com.zpi2016.service.user.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class UserServiceTest {
 
     @InjectMocks
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Mock
     private UserRepository userRepository;
