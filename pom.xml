@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
     <groupId>com.zpi2016</groupId>
     <artifactId>PWR-Project</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>1.0</version>
     <name>ZPI 2016</name>
     <url>https://github.com/ZPI2016/PWR-Project</url>
