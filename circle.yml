@@ -1,0 +1,8 @@
+machine:
+  java:
+    version: openjdk8
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: m33tme
