@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by filip on 26.02.2016.
@@ -12,10 +13,10 @@ import javax.persistence.MappedSuperclass;
 public class Rating extends GenericEntity<Rating> {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "OVERALL", nullable = false)
+    @NotNull
     private Rate overall;
 
-    @Column(name = "DESCR", length = 500, nullable = false)
+    @Column(length = 500, nullable = false)
     private String descr;
 
     public Rate getOverall() {

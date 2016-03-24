@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Created by kuba on 28.02.16.
  */
-public interface LocationRepository extends CrudRepository<Location, Integer> {
+public interface LocationRepository extends CrudRepository<Location, String> {
 }

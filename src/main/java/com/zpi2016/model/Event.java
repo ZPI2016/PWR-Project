@@ -1,6 +1,9 @@
 package com.zpi2016.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,40 +12,38 @@ import java.util.Set;
  * Created by filip on 26.02.2016.
  */
 @Entity
-@Table(name = "EVENTS")
 public class Event extends GenericEntity<Event> {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CATEGORY", nullable = false)
+    @NotNull
     private Category category;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "STARTTIME", nullable = false)
+    @NotNull
     private Date startTime;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="LOCATION_ID", nullable = false)
+    @NotNull
     private Location place;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CREATOR_ID", nullable = false)
+    @NotNull
     private User creator;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "EVENT_USER", joinColumns = { @JoinColumn(name = "EVENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
+    @JoinTable
     private final Set<User> participants = new HashSet<User>(0);
 
+    @JsonIgnore
 	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private final Set<EventRating> ratings = new HashSet<EventRating>(0);
 	
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DEADLINE")
     private Date deadline;
 
-    @Column(name = "MINPARTICIPANTS")
     private Integer minParticipants;
 
-    @Column(name = "MAXPARTICIPANTS")
     private Integer maxParticipants;
 
     public Event() {}

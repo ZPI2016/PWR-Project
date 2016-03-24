@@ -1,3 +1,5 @@
 .idea
 PWR-Project.iml
 target
+*.orig
+*.gitignore

@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Created by kuba on 28.02.16.
  */
-public interface EventRatingRepository extends CrudRepository<EventRating, Integer> {
+public interface EventRatingRepository extends CrudRepository<EventRating, String> {
 }

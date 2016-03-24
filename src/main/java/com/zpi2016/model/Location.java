@@ -3,19 +3,19 @@ package com.zpi2016.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by filip on 26.02.2016.
  */
 
 @Entity
-@Table(name = "LOCATIONS")
 public class Location extends GenericEntity<Location> {
 
-    @Column(name = "GEOLONGITUDE", nullable = false)
+    @NotNull
     private Float geoLongitude;
 
-    @Column(name = "GEOLATITUDE", nullable = false)
+    @NotNull
     private Float geoLatitude;
 
     public Location() {}
@@ -23,6 +23,11 @@ public class Location extends GenericEntity<Location> {
     public Location(Float geoLongitude, Float geoLatitude) {
         this.geoLatitude =  geoLatitude;
         this.geoLongitude = geoLongitude;
+    }
+
+    public void copy(Location other) {
+        this.geoLatitude =  other.geoLatitude;
+        this.geoLongitude = other.geoLongitude;
     }
 
     public Float getGeoLatitude() {

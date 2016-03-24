@@ -1,21 +1,21 @@
 package com.zpi2016.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by filip on 27.02.2016.
  */
 
 @Entity
-@Table(name = "EVENTS_RATINGS")
 public class EventRating extends Rating {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    @NotNull
     private User author;
 	
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "EVENT_ID", nullable = false)
+    @NotNull
     private Event event;
 	
 	public User getAuthor() {

@@ -12,6 +12,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.TransactionSystemException;
 
 import java.util.Date;
 import java.util.List;
@@ -95,18 +96,18 @@ public class UserRepositoryTest {
         userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL, DOB, address, RADIUS).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveUserWithoutDob() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, null, address, RADIUS).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveUserWithoutAddress() {
         userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DOB, null, RADIUS).build());
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveUserWithoutRadius() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         userRepository.save(new User.Builder(USERNAME + FOO, PASSWORD, EMAIL + FOO, DOB, address, null).build());
@@ -173,6 +174,26 @@ public class UserRepositoryTest {
     @Test
     public void shouldNotFindUserByEmail() {
         Assert.assertNull(userRepository.findByEmail(FOO));
+    }
+
+    @Test
+    public void shouldFindUserByUsernameOrEmail() {
+        Assert.assertNotNull(userRepository.findByUsernameOrEmail(USERNAME,EMAIL));
+    }
+
+    @Test
+    public void shouldFindUserByUsernameOrEmailInvalidUsername() {
+        Assert.assertNotNull(userRepository.findByUsernameOrEmail(FOO,EMAIL));
+    }
+
+    @Test
+    public void shouldFindUserByUsernameOrEmailInvalidEmail() {
+        Assert.assertNotNull(userRepository.findByUsernameOrEmail(USERNAME,FOO));
+    }
+
+    @Test
+    public void shouldNotFindUserByUsernameOrEmail() {
+        Assert.assertNull(userRepository.findByUsernameOrEmail(FOO,FOO));
     }
 
     @Test

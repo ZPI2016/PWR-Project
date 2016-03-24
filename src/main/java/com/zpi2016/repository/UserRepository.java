@@ -10,11 +10,13 @@ import java.util.List;
 /**
  * Created by kuba on 28.02.16.
  */
-public interface UserRepository extends CrudRepository <User, Integer> {
+public interface UserRepository extends CrudRepository <User, String> {
 
     public User findByUsername(String username);
 
     public User findByEmail(String email);
+
+    public User findByUsernameOrEmail(String username, String email);
 
     public List<User> findByFirstName(String firstName);
 

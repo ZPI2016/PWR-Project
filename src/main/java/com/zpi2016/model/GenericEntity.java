@@ -18,24 +18,20 @@ import java.util.Date;
 public class GenericEntity<T extends GenericEntity<T>> {
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
-	@Column(name = "ID")
-	private Integer id;
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	private String id;
 
 	@CreationTimestamp
-	@Column(name = "CREATE_DATE")
 	private Date createDate;
 
 	@UpdateTimestamp
-	@Column(name = "UPDATE_DATE")
 	private Date updateDate;
 
 	@Version
-	@Column(name = "VERSION", nullable = false)
 	private Long version;
 
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -45,7 +41,7 @@ public class GenericEntity<T extends GenericEntity<T>> {
 	 * @param id
 	 *            ID to be assigned to the current entity
 	 */
-	public void setId(final Integer id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
