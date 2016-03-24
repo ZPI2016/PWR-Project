@@ -1,6 +1,9 @@
 machine:
   java:
     version: openjdk8
+test:
+  override:
+    - echo "tests will come soon"
 deployment:
   staging:
     branch: master
