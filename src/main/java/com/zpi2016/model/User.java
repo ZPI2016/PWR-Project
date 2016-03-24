@@ -13,6 +13,7 @@ import java.util.Set;
  * Created by filip on 26.02.2016.
  */
 @Entity
+@Table(name = "Users")
 public class User extends GenericEntity<User> {
 
     @Column(length = 50, nullable = false, unique = true)
