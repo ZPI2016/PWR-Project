@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Springboot starting application class
+ * Spring boot starting application class
  * It's the main configuration class at the same time
  *
  * Annotations explained:
