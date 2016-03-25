@@ -1,9 +1,6 @@
 machine:
   java:
     version: oraclejdk8
-test:
-  override:
-    - echo "tests will come soon"
 deployment:
   staging:
     branch: master
