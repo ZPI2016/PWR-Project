@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Application{
 
 	/**
-	 *	Starts the whole Springboot application
+	 *	Starts the whole Spring boot application
 	 */
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
