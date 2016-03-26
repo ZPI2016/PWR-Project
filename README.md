@@ -12,7 +12,7 @@ mvn test
 mvn verify
 
 # working with REST via console
-add user:  curl -X POST -H "Content-Type: application/json" -d '{ "username": "test_user", "password": "test_password", "email":"test@gmail.com", "address":{"geoLongitude":1.0,"geoLatitude":1.0}, "dob":"2016-03-21" }' http://localhost:8080/users
+add user:  curl -X POST -H "Content-Type: application/json" -d '{ "username": "test_user", "password": "test_password", "email":"test@gmail.com", "address":{"geoLongitude":1.0,"geoLatitude":1.0}, "dob":"2016-03-21" }' {URL}/users
 
 retrieve users: curl {URL}/users
 
