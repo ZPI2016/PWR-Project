@@ -11,13 +11,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * It's the main configuration class at the same time
  *
  * Annotations explained:
- * > EntityScan - tells Hibernate where to look for Entities
- * > EnableJpaRepositories - enables auto configuration of Spring Data JPA (the 'interface related magic')
  * > EnableTransactionManagement - tells Spring to perform annotation driven transactions
  */
 
-@EntityScan(basePackages = {"com.zpi2016.model"})
-@EnableJpaRepositories(basePackages = {"com.zpi2016.repository"})
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application{

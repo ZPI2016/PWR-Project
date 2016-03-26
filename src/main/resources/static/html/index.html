@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>ZPI 2016</title>
+    <script type="text/javascript" src="../angular.js"></script>
+    <script type="text/javascript" src="../index.js"></script>
+</head>
+<body  >
+<h1>
+    Hello, beautiful / handsome :)
+</h1>
+<h4>
+    Deployed from CircleCI
+</h4>
+<div ng-controller="FormController as formCtrl">
+    <form name="indexForm" ng-submit="formCtrl.onClick(indexForm.user)">
+        Username:<br>
+        <input type="text" name="username" ng-model="indexForm.user.username"><br>
+        Password:<br>
+        <input type="password" name="password" ng-model="indexForm.user.password"><br>
+        Email:<br>
+        <input type="email" name="email" ng-model="indexForm.user.email"><br>
+        geoLongitude:<br>
+        <input type="text" name="geoLongitude" ng-model="indexForm.user.address.geoLongitude"><br>
+        geoLatitude:<br>
+        <input type="text" name="geoLatitude" ng-model="indexForm.user.address.geoLatitude"><br>
+        DOB:<br>
+        <input type="date" name="dob" ng-model="indexForm.user.dob"><br>
+        <input type="submit" value="Submit">
+    </form>
+
+</div>
+
+</body>
+</html>
