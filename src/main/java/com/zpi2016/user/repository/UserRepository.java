@@ -1,7 +1,7 @@
 package com.zpi2016.user.repository;
 
-import com.zpi2016.model.Location;
-import com.zpi2016.user.User;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Date;

@@ -1,10 +1,8 @@
 package com.zpi2016.user.support;
 
-import com.zpi2016.model.Location;
-import com.zpi2016.user.User;
-import com.zpi2016.service.user.UserService;
-import com.zpi2016.utils.UserAlreadyExistsException;
-import com.zpi2016.utils.UserNotFoundException;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,7 +37,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User updateUserWithId(@RequestBody @Valid final User user, @PathVariable UUID id) {
+    public User updateUserWithId(@RequestBody final User user, @PathVariable UUID id) {
         return userService.update(user, id);
     }
 
@@ -54,7 +52,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/address", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Location updateAddressOfUserWithId(@RequestBody @Valid final Location address, @PathVariable UUID id) {
+    public Location updateAddressOfUserWithId(@RequestBody final Location address, @PathVariable UUID id) {
         return userService.updateAddress(address, id);
     }
 

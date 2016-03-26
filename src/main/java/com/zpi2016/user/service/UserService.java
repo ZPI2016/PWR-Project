@@ -1,11 +1,11 @@
 package com.zpi2016.user.service;
 
-import com.zpi2016.model.Location;
-import com.zpi2016.user.User;
-import com.zpi2016.repository.UserRepository;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.repository.UserRepository;
 import com.zpi2016.support.common.GenericService;
-import com.zpi2016.utils.UserAlreadyExistsException;
-import com.zpi2016.utils.UserNotFoundException;
+import com.zpi2016.user.support.UserAlreadyExistsException;
+import com.zpi2016.user.support.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,7 @@ public class UserService implements GenericService<User> {
     @Transactional
     public User update(User user, UUID id) {
         checkIfUserExists(id);
-        checkUniqueConstraints(user);
+        checkUniqueConstraints(user, id);
         User existing = findOne(id);
         existing.copy(user);
         return existing;
@@ -69,6 +69,12 @@ public class UserService implements GenericService<User> {
         return currentAddress;
     }
 
+    private void checkIfUserExists(UUID id) {
+        if (!repository.exists(id)) {
+            throw new UserNotFoundException(String.format("Could not find user with id: %s", id));
+        }
+    }
+
     private void checkUniqueConstraints(User user) {
         User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
         if (existing != null) {
@@ -78,9 +84,12 @@ public class UserService implements GenericService<User> {
         }
     }
 
-    private void checkIfUserExists(UUID id) {
-        if (!repository.exists(id)) {
-            throw new UserNotFoundException(String.format("Could not find user with id: %s", id));
+    private void checkUniqueConstraints(User user, UUID id) {
+        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        if (existing != null && !existing.getId().equals(id)) {
+            throw new UserAlreadyExistsException(String.format(
+                    "There already exists a user with username: %s or email: %s",
+                    user.getUsername(), user.getEmail()));
         }
     }
 }

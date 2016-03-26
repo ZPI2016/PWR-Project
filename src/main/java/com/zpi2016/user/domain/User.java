@@ -1,10 +1,10 @@
 package com.zpi2016.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zpi2016.model.Event;
-import com.zpi2016.model.EventRating;
-import com.zpi2016.model.Location;
-import com.zpi2016.model.UserRating;
+import com.zpi2016.event.domain.Event;
+import com.zpi2016.rating.domain.EventRating;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.rating.domain.UserRating;
 import com.zpi2016.support.common.GenericEntity;
 
 import javax.persistence.*;
@@ -81,14 +81,14 @@ public class User extends GenericEntity {
     }
 
     public void copy(User other) {
-        this.username = other.username;
-        this.password = other.password;
-        this.email = other.email;
-        this.firstName = other.firstName;
-        this.lastName = other.lastName;
-        this.dob = other.dob;
-        this.address.copy(other.address);
-        this.radius = other.radius;
+        if (other.username != null && !this.username.equals(other.username))    this.username = other.username;
+        if (other.password != null && !this.password.equals(other.password))    this.password = other.password;
+        if (other.email != null && !this.email.equals(other.email))             this.email = other.email;
+        if (other.firstName != null && !this.firstName.equals(other.firstName)) this.firstName = other.firstName;
+        if (other.lastName != null && !this.lastName.equals(other.lastName))    this.lastName = other.lastName;
+        if (other.dob != null  && !this.dob.equals(other.dob))                  this.dob = other.dob;
+        if (other.radius != null && !this.radius.equals(other.radius))          this.radius = other.radius;
+        if (other.address != null) this.address.copy(other.address);
     }
 
     public String getUsername() {
