@@ -25,7 +25,7 @@ public class Location extends GenericEntity {
         this.geoLongitude = geoLongitude;
     }
 
-    public void copy(Location other) {
+    public void updateWithPropertiesFrom(Location other) {
         if (other.geoLatitude != null && !this.geoLatitude.equals(other.geoLatitude))  this.geoLatitude =  other.geoLatitude;
         if (other.geoLongitude != null && !this.geoLongitude.equals(other.geoLongitude)) this.geoLongitude = other.geoLongitude;
     }

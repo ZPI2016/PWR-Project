@@ -44,7 +44,7 @@ public class UserService implements GenericService<User> {
         checkIfUserExists(id);
         checkUniqueConstraints(user, id);
         User existing = findOne(id);
-        existing.copy(user);
+        existing.updateWithPropertiesFrom(user);
         return existing;
     }
 
@@ -65,7 +65,7 @@ public class UserService implements GenericService<User> {
     public Location updateAddress(Location newAddress, UUID id) {
         checkIfUserExists(id);
         Location currentAddress = findOne(id).getAddress();
-        currentAddress.copy(newAddress);
+        currentAddress.updateWithPropertiesFrom(newAddress);
         return currentAddress;
     }
 

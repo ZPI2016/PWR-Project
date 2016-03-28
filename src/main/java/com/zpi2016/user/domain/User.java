@@ -80,15 +80,17 @@ public class User extends GenericEntity {
         this.radius = builder.radius;
     }
 
-    public void copy(User other) {
+    public void updateWithPropertiesFrom(User other) {
         if (other.username != null && !this.username.equals(other.username))    this.username = other.username;
         if (other.password != null && !this.password.equals(other.password))    this.password = other.password;
         if (other.email != null && !this.email.equals(other.email))             this.email = other.email;
         if (other.firstName != null && !this.firstName.equals(other.firstName)) this.firstName = other.firstName;
+        if (this.firstName.isEmpty()) this.firstName = null;
         if (other.lastName != null && !this.lastName.equals(other.lastName))    this.lastName = other.lastName;
+        if (this.lastName.isEmpty()) this.lastName = null;
         if (other.dob != null  && !this.dob.equals(other.dob))                  this.dob = other.dob;
         if (other.radius != null && !this.radius.equals(other.radius))          this.radius = other.radius;
-        if (other.address != null) this.address.copy(other.address);
+        if (other.address != null) this.address.updateWithPropertiesFrom(other.address);
     }
 
     public String getUsername() {
