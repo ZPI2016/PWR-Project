@@ -19,11 +19,7 @@
                 address: user.address,
                 dob: user.dob
             });
-            $http.post('/users', myapp.data).success(function() {
-                // location url has to contain 'localhost:8080' otherwise ('/users') redirect works but to see
-                // users it's needed to reload the page manually
-                $window.location = 'http://localhost:8080/users';
-            });
+            $http.post('/users', myapp.data);
         };
     });
 
