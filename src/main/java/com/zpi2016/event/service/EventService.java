@@ -1,5 +1,6 @@
 package com.zpi2016.event.service;
 
+import com.google.common.base.Preconditions;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.repository.EventRepository;
 import com.zpi2016.event.utils.EventNotFoundException;
@@ -8,6 +9,7 @@ import com.zpi2016.support.common.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -17,6 +19,8 @@ import java.util.UUID;
 public class EventService implements GenericService<Event> {
 
 
+    //todo: think about sending notifications for people of interest that event details has changed
+
     @Autowired
     private EventRepository repository;
 
@@ -25,7 +29,7 @@ public class EventService implements GenericService<Event> {
     @Override
     @Transactional
     public Event save(final Event event) throws EventNotFoundException {
-        if (!eventWithIdExists(event.getId()))
+        if (!eventExists(event.getId()))
             return repository.save(event);
         else
             return null;
@@ -58,17 +62,41 @@ public class EventService implements GenericService<Event> {
     }
 
     @Transactional
-    public Location findAddress(UUID id) throws EventNotFoundException {
+    public Location findPlace(UUID id) throws EventNotFoundException {
         checkIfEventExists(id);
         return findOne(id).getPlace();
     }
 
+    //why do we return new values?
     @Transactional
-    public Location updateAddress(Location newAddress, UUID id) throws EventNotFoundException {
+    public Location updatePlace(Location newPlace, UUID id) throws EventNotFoundException {
         checkIfEventExists(id);
-        Location currentAddress = findOne(id).getPlace();
-        currentAddress.copy(newAddress);
-        return currentAddress;
+        Location currentPlace = findOne(id).getPlace();
+        currentPlace.copy(newPlace);
+        return currentPlace;
+    }
+
+
+    @Transactional
+    public Date updateTime(Date newStartTime, UUID id) throws EventNotFoundException {
+        //todo: change this. Find a solution not to create object every time we want to update time.
+        Preconditions.checkArgument(newStartTime.after(new Date()), "Date of event start cannot be past one!");
+        checkIfEventExists(id);
+     //   Date currentStartTime = findOne(id).getStartTime();
+            findOne(id).setStartTime(newStartTime);
+        return newStartTime;
+    }
+
+
+    @Transactional
+    public Event updateParticipantsNumber(int newMinParticipants, int newMaxParticipants, UUID id) throws EventNotFoundException {
+        Preconditions.checkArgument(newMinParticipants>0, "Number of minimum participants must be a positive value");
+        Preconditions.checkArgument(newMaxParticipants>0, "Number of maximum participants must be a positive value");
+        checkIfEventExists(id);
+        Event eventToUpdate = findOne(id);
+        eventToUpdate.setMinParticipants(newMinParticipants);
+        eventToUpdate.setMaxParticipants(newMaxParticipants);
+     return eventToUpdate;
     }
 
     private void checkIfEventExists(UUID id) throws EventNotFoundException {
@@ -77,7 +105,7 @@ public class EventService implements GenericService<Event> {
         }
     }
 
-    private boolean eventWithIdExists(UUID id) throws EventNotFoundException {
+    private boolean eventExists(UUID id) throws EventNotFoundException {
         return repository.exists(id);
     }
 

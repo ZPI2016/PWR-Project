@@ -18,6 +18,9 @@ import java.util.Set;
 @Entity
 public class Event extends GenericEntity {
 
+    @NotNull
+    private String title;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Category category;
