@@ -1,45 +1,41 @@
 /**
  * Created by Martyna on 21.03.2016.
+ *
+ * Updated by Kuba on 03.04.2016
  */
 
-(function(){
-    var app = angular.module('myApp', []);
-    var login = false;
+angular.module('index', [ 'ngRoute' ])
+    .config(function($routeProvider, $httpProvider) {
 
-    app.controller('FormController', function ($http, $window){
+        $routeProvider.when('/', {
+            templateUrl : 'home.html',
+            controller : 'homeCtrl',
+            controllerAs: 'controller'
+        }).when('/login', {
+            templateUrl : 'login.html',
+            controller : 'loginCtrl',
+            controllerAs: 'controller'
+        }).when('/register', {
+            templateUrl : 'register.html',
+            controller : 'registerCtrl',
+            controllerAs: 'controller'
+        }).otherwise('/');
 
-        var data;
-        var myapp = this;
+        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 
-        this.onClick = function (user) {
-            myapp.data = JSON.stringify({
-                username: user.username,
-                password: user.password,
-                email: user.email,
-                address: user.address,
-                dob: user.dob
-            });
-            $http.post('/users', myapp.data);
-        };
+    })
+
+    .controller('homeCtrl', function($http) {
+        var self = this;
+        //TODO: show login status
+    })
+
+    .controller('loginCtrl', function($rootScope, $http, $location) {
+        var self = this;
+        //TODO: process login
+    })
+
+    .controller("registerCtrl", function($rootScope, $http, $location){
+        var self = this;
+        //TODO: process login
     });
-
-    app.controller('LoginController', function () {
-        var data;
-        var myapp = this;
-
-        this.onClick = function (user) {
-            myapp.data = JSON.stringify({
-                username: user.username,
-                password: user.password
-            });
-        };
-
-    });
-
-    // app.selectTab = function (chosen){
-    //     this.login = chosen;
-    // };
-
-
-
-})();

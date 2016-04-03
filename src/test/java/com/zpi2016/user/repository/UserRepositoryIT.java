@@ -2,10 +2,9 @@
 package com.zpi2016.user.repository;
 
 import com.zpi2016.Application;
-import com.zpi2016.location.repository.LocationRepository;
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.location.repository.LocationRepository;
 import com.zpi2016.user.domain.User;
-import com.zpi2016.user.repository.UserRepository;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

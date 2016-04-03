@@ -1,9 +1,9 @@
 package com.zpi2016.user.service;
 
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.support.common.GenericService;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.support.common.GenericService;
 import com.zpi2016.user.support.UserAlreadyExistsException;
 import com.zpi2016.user.support.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

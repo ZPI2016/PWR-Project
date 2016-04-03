@@ -2,7 +2,6 @@ package com.zpi2016.user.service;
 
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.user.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
