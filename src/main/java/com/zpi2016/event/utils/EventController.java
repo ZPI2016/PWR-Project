@@ -23,6 +23,16 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+//    @RequestMapping("/user")
+//    public String showMockedUser(){
+//        return "/html/user.html";
+//    }
+//
+//    @RequestMapping("/events")
+//    public String showAllEvents(){
+//        return "/html/events.html";
+//    }
+
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Event createEvent(@RequestBody @Valid final Event Event) throws EventNotFoundException {
         return eventService.save(Event);

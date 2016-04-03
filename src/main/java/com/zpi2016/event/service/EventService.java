@@ -50,10 +50,10 @@ public class EventService implements GenericService<Event> {
 
     @Override
     @Transactional
-    public Event update(Event Event, UUID id) throws EventNotFoundException {
+    public Event update(Event event, UUID id) throws EventNotFoundException {
         checkIfEventExists(id);
         Event existing = findOne(id);
-        existing.copy(Event);
+        existing.copy(event);
         return existing;
     }
 

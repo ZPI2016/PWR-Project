@@ -57,6 +57,7 @@ public class Event extends GenericEntity {
     }
 
     private Event(Builder builder) {
+        this.title = builder.title;
         this.category = builder.category;
         this.startTime = builder.startTime;
         this.place = builder.place;
@@ -153,8 +154,10 @@ public class Event extends GenericEntity {
         private Date deadline;
         private Integer minParticipants;
         private Integer maxParticipants;
+        public String title;
 
-        public Builder(Category category, Date startTime, Location place, User creator) {
+        public Builder(String title, Category category, Date startTime, Location place, User creator) {
+            this.title = title;
             this.category = category;
             this.startTime = startTime;
             this.place = place;
