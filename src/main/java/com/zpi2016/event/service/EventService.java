@@ -7,6 +7,7 @@ import com.zpi2016.event.utils.EventNotFoundException;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.support.common.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -16,6 +17,8 @@ import java.util.UUID;
 /**
  * Created by Sandra on 2016-04-01.
  */
+
+@Service
 public class EventService implements GenericService<Event> {
 
 
@@ -82,7 +85,6 @@ public class EventService implements GenericService<Event> {
         //todo: change this. Find a solution not to create object every time we want to update time.
         Preconditions.checkArgument(newStartTime.after(new Date()), "Date of event start cannot be past one!");
         checkIfEventExists(id);
-     //   Date currentStartTime = findOne(id).getStartTime();
             findOne(id).setStartTime(newStartTime);
         return newStartTime;
     }

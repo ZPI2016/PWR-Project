@@ -60,8 +60,8 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{id}/eventPlace", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Location updateAddressOfEventWithId(@RequestBody final Location address, @PathVariable UUID id) throws EventNotFoundException {
-        return eventService.updatePlace(address, id);
+    public Location updateAddressOfEventWithId(@RequestBody final Location place, @PathVariable UUID id) throws EventNotFoundException {
+        return eventService.updatePlace(place, id);
     }
 
     @ExceptionHandler
