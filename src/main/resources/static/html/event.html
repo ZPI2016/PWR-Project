@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>ZPI EVENTS PAGE</title>
     <script type="text/javascript" src="../js/angular.js"></script>
-    <script type="text/javascript" src="../js/events.js"></script>
+    <script type="text/javascript" src="../js/event.js"></script>
 </head>
 <body>
 <h2>Available events</h2>
 <br>
-<div ng-controller="EventsController as eventsCtrl">
+<div ng-controller="EventController as eventsCtrl">
     <div ng-repeat="event in events">
         <h4>{{event.title}}&nbsp;&nbsp;&nbsp;{{event.category}}</h4>
     </div>

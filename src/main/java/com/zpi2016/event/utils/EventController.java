@@ -1,14 +1,18 @@
 package com.zpi2016.event.utils;
 
+import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.service.EventService;
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,14 +27,17 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private UserService userService;
+
 //    @RequestMapping("/user")
 //    public String showMockedUser(){
 //        return "/html/user.html";
 //    }
 //
-//    @RequestMapping("/events")
+//    @RequestMapping("/event")
 //    public String showAllEvents(){
-//        return "/html/events.html";
+//        return "/html/event.html";
 //    }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -39,9 +46,13 @@ public class EventController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Event> getEvents() {
+    public Iterable<Event> getEvents() throws EventNotFoundException {
+        //String title, Category category, Date startTime, Location place, User creator
+        eventService.save(new Event.Builder("Sample Title", Category.DANCING,new Date(), new Location(50.5f, 20.1f),userService.findByName("Jan")).build());
         return eventService.findAll();
     }
+
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Event getEventById(@PathVariable UUID id) {
@@ -62,11 +73,6 @@ public class EventController {
     @RequestMapping(value = "/{id}/place", method = RequestMethod.GET)
     public Location getPlaceOfEventWithId(@PathVariable UUID id) throws EventNotFoundException {
         return eventService.findPlace(id);
-    }
-
-    @RequestMapping(value = "/{id}/allEvents", method = RequestMethod.GET)
-    public Iterable<Event> getAllEvents() throws EventNotFoundException {
-        return eventService.findAll();
     }
 
     @RequestMapping(value = "/{id}/eventPlace", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)

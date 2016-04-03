@@ -43,6 +43,8 @@ public class EventService implements GenericService<Event> {
         return repository.findOne(id);
     }
 
+
+
     @Override
     public Iterable<Event> findAll() {
         return repository.findAll();

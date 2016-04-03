@@ -21,9 +21,9 @@ public class HomeController {
         return "/html/user.html";
     }
 
-    @RequestMapping("/events")
+    @RequestMapping("/event")
     public String showAllEvents(){
-        return "/html/events.html";
+        return "/html/event.html";
     }
 
 
