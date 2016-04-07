@@ -52,8 +52,6 @@ public class EventController {
         return eventService.findAll();
     }
 
-
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Event getEventById(@PathVariable UUID id) {
         return eventService.findOne(id);
