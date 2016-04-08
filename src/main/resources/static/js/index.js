@@ -6,9 +6,8 @@
     var app = angular.module('myApp', []);
     var login = false;
 
-    app.controller('FormController', function ($http, $window){
+    app.controller('FormController', function ($http){
 
-        var data;
         var myapp = this;
 
         this.onClick = function (user) {

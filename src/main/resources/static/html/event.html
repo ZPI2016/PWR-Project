@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZPI EVENT</title>
+    <script type="text/javascript" src="../js/angular.js"></script>
+    <script type="text/javascript" src="../js/event.js"></script>
+</head>
+<body ng-app="myApp">
+    <h2>New Event</h2>
+
+    <div ng-controller="CreateEventController as eventCtrl">
+        <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
+            Username:<br>
+            <input type="text" name="username" ng-model="indexForm.user.username"><br>
+            DOB:<br>
+            <input type="date" name="dob" ng-model="indexForm.user.dob"><br>
+            Email:<br>
+            <input type="email" name="email" ng-model="indexForm.user.email"><br>
+            geoLongitude:<br>
+        </form>
+    </div>
+
+</body>
+</html>

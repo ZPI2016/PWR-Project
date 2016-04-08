@@ -5,11 +5,18 @@
     <title>ZPI USER</title>
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/user.js"></script>
+    <script type="text/css" src="../bootstrap/css/bootstrap.min.css"></script>
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bootstrap/js/jquery-2.2.3.min.js"></script>
 </head>
 <body>
-    <div ng-controller="UserDataController as userCtrl">
-        <h3>{{user.username}}</h3>
-        <h4>{{user.email}}</h4>
+    <div  class="container">
+        <h2>List of users registered</h2>
+        <div class="list-group" ng-controller="UserDataController as userCtrl">
+            <div ng-repeat="user in users" class="list-group-item">
+                <h3>{{user.username}}&nbsp;&nbsp;&nbsp;&nbsp;{{user.email}}</h3>
+            </div>
+        </div>
     </div>
 
 </body>

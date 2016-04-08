@@ -5,11 +5,16 @@
 (function () {
     var app = angular.module("myApp",[]);
 
-    app.controller("UserDataController", function ($scope) {
-        $scope.user = {
+    app.controller("UserDataController", function ($http, $scope) {
+        
+        $http.get('/users').success(function (result) {
+            $scope.users = result;
+        });
+        
+       /* $scope.user = {
             username : "Martyna",
             email : "m@l.com"
-        };
+        };*/
         
     });
 })();
