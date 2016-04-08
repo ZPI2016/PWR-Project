@@ -44,7 +44,6 @@ public class EventService implements GenericService<Event> {
     }
 
 
-
     @Override
     public Iterable<Event> findAll() {
         return repository.findAll();
@@ -87,20 +86,20 @@ public class EventService implements GenericService<Event> {
         //todo: change this. Find a solution not to create object every time we want to update time.
         Preconditions.checkArgument(newStartTime.after(new Date()), "Date of event start cannot be past one!");
         checkIfEventExists(id);
-            findOne(id).setStartTime(newStartTime);
+        findOne(id).setStartTime(newStartTime);
         return newStartTime;
     }
 
 
     @Transactional
     public Event updateParticipantsNumber(int newMinParticipants, int newMaxParticipants, UUID id) throws EventNotFoundException {
-        Preconditions.checkArgument(newMinParticipants>0, "Number of minimum participants must be a positive value");
-        Preconditions.checkArgument(newMaxParticipants>0, "Number of maximum participants must be a positive value");
+        Preconditions.checkArgument(newMinParticipants > 0, "Number of minimum participants must be a positive value");
+        Preconditions.checkArgument(newMaxParticipants > 0, "Number of maximum participants must be a positive value");
         checkIfEventExists(id);
         Event eventToUpdate = findOne(id);
         eventToUpdate.setMinParticipants(newMinParticipants);
         eventToUpdate.setMaxParticipants(newMaxParticipants);
-     return eventToUpdate;
+        return eventToUpdate;
     }
 
     private void checkIfEventExists(UUID id) throws EventNotFoundException {

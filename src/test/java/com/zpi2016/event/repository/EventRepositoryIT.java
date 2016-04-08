@@ -27,6 +27,7 @@ import java.util.UUID;
 @SpringApplicationConfiguration(classes = {Application.class})
 public class EventRepositoryIT {
 
+    private static final String SAMPLE_TITLE = "Sample title";
     @Autowired
     private EventRepository eventRepository;
 
@@ -69,7 +70,7 @@ public class EventRepositoryIT {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         User user = new User.Builder(USERNAME, PASSWORD, EMAIL, DEADLINE, address, RADIUS)
                 .withFirstName(FIRST_NAME).withLastName(LAST_NAME).build();
-        Event event = new Event.Builder(CATEGORY, START_TIME, address, user).withDeadline(DEADLINE)
+        Event event = new Event.Builder(SAMPLE_TITLE,CATEGORY, START_TIME, address, user).withDeadline(DEADLINE)
                 .withMinParticipants(MIN_PARTICIPANTS).withMaxParticipants(MAX_PARTICIPANTS).build();
         user.getCreatedEvents().add(event);
         userRepository.save(user);
@@ -85,33 +86,33 @@ public class EventRepositoryIT {
     public void shouldSaveEvent() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         User user = userRepository.findAll().iterator().next();
-        eventRepository.save(new Event.Builder(CATEGORY, START_TIME, address, user).build());
+        eventRepository.save(new Event.Builder(SAMPLE_TITLE,CATEGORY, START_TIME, address, user).build());
     }
 
     @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutCategory() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         User user = userRepository.findAll().iterator().next();
-        eventRepository.save(new Event.Builder(null, START_TIME, address, user).build());
+        eventRepository.save(new Event.Builder(SAMPLE_TITLE,null, START_TIME, address, user).build());
     }
 
     @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutStartTime() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
         User user = userRepository.findAll().iterator().next();
-        eventRepository.save(new Event.Builder(CATEGORY, null, address, user).build());
+        eventRepository.save(new Event.Builder(SAMPLE_TITLE,CATEGORY, null, address, user).build());
     }
 
     @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutPlace() {
         User user = userRepository.findAll().iterator().next();
-        eventRepository.save(new Event.Builder(CATEGORY, START_TIME, null, user).build());
+        eventRepository.save(new Event.Builder(SAMPLE_TITLE,CATEGORY, START_TIME, null, user).build());
     }
 
     @Test(expected = TransactionSystemException.class)
     public void shouldNotSaveEventWithoutCreator() {
         Location address = new Location(ADDRESS.getGeoLongitude(), ADDRESS.getGeoLatitude());
-        eventRepository.save(new Event.Builder(CATEGORY, START_TIME, address, null).build());
+        eventRepository.save(new Event.Builder(SAMPLE_TITLE,CATEGORY, START_TIME, address, null).build());
     }
 
     @Test
@@ -122,7 +123,7 @@ public class EventRepositoryIT {
 
     @Test
     public void shouldNotDeleteEvent() {
-        eventRepository.delete(new Event.Builder(CATEGORY, START_TIME, ADDRESS, userRepository.findAll().iterator().next()).build());
+        eventRepository.delete(new Event.Builder(SAMPLE_TITLE,CATEGORY, START_TIME, ADDRESS, userRepository.findAll().iterator().next()).build());
         Assert.assertTrue(eventRepository.findAll().iterator().hasNext());
     }
 

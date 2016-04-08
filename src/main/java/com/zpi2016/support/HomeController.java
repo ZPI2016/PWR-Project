@@ -12,22 +12,14 @@ public class HomeController {
 
     //TODO: implement index.html
     @RequestMapping("/")
-    public String index(){
+    public String index() {
         return "/html/index.html";
     }
 
     @RequestMapping("/user")
-    public String showMockedUser(){
+    public String showMockedUser() {
         return "/html/user.html";
     }
-
-    @RequestMapping("/event")
-    public String showAllEvents(){
-        return "/html/event.html";
-    }
-
-
-
 
 
 }
