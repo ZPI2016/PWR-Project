@@ -18,6 +18,9 @@ import java.util.Set;
 @Entity
 public class Event extends GenericEntity {
 
+    @NotNull
+    private String title;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Category category;
@@ -40,9 +43,9 @@ public class Event extends GenericEntity {
     private final Set<User> participants = new HashSet<User>(0);
 
     @JsonIgnore
-	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private final Set<EventRating> ratings = new HashSet<EventRating>(0);
-	
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date deadline;
 
@@ -50,9 +53,11 @@ public class Event extends GenericEntity {
 
     private Integer maxParticipants;
 
-    public Event() {}
+    public Event() {
+    }
 
     private Event(Builder builder) {
+        this.title = builder.title;
         this.category = builder.category;
         this.startTime = builder.startTime;
         this.place = builder.place;
@@ -126,6 +131,20 @@ public class Event extends GenericEntity {
         return ratings;
     }
 
+    public void copy(Event other) {
+
+        if (other.category != null && !this.category.equals(other.category)) this.category = other.category;
+        if (other.startTime != null && !this.startTime.equals(other.startTime)) this.startTime = other.startTime;
+        if (other.place != null && !this.place.equals(other.place)) this.place = other.place;
+        if (other.creator != null && !this.creator.equals(other.creator)) this.creator = other.creator;
+        if (other.deadline != null && !this.deadline.equals(other.deadline)) this.deadline = other.deadline;
+        if (other.minParticipants != null && !this.minParticipants.equals(other.minParticipants))
+            this.minParticipants = other.minParticipants;
+        if (other.maxParticipants != null && !this.maxParticipants.equals(other.maxParticipants))
+            this.maxParticipants = other.maxParticipants;
+
+    }
+
     public static class Builder {
 
         private final Category category;
@@ -135,8 +154,10 @@ public class Event extends GenericEntity {
         private Date deadline;
         private Integer minParticipants;
         private Integer maxParticipants;
+        public String title;
 
-        public Builder(Category category, Date startTime, Location place, User creator) {
+        public Builder(String title, Category category, Date startTime, Location place, User creator) {
+            this.title = title;
             this.category = category;
             this.startTime = startTime;
             this.place = place;

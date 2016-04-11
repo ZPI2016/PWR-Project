@@ -38,6 +38,10 @@ public class UserService implements GenericService<User> {
         return repository.findAll();
     }
 
+    public User findByName(final String name) {
+        return repository.findByUsername(name);
+    }
+
     @Override
     @Transactional
     public User update(User user, UUID id) {
