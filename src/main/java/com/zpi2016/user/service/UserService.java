@@ -4,6 +4,7 @@ import com.zpi2016.location.domain.Location;
 import com.zpi2016.support.common.GenericService;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
+import com.zpi2016.user.support.Role;
 import com.zpi2016.user.support.UserAlreadyExistsException;
 import com.zpi2016.user.support.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class UserService implements GenericService<User> {
     @Transactional
     public User save(final User user) {
         checkUniqueConstraints(user);
+        user.setRole(Role.USER);
         return repository.save(user);
     }
 

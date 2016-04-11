@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -52,43 +53,14 @@ public class Application{
 	 */
 	@Configuration
 	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-	protected class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+	protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
-					.httpBasic().and()
 					.authorizeRequests()
-					.antMatchers("/index.html", "/home.html", "/login.html", "/").permitAll().anyRequest()
-					.authenticated().and()
-					.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-					.csrf().csrfTokenRepository(csrfTokenRepository());;
-		}
-
-		private CsrfTokenRepository csrfTokenRepository() {
-			HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-			repository.setHeaderName("X-XSRF-TOKEN");
-			return repository;
+					.anyRequest()
+					.permitAll();
 		}
 	}
 
-	public class CsrfHeaderFilter extends OncePerRequestFilter {
-		@Override
-		protected void doFilterInternal(HttpServletRequest request,
-										HttpServletResponse response, FilterChain filterChain)
-				throws ServletException, IOException {
-			CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class
-					.getName());
-			if (csrf != null) {
-				Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
-				String token = csrf.getToken();
-				if (cookie==null || token!=null && !token.equals(cookie.getValue())) {
-					cookie = new Cookie("XSRF-TOKEN", token);
-					cookie.setPath("/");
-					response.addCookie(cookie);
-				}
-			}
-			filterChain.doFilter(request, response);
-		}
-	}
 }

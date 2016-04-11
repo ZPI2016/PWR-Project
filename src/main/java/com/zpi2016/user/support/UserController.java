@@ -2,6 +2,7 @@ package com.zpi2016.user.support;
 
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.user.domain.User;
+import com.zpi2016.user.service.IUserService;
 import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

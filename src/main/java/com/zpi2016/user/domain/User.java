@@ -6,6 +6,7 @@ import com.zpi2016.location.domain.Location;
 import com.zpi2016.rating.domain.EventRating;
 import com.zpi2016.rating.domain.UserRating;
 import com.zpi2016.support.common.GenericEntity;
+import com.zpi2016.user.support.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,10 @@ public class User extends GenericEntity {
 
     @Column(length = 80, nullable = false, unique = true)
     private String email;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -78,6 +83,7 @@ public class User extends GenericEntity {
         this.dob = builder.dob;
         this.address = builder.address;
         this.radius = builder.radius;
+        this.role = Role.USER;
     }
 
     public void copy(User other) {
@@ -173,6 +179,14 @@ public class User extends GenericEntity {
 
     public Set<EventRating> getGivenEventRatings() {
         return givenEventRatings;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public static class Builder {
