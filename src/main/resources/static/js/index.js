@@ -9,7 +9,7 @@ angular.module('index', [ 'ngRoute' ])
 
         $routeProvider.when('/', {
             templateUrl : 'home.html',
-            controller : 'homeCtrl',
+            controller : 'home',
             controllerAs: 'controller'
         }).when('/login', {
             templateUrl : 'login.html',
@@ -25,6 +25,10 @@ angular.module('index', [ 'ngRoute' ])
 
     })
 
+    .controller('home', function($http) {
+        var self = this;
+    })
+
     .controller('homeCtrl', function($http) {
         var self = this;
         //TODO: show login status
@@ -35,7 +39,8 @@ angular.module('index', [ 'ngRoute' ])
         //TODO: process login
     })
 
-    .controller("registerCtrl", function($rootScope, $http, $location){
+    .controller("registerCtrl", function($rootScope, $http, $location) {
         var self = this;
-        //TODO: process login
-    });
+    })
+
+    .controller('navigation', function() {});
