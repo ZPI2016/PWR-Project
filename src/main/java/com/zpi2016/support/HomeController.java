@@ -13,7 +13,7 @@ public class HomeController {
     //TODO: implement index.html
     @RequestMapping("/")
     public String index(){
-        return "/html/index.html";
+        return "index.html";
     }
 
 }

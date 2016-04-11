@@ -53,6 +53,7 @@ public class Application{
 	 */
 	@Configuration
 	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+	@EnableWebSecurity
 	protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
