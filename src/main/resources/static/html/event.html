@@ -11,13 +11,15 @@
 
     <div ng-controller="CreateEventController as eventCtrl">
         <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
-            Username:<br>
-            <input type="text" name="username" ng-model="indexForm.user.username"><br>
-            DOB:<br>
-            <input type="date" name="dob" ng-model="indexForm.user.dob"><br>
-            Email:<br>
-            <input type="email" name="email" ng-model="indexForm.user.email"><br>
+            Title:<br>
+            <input type="text" name="title" ng-model="createEventForm.event.title"><br>
+            Start Time:<br>
+            <input type="date" name="startTime" ng-model="createEventForm.event.startTime"><br>
             geoLongitude:<br>
+            <input type="text" name="geoLongitude" class="form-control" ng-model="createEventForm.event.address.geoLongitude"><br>
+            geoLatitude:<br>
+            <input type="text" name="geoLatitude" class="form-control" ng-model="createEventForm.event.address.geoLatitude"><br>
+            <input type="submit" value="Submit" class="btn">
         </form>
     </div>
 

@@ -1,14 +1,17 @@
 package com.zpi2016.event.utils;
 
+import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.service.EventService;
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.UUID;
 
 /**

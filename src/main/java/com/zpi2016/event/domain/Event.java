@@ -67,6 +67,14 @@ public class Event extends GenericEntity {
         this.minParticipants = builder.minParticipants;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -133,6 +141,7 @@ public class Event extends GenericEntity {
 
     public void copy(Event other) {
 
+        if (other.title != null && !this.title.equals(other.title)) this.title = other.title;
         if (other.category != null && !this.category.equals(other.category)) this.category = other.category;
         if (other.startTime != null && !this.startTime.equals(other.startTime)) this.startTime = other.startTime;
         if (other.place != null && !this.place.equals(other.place)) this.place = other.place;
@@ -156,9 +165,9 @@ public class Event extends GenericEntity {
         private Integer maxParticipants;
         public String title;
 
-        public Builder(String title, Category category, Date startTime, Location place, User creator) {
+        public Builder(String title, String category, Date startTime, Location place, User creator) {
             this.title = title;
-            this.category = category;
+            this.category = Category.valueOf(category);
             this.startTime = startTime;
             this.place = place;
             this.creator = creator;

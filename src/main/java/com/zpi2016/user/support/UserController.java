@@ -56,6 +56,11 @@ public class UserController {
         return userService.updateAddress(address, id);
     }
 
+    @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
+    public User getUserWithId(@PathVariable String username) {
+        return userService.findByUsername(username);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleUserAlreadyExistsException(UserAlreadyExistsException e) {
