@@ -38,9 +38,10 @@ public class UserService implements GenericService<User> {
         return repository.findAll();
     }
 
-    public User findByName(final String name) {
+    public User findByUsername(final String name) {
         return repository.findByUsername(name);
     }
+
 
     @Override
     @Transactional

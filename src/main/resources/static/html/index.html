@@ -5,8 +5,19 @@
     <title>ZPI 2016</title>
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/index.js"></script>
+    <script type="text/css" src="../bootstrap/css/bootstrap.min.css"></script>
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bootstrap/js/jquery-2.2.3.min.js"></script>
+    <!--<link
+            href="css/angular-bootstrap.css"
+            rel="stylesheet">
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+            display: none !important;
+        }
+    </style>-->
 </head>
-<body  >
+<body ng-cloak class="ng-cloak" >
 <h1>
     Hello, handsome :)
 </h1>
@@ -15,28 +26,40 @@
 </h4>
 <button ng-click="login=false" value="Register">REGISTER</button>&nbsp;&nbsp;&nbsp;
 <button ng-click="login=true" value="Login">LOGIN</button><br><br><br>
-<div ng-controller="FormController as formCtrl" ng-show="!login">
-    <form name="indexForm" ng-submit="formCtrl.onClick(indexForm.user)">
-        Username:<br>
-        <input type="text" name="username" ng-model="indexForm.user.username"><br>
-        Password:<br>
-        <input type="password" name="password" ng-model="indexForm.user.password"><br>
-        Email:<br>
-        <input type="email" name="email" ng-model="indexForm.user.email"><br>
-        geoLongitude:<br>
-        <input type="text" name="geoLongitude" ng-model="indexForm.user.address.geoLongitude"><br>
-        geoLatitude:<br>
-        <input type="text" name="geoLatitude" ng-model="indexForm.user.address.geoLatitude"><br>
-        DOB:<br>
-        <input type="date" name="dob" ng-model="indexForm.user.dob"><br>
-        <input type="submit" value="Submit">
+<div class="container" ng-controller="FormController as formCtrl" ng-show="!login">
+    <form name="indexForm" ng-submit="formCtrl.onClick(indexForm.user)" role="form">
+        <div class="form-group">
+
+        </div>
+        Category:<br>
+        <input type="text" name="username" class="form-control" ng-model="indexForm.user.username"><br>
+        <div class="form-group">
+            Password:<br>
+            <input type="password" name="password" ng-model="indexForm.user.password"><br>
+        </div>
+        <div class="form-group">
+            Email:<br>
+            <input type="email" name="email" class="form-control" ng-model="indexForm.user.email"><br>
+        </div>
+        <div class="form-group">
+            geoLongitude:<br>
+            <input type="text" name="geoLongitude" class="form-control" ng-model="indexForm.user.address.geoLongitude"><br>
+            geoLatitude:<br>
+            <input type="text" name="geoLatitude" class="form-control" ng-model="indexForm.user.address.geoLatitude"><br>
+        </div>
+        <div class="form-group">
+            DOB:<br>
+            <input type="date" name="dob" ng-model="indexForm.user.dob"><br>
+        </div>
+
+        <input type="submit" value="Submit" class="btn">
     </form>
 
 
 </div>
 
 <div ng-controller="LoginController as loginCtrl" ng-show="login">
-    <form name="loginForm" ng-submit="loginCtrl..onClick(loginForm.user)">
+    <form name="loginForm" ng-submit="loginCtrl.onClick(loginForm.user)">
         Login:<br>
         <input type="text" name="username" ng-model="loginCtrl.user.username"><br>
         Password:<br>

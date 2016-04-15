@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ZPI EVENTS PAGE</title>
+    <title>ZPI EVENT</title>
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/event.js"></script>
 </head>
-<body>
-<h2>Available events</h2>
-<br>
-<div ng-controller="EventController as eventsCtrl">
-    <div ng-repeat="event in events">
-        <h4>{{event.title}}&nbsp;&nbsp;&nbsp;{{event.category}}</h4>
+<body ng-app="myApp">
+    <h2>New Event</h2>
+
+    <div ng-controller="CreateEventController as eventCtrl">
+        <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
+            Title:<br>
+            <input type="text" name="title" ng-model="createEventForm.event.title"><br>
+            Start Time:<br>
+            <input type="date" name="startTime" ng-model="createEventForm.event.startTime"><br>
+            geoLongitude:<br>
+            <input type="text" name="geoLongitude" class="form-control" ng-model="createEventForm.event.address.geoLongitude"><br>
+            geoLatitude:<br>
+            <input type="text" name="geoLatitude" class="form-control" ng-model="createEventForm.event.address.geoLatitude"><br>
+            <input type="submit" value="Submit" class="btn">
+        </form>
     </div>
-</div>
+
 </body>
 </html>

@@ -32,10 +32,7 @@ public class EventService implements GenericService<Event> {
     @Override
     @Transactional
     public Event save(final Event event) throws EventNotFoundException {
-        if (!eventExists(event.getId()))
-            return repository.save(event);
-        else
-            return null;
+       return repository.save(event);
     }
 
     @Override

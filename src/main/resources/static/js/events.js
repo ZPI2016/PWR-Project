@@ -9,17 +9,19 @@
 
         // CHECK: not sure if this will work with the EventController
         // to make it work put the value of RequestMapping which returns a list of events in the brackets of get mathod
-        // $scope.events = $http.get('');
+        $http.get('/events').success(function (result) {
+            $scope.events = result;
+        })
 
-        $scope.events = [
-            {
-                title: "Afternoon Squash",
-                category: "SPORTS"
-            },
-            {
-                title: "Salsa class",
-                category: "DANCING"
-            }
-        ];
+        // $scope.events = [
+        //     {
+        //         title: "Afternoon Squash",
+        //         category: "SPORTS"
+        //     },
+        //     {
+        //         title: "Salsa class",
+        //         category: "DANCING"
+        //     }
+        // ];
     });
 })();

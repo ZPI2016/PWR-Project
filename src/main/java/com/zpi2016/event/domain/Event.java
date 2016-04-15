@@ -18,7 +18,6 @@ import java.util.Set;
 @Entity
 public class Event extends GenericEntity {
 
-
     @NotNull
     private String title;
 
@@ -67,7 +66,6 @@ public class Event extends GenericEntity {
         this.maxParticipants = builder.maxParticipants;
         this.minParticipants = builder.minParticipants;
     }
-
 
     public String getTitle() {
         return title;
@@ -143,7 +141,6 @@ public class Event extends GenericEntity {
 
     public void copy(Event other) {
 
-
         if (other.title != null && !this.title.equals(other.title)) this.title = other.title;
         if (other.category != null && !this.category.equals(other.category)) this.category = other.category;
         if (other.startTime != null && !this.startTime.equals(other.startTime)) this.startTime = other.startTime;
@@ -166,7 +163,7 @@ public class Event extends GenericEntity {
         private Date deadline;
         private Integer minParticipants;
         private Integer maxParticipants;
-        private String title;
+        public String title;
 
         public Builder(String title, Category category, Date startTime, Location place, User creator) {
             this.title = title;

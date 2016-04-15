@@ -1,25 +1,38 @@
 /**
- * Created by Martyna on 01.04.2016.
+ * Created by Martyna on 07.04.2016.
  */
 
 (function () {
-    var app = angular.module("myApp",[]);
+    var app = angular.module('myApp', []);
+    
+    app.controller('CreateEventController', function ($http) {
 
-    app.controller("EventController", function ($http, $scope) {
+        var myapp = this;
+        
+        this.onClick = function (event) {
 
-        // CHECK: not sure if this will work with the EventController
-        // to make it work put the value of RequestMapping which returns a list of events in the brackets of get mathod
-        // $scope.events = $http.get('');
+            // myapp.address = JSON.stringify({
+            //     geoLongitude: 44,
+            //     geoLatitude: 22
+            // });
 
-        $scope.events = [
-            {
-                title: "Afternoon Squash",
-                category: "SPORTS"
-            },
-            {
-                title: "Salsa class",
-                category: "DANCING"
-            }
-        ];
+            $http.get('/users/username/martyna').success(function (result) {
+                myapp.usr = result;
+
+                myapp.data = JSON.stringify({
+                    title: event.title,
+                    category: 'DANCING',
+                    place: event.address,
+                    startTime: event.startTime,
+                    creator: myapp.usr
+                });
+
+                console.log(event.title);
+                console.log(event.usr);
+
+                $http.post('/events', myapp.data);
+            });
+        };
     });
+    
 })();
