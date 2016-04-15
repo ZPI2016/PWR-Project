@@ -165,9 +165,9 @@ public class Event extends GenericEntity {
         private Integer maxParticipants;
         public String title;
 
-        public Builder(String title, String category, Date startTime, Location place, User creator) {
+        public Builder(String title, Category category, Date startTime, Location place, User creator) {
             this.title = title;
-            this.category = Category.valueOf(category);
+            this.category = category;
             this.startTime = startTime;
             this.place = place;
             this.creator = creator;
