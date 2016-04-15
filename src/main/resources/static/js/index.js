@@ -4,8 +4,9 @@
 
 (function(){
     var app = angular.module('myApp', []);
+    var login = false;
 
-    app.controller('FormController', function ($http) {
+    app.controller('FormController', function ($http, $window){
 
         var data;
         var myapp = this;
@@ -21,4 +22,24 @@
             $http.post('/users', myapp.data);
         };
     });
+
+    app.controller('LoginController', function () {
+        var data;
+        var myapp = this;
+
+        this.onClick = function (user) {
+            myapp.data = JSON.stringify({
+                username: user.username,
+                password: user.password
+            });
+        };
+
+    });
+
+    // app.selectTab = function (chosen){
+    //     this.login = chosen;
+    // };
+
+
+
 })();
