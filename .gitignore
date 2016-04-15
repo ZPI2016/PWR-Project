@@ -3,3 +3,4 @@ PWR-Project.iml
 target
 *.orig
 *.gitignore
+src/main/resources/application.properties
