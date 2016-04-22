@@ -11,11 +11,6 @@
         
         this.onClick = function (event) {
 
-            // myapp.address = JSON.stringify({
-            //     geoLongitude: 44,
-            //     geoLatitude: 22
-            // });
-
             $http.get('/users/username/martyna').success(function (result) {
                 myapp.usr = result;
 

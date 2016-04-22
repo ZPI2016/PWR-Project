@@ -20,6 +20,4 @@ public class HomeController {
     public String showMockedUser() {
         return "/html/user.html";
     }
-
-
 }

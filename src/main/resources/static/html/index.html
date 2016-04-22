@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>ZPI 2016</title>
+    <style type="text/css">
+        div#map_container {
+            width: 50%;
+            height: 350px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="../js/map_loader.js"></script>
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/index.js"></script>
     <script type="text/css" src="../bootstrap/css/bootstrap.min.css"></script>
@@ -17,7 +26,7 @@
         }
     </style>-->
 </head>
-<body ng-cloak class="ng-cloak" >
+<body ng-cloak class="ng-cloak" onload="loadMap()">
 <h1>
     Hello, handsome :)
 </h1>
@@ -31,7 +40,7 @@
         <div class="form-group">
 
         </div>
-        Category:<br>
+            Username:<br>
         <input type="text" name="username" class="form-control" ng-model="indexForm.user.username"><br>
         <div class="form-group">
             Password:<br>
@@ -42,10 +51,11 @@
             <input type="email" name="email" class="form-control" ng-model="indexForm.user.email"><br>
         </div>
         <div class="form-group">
-            geoLongitude:<br>
-            <input type="text" name="geoLongitude" class="form-control" ng-model="indexForm.user.address.geoLongitude"><br>
-            geoLatitude:<br>
-            <input type="text" name="geoLatitude" class="form-control" ng-model="indexForm.user.address.geoLatitude"><br>
+            <div id="map_container"></div>
+            GeoLongitude:<br>
+            <input type="text" name="geoLongitude" id="geoLongitude" class="form-control" ng-model="indexForm.user.address.geoLongitude"><br>
+            GeoLatitude:<br>
+            <input type="text" name="geoLatitude" id="geoLatitude" class="form-control"  ng-model="indexForm.user.address.geoLatitude"><br>
         </div>
         <div class="form-group">
             DOB:<br>

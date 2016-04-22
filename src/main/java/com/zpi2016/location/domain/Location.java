@@ -13,14 +13,14 @@ import javax.validation.constraints.NotNull;
 public class Location extends GenericEntity {
 
     @NotNull
-    private Float geoLongitude;
+    private Double geoLongitude;
 
     @NotNull
-    private Float geoLatitude;
+    private Double geoLatitude;
 
     public Location() {}
 
-    public Location(Float geoLongitude, Float geoLatitude) {
+    public Location(Double geoLongitude, Double geoLatitude) {
         this.geoLatitude =  geoLatitude;
         this.geoLongitude = geoLongitude;
     }
@@ -30,19 +30,19 @@ public class Location extends GenericEntity {
         if (other.geoLongitude != null && !this.geoLongitude.equals(other.geoLongitude)) this.geoLongitude = other.geoLongitude;
     }
 
-    public Float getGeoLatitude() {
+    public Double getGeoLatitude() {
         return geoLatitude;
     }
 
-    public void setGeoLatitude(Float geoLatitude) {
+    public void setGeoLatitude(Double geoLatitude) {
         this.geoLatitude = geoLatitude;
     }
 
-    public Float getGeoLongitude() {
+    public Double getGeoLongitude() {
         return geoLongitude;
     }
 
-    public void setGeoLongitude(Float geoLongitude) {
+    public void setGeoLongitude(Double geoLongitude) {
         this.geoLongitude = geoLongitude;
     }
 

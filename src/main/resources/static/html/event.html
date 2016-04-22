@@ -3,25 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>ZPI EVENT</title>
+    <style type="text/css">
+        div#map_container {
+            width: 50%;
+            height: 350px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="../js/map_loader.js"></script>
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/event.js"></script>
 </head>
-<body ng-app="myApp">
-    <h2>New Event</h2>
+<body ng-app="myApp" onload="loadMap()">
+<h2>New Event</h2>
 
-    <div ng-controller="CreateEventController as eventCtrl">
-        <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
-            Title:<br>
-            <input type="text" name="title" ng-model="createEventForm.event.title"><br>
-            Start Time:<br>
-            <input type="date" name="startTime" ng-model="createEventForm.event.startTime"><br>
-            geoLongitude:<br>
-            <input type="text" name="geoLongitude" class="form-control" ng-model="createEventForm.event.address.geoLongitude"><br>
-            geoLatitude:<br>
-            <input type="text" name="geoLatitude" class="form-control" ng-model="createEventForm.event.address.geoLatitude"><br>
+<div id="map_container"></div>
+<div ng-controller="CreateEventController as eventCtrl">
+    <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
+        Title:<br>
+        <input type="text" name="title" ng-model="createEventForm.event.title"><br>
+        Start Time:<br>
+        <input type="date" name="startTime" ng-model="createEventForm.event.startTime"><br>
+
+        <div class="form-group">
+            GeoLongitude:<br>
+            <input type="text" name="geoLongitude" id="geoLongitude" class="form-control"
+                   ng-model="createEventForm.event.address.geoLongitude"><br>
+            GeoLatitude:<br>
+            <input type="text" name="geoLatitude" id="geoLatitude" class="form-control"
+                   ng-model="createEventForm.event.address.geoLatitude"><br>
             <input type="submit" value="Submit" class="btn">
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
