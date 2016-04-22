@@ -3,7 +3,7 @@
  */
 
 (function () {
-    var app = angular.module("myApp",[]);
+    var app = angular.module("myApp",['ngRoute']);
 
     app.controller("UserDataController", function ($http, $scope) {
         

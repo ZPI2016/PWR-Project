@@ -2,8 +2,8 @@ package com.zpi2016.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zpi2016.event.domain.Event;
-import com.zpi2016.rating.domain.EventRating;
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.rating.domain.EventRating;
 import com.zpi2016.rating.domain.UserRating;
 import com.zpi2016.support.common.GenericEntity;
 
