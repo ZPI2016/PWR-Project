@@ -1,7 +1,6 @@
 package com.zpi2016.user.service;
 
 import com.zpi2016.location.domain.Location;
-import com.zpi2016.support.common.GenericService;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
 import com.zpi2016.user.support.Role;
@@ -11,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
  * Created by aman on 13.03.16.
  */
 @Service
-public class UserService implements GenericService<User> {
+public class UserService implements IUserService {
 
     @Autowired
     private UserRepository repository;
@@ -27,6 +27,8 @@ public class UserService implements GenericService<User> {
     public User save(final User user) {
         checkUniqueConstraints(user);
         user.setRole(Role.USER);
+        user.setDob(new Date());
+        user.setAddress(new Location(1f,1f));
         return repository.save(user);
     }
 
