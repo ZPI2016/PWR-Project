@@ -7,15 +7,15 @@
 angular.module('index', [ 'ngRoute' ])
     .config(function($routeProvider, $httpProvider) {
 
-        $routeProvider.when('/signin', {
-            templateUrl : 'signin.html',
+        $routeProvider.when('/login', {
+            templateUrl : 'login.html',
             controller : 'loginCtrl',
             controllerAs: 'controller'
         }).when('/register', {
             templateUrl : 'register.html',
             controller : 'registerCtrl',
             controllerAs: 'controller'
-        }).otherwise('/signin');
+        }).otherwise('/');
 
 //      $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 
@@ -27,7 +27,7 @@ angular.module('index', [ 'ngRoute' ])
         self.error = {};
         self.login = function(){
             console.log("Login: " + self.user.username)
-            $http.post("/login", self.user)
+            $http.post("/login", JSON.stringify(self.user))
                 .then(function successful(response){
                     console.log(response);
                 }, function error(response){
