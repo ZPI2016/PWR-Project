@@ -3,7 +3,7 @@ package com.zpi2016.event.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.rating.domain.EventRating;
-import com.zpi2016.support.common.GenericEntity;
+import com.zpi2016.core.common.domain.GenericEntity;
 import com.zpi2016.user.domain.User;
 
 import javax.persistence.*;

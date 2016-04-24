@@ -3,10 +3,13 @@ package com.zpi2016.user.service;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.support.common.GenericService;
+import com.zpi2016.core.common.service.GenericService;
 import com.zpi2016.user.support.UserAlreadyExistsException;
 import com.zpi2016.user.support.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +19,18 @@ import java.util.UUID;
  * Created by aman on 13.03.16.
  */
 @Service
-public class UserService implements GenericService<User> {
+public class UserService implements GenericService<User>, UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Override
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        UserDetails user = repository.findByUsername(username);
+        if (user == null) throw new UsernameNotFoundException(String.format(
+                "There is no user with username: %s", username));
+        return user;
+    }
 
     @Override
     @Transactional

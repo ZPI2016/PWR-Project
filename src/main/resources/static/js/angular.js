@@ -3042,7 +3042,7 @@
 
         if (elements) {
 
-            // if a Node (the most common case)
+            // if a Node (the most support case)
             if (elements.nodeType) {
                 root[root.length++] = elements;
             } else {
@@ -10302,7 +10302,7 @@
          * - **`defaults.headers`** - {Object} - Default headers for all $http requests.
          * Refer to {@link ng.$http#setting-http-headers $http} for documentation on
          * setting default headers.
-         *     - **`defaults.headers.common`**
+         *     - **`defaults.headers.support`**
          *     - **`defaults.headers.post`**
          *     - **`defaults.headers.put`**
          *     - **`defaults.headers.patch`**
@@ -10348,7 +10348,7 @@
          * Configure $http service to combine processing of multiple http responses received at around
          * the same time via {@link ng.$rootScope.Scope#$applyAsync $rootScope.$applyAsync}. This can result in
          * significant performance improvement for bigger applications that make many HTTP requests
-         * concurrently (common during application bootstrap).
+         * concurrently (support during application bootstrap).
          *
          * Defaults to false. If no value is specified, returns the current configured value.
          *
@@ -16723,7 +16723,7 @@
                                         while (length--) {
                                             try {
                                                 watch = watchers[length];
-                                                // Most common watches are on primitives, in which case we can short
+                                                // Most support watches are on primitives, in which case we can short
                                                 // circuit it with === operator, only when === fails do we use .equals
                                                 if (watch) {
                                                     get = watch.get;

@@ -1,6 +1,6 @@
 package com.zpi2016.rating.domain;
 
-import com.zpi2016.support.common.GenericEntity;
+import com.zpi2016.core.common.domain.GenericEntity;
 import com.zpi2016.user.domain.User;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package com.zpi2016.event.domain;
 
-import com.zpi2016.support.common.GenericEntity;
+import com.zpi2016.core.common.domain.GenericEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

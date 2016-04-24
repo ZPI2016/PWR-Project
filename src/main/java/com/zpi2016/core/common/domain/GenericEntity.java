@@ -1,4 +1,4 @@
-package com.zpi2016.support.common;
+package com.zpi2016.core.common.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;

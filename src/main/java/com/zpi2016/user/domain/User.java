@@ -5,21 +5,22 @@ import com.zpi2016.event.domain.Event;
 import com.zpi2016.rating.domain.EventRating;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.rating.domain.UserRating;
-import com.zpi2016.support.common.GenericEntity;
+import com.zpi2016.core.common.domain.GenericEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by filip on 26.02.2016.
  */
 @Entity
 @Table(name = "Users")
-public class User extends GenericEntity {
+public class User extends GenericEntity implements UserDetails {
 
     @Column(length = 50, nullable = false, unique = true)
     private String username;
@@ -67,7 +68,12 @@ public class User extends GenericEntity {
     @NotNull
 	private Float radius = 10.0f;
 
-    public User() {}
+    @NotNull
+    private SimpleGrantedAuthority role;
+
+    public User() {
+        role = new SimpleGrantedAuthority("ROLE_USER");
+    }
 
     private User(Builder builder) {
         this.username = builder.username;
@@ -78,6 +84,7 @@ public class User extends GenericEntity {
         this.dob = builder.dob;
         this.address = builder.address;
         this.radius = builder.radius;
+        this.role = builder.role;
     }
 
     public void updateWithPropertiesFrom(User other) {
@@ -85,12 +92,44 @@ public class User extends GenericEntity {
         if (other.password != null && !this.password.equals(other.password))    this.password = other.password;
         if (other.email != null && !this.email.equals(other.email))             this.email = other.email;
         if (other.firstName != null && !this.firstName.equals(other.firstName)) this.firstName = other.firstName;
-        if (this.firstName.isEmpty()) this.firstName = null;
+        if (this.firstName.isEmpty())                                           this.firstName = null;
         if (other.lastName != null && !this.lastName.equals(other.lastName))    this.lastName = other.lastName;
-        if (this.lastName.isEmpty()) this.lastName = null;
+        if (this.lastName.isEmpty())                                            this.lastName = null;
         if (other.dob != null  && !this.dob.equals(other.dob))                  this.dob = other.dob;
         if (other.radius != null && !this.radius.equals(other.radius))          this.radius = other.radius;
         if (other.address != null) this.address.updateWithPropertiesFrom(other.address);
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(role);
+        return authorities;
     }
 
     public String getUsername() {
@@ -156,7 +195,15 @@ public class User extends GenericEntity {
 	public void setRadius(Float radius) {
 		this.radius = radius;
 	}
-	
+
+    public SimpleGrantedAuthority getRole() {
+        return role;
+    }
+
+    public void setRole(final SimpleGrantedAuthority role) {
+        this.role = role;
+    }
+
     public Set<Event> getAttendedEvents() {
         return attendedEvents;
     }
@@ -187,6 +234,7 @@ public class User extends GenericEntity {
         private final Date dob;
         private final Location address;
         private final Float radius;
+        private SimpleGrantedAuthority role;
 
         public Builder(String username, String password, String email, Date dob, Location address, Float radius) {
             this.username = username;
@@ -195,6 +243,7 @@ public class User extends GenericEntity {
             this.dob = dob;
             this.address = address;
             this.radius = radius;
+            this.role = new SimpleGrantedAuthority("ROLE_USER");
         }
 
         public Builder withFirstName(String firstName) {
@@ -204,6 +253,11 @@ public class User extends GenericEntity {
 
         public Builder withLastName(String lastName) {
             this.lastName = lastName;
+            return this;
+        }
+
+        public Builder withRole(String role) {
+            this.role = new SimpleGrantedAuthority(role);
             return this;
         }
 

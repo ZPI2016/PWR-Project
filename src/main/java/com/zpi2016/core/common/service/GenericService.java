@@ -1,4 +1,4 @@
-package com.zpi2016.support.common;
+package com.zpi2016.core.common.service;
 
 import java.util.UUID;
 
