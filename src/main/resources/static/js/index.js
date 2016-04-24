@@ -7,7 +7,7 @@
 angular.module('index', [ 'ngRoute' ])
     .config(function($routeProvider, $httpProvider) {
 
-        $routeProvider.when('/login', {
+        $routeProvider.when('/signin', {
             templateUrl : 'login.html',
             controller : 'loginCtrl',
             controllerAs: 'controller'
@@ -21,21 +21,33 @@ angular.module('index', [ 'ngRoute' ])
 
     })
 
-    .controller('loginCtrl', function($http) {
-        var self = this;
-        self.user = {};
-        self.error = {};
-        self.login = function(){
-            console.log("Login: " + self.user.username)
-            $http.post("/login", JSON.stringify(self.user))
-                .then(function successful(response){
-                    console.log(response);
-                }, function error(response){
-                    console.log(response);
-                    self.error = true;
-                })
-        }
-    })
+    // WYSYŁA PUSTY REQUEST (???)
+    //
+    //.controller('loginCtrl', function($http) {
+    //    var self = this;
+    //    self.user = {};
+    //    self.error = {};
+    //    self.login = function(){
+    //        console.log("Login: " + self.user.username)
+    //        $http({
+    //            method  : 'POST',
+    //            url     : '/login',
+    //            data    : {
+    //                username: self.user.username,
+    //                password: self.user.password
+    //            },
+    //            headers : {'Content-Type': 'application/json'}
+    //        })
+    //            .then(function successful(response){
+    //                console.log("SUCCESS");
+    //                console.log(response);
+    //            }, function error(response){
+    //                console.log("FAILURE");
+    //                console.log(response);
+    //                self.error = true;
+    //            })
+    //    }
+    //})
 
     .controller("registerCtrl", function($http) {
         var self = this;
