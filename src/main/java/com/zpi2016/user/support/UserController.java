@@ -6,6 +6,7 @@ import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping(value = "/security/logged", method = RequestMethod.GET)
+    public User getLoggedUser() {
+        return (User) userService.getCurrentLoggedUser();
+    }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody @Valid final User user) {
@@ -65,6 +71,12 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleUserNotFoundException(UserNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleInsufficientAuthenticationException(InsufficientAuthenticationException e) {
         return e.getMessage();
     }
 

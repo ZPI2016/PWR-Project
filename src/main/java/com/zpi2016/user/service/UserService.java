@@ -7,9 +7,11 @@ import com.zpi2016.core.common.service.GenericService;
 import com.zpi2016.user.support.UserAlreadyExistsException;
 import com.zpi2016.user.support.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class UserService implements GenericService<User>, UserDetailsService {
     @Transactional
     public User save(final User user) {
         checkUniqueConstraints(user);
+        encryptPassword(user);
         return repository.save(user);
     }
 
@@ -52,8 +55,10 @@ public class UserService implements GenericService<User>, UserDetailsService {
     @Override
     @Transactional
     public User update(User user, UUID id) {
+        checkIfAuthorized(id);
         checkIfUserExists(id);
         checkUniqueConstraints(user, id);
+        encryptPassword(user);
         User existing = findOne(id);
         existing.updateWithPropertiesFrom(user);
         return existing;
@@ -62,45 +67,55 @@ public class UserService implements GenericService<User>, UserDetailsService {
     @Override
     @Transactional
     public void delete(UUID id) {
+        checkIfAuthorized(id);
         checkIfUserExists(id);
         repository.delete(id);
     }
 
     @Transactional
-    public Location findAddress(UUID id) {
+    public Location findAddress(final UUID id) {
         checkIfUserExists(id);
         return findOne(id).getAddress();
     }
 
     @Transactional
-    public Location updateAddress(Location newAddress, UUID id) {
+    public Location updateAddress(final Location newAddress, final UUID id) {
+        checkIfAuthorized(id);
         checkIfUserExists(id);
         Location currentAddress = findOne(id).getAddress();
         currentAddress.updateWithPropertiesFrom(newAddress);
         return currentAddress;
     }
 
-    private void checkIfUserExists(UUID id) {
-        if (!repository.exists(id)) {
+    private void encryptPassword(final User user) {
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder("m33tme");
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+    }
+
+    private void checkIfAuthorized(final UUID id) {
+        if (!isAuthorized(id))
+            throw new InsufficientAuthenticationException(String.format("You have no rights to manage user with id: %s", id));
+    }
+
+    private void checkIfUserExists(final UUID id) {
+        if (!repository.exists(id))
             throw new UserNotFoundException(String.format("Could not find user with id: %s", id));
-        }
     }
 
-    private void checkUniqueConstraints(User user) {
+    private void checkUniqueConstraints(final User user) {
         User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
-        if (existing != null) {
+        if (existing != null)
             throw new UserAlreadyExistsException(String.format(
                     "There already exists a user with username: %s or email: %s",
                     user.getUsername(), user.getEmail()));
-        }
     }
 
-    private void checkUniqueConstraints(User user, UUID id) {
+    private void checkUniqueConstraints(final User user, final UUID id) {
         User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
-        if (existing != null && !existing.getId().equals(id)) {
+        if (existing != null && !existing.getId().equals(id))
             throw new UserAlreadyExistsException(String.format(
                     "There already exists a user with username: %s or email: %s",
                     user.getUsername(), user.getEmail()));
-        }
     }
 }

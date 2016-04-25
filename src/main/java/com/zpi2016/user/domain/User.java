@@ -1,6 +1,7 @@
 package com.zpi2016.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.rating.domain.EventRating;
 import com.zpi2016.location.domain.Location;
@@ -25,7 +26,8 @@ public class User extends GenericEntity implements UserDetails {
     @Column(length = 50, nullable = false, unique = true)
     private String username;
 
-    @Column(length = 50, nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
     private String password;
 
     @Column(length = 80, nullable = false, unique = true)
