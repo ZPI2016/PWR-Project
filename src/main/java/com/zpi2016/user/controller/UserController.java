@@ -1,4 +1,4 @@
-package com.zpi2016.user.support;
+package com.zpi2016.user.controller;
 
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.user.domain.User;

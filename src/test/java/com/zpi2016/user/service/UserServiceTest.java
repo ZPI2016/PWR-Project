@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.user.support.UserNotFoundException;
+import com.zpi2016.user.controller.UserNotFoundException;
 
 
 /**
@@ -131,7 +131,7 @@ public class UserServiceTest
     private User stubRepositoryToReturnUserOnSave()
     {
         User user = new User();
-        when( userRepository.save( Mockito.any( User.class ) ) ).thenReturn( user );
+        when(userRepository.save(Mockito.any(User.class))).thenReturn( user );
         return user;
     }
 

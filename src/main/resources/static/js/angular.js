@@ -439,7 +439,7 @@
      * to `dst`. You can specify multiple `src` objects. If you want to preserve original objects, you can do so
      * by passing an empty object as the target: `var object = angular.extend({}, object1, object2)`.
      *
-     * **Note:** Keep in mind that `angular.extend` does not support recursive merge (deep copy). Use
+     * **Note:** Keep in mind that `angular.extend` does not controller recursive merge (deep copy). Use
      * {@link angular.merge} for this.
      *
      * @param {Object} dst Destination object.
@@ -1799,7 +1799,7 @@
                 window[jqName];   // use jQuery specified by `ngJq`
 
         // Use jQuery if it exists with proper functionality, otherwise default to us.
-        // Angular 1.2+ requires jQuery 1.7+ for on()/off() support.
+        // Angular 1.2+ requires jQuery 1.7+ for on()/off() controller.
         // Angular 1.3+ technically requires at least jQuery 2.1+ but it may work with older
         // versions. It will not work for sure with jQuery <1.7, though.
         if (jQuery && jQuery.fn.on) {
@@ -2646,9 +2646,9 @@
      * - [`addClass()`](http://api.jquery.com/addClass/)
      * - [`after()`](http://api.jquery.com/after/)
      * - [`append()`](http://api.jquery.com/append/)
-     * - [`attr()`](http://api.jquery.com/attr/) - Does not support functions as parameters
-     * - [`bind()`](http://api.jquery.com/bind/) - Does not support namespaces, selectors or eventData
-     * - [`children()`](http://api.jquery.com/children/) - Does not support selectors
+     * - [`attr()`](http://api.jquery.com/attr/) - Does not controller functions as parameters
+     * - [`bind()`](http://api.jquery.com/bind/) - Does not controller namespaces, selectors or eventData
+     * - [`children()`](http://api.jquery.com/children/) - Does not controller selectors
      * - [`clone()`](http://api.jquery.com/clone/)
      * - [`contents()`](http://api.jquery.com/contents/)
      * - [`css()`](http://api.jquery.com/css/) - Only retrieves inline-styles, does not call `getComputedStyle()`.
@@ -2660,11 +2660,11 @@
      * - [`find()`](http://api.jquery.com/find/) - Limited to lookups by tag name
      * - [`hasClass()`](http://api.jquery.com/hasClass/)
      * - [`html()`](http://api.jquery.com/html/)
-     * - [`next()`](http://api.jquery.com/next/) - Does not support selectors
-     * - [`on()`](http://api.jquery.com/on/) - Does not support namespaces, selectors or eventData
-     * - [`off()`](http://api.jquery.com/off/) - Does not support namespaces, selectors or event object as parameter
-     * - [`one()`](http://api.jquery.com/one/) - Does not support namespaces or selectors
-     * - [`parent()`](http://api.jquery.com/parent/) - Does not support selectors
+     * - [`next()`](http://api.jquery.com/next/) - Does not controller selectors
+     * - [`on()`](http://api.jquery.com/on/) - Does not controller namespaces, selectors or eventData
+     * - [`off()`](http://api.jquery.com/off/) - Does not controller namespaces, selectors or event object as parameter
+     * - [`one()`](http://api.jquery.com/one/) - Does not controller namespaces or selectors
+     * - [`parent()`](http://api.jquery.com/parent/) - Does not controller selectors
      * - [`prepend()`](http://api.jquery.com/prepend/)
      * - [`prop()`](http://api.jquery.com/prop/)
      * - [`ready()`](http://api.jquery.com/ready/)
@@ -2676,7 +2676,7 @@
      * - [`text()`](http://api.jquery.com/text/)
      * - [`toggleClass()`](http://api.jquery.com/toggleClass/)
      * - [`triggerHandler()`](http://api.jquery.com/triggerHandler/) - Passes a dummy event object to handlers.
-     * - [`unbind()`](http://api.jquery.com/unbind/) - Does not support namespaces or event object as parameter
+     * - [`unbind()`](http://api.jquery.com/unbind/) - Does not controller namespaces or event object as parameter
      * - [`val()`](http://api.jquery.com/val/)
      * - [`wrap()`](http://api.jquery.com/wrap/)
      *
@@ -2904,7 +2904,7 @@
     }
 
     function jqLiteOff(element, type, fn, unsupported) {
-        if (isDefined(unsupported)) throw jqLiteMinErr('offargs', 'jqLite#off() does not support the `selector` argument');
+        if (isDefined(unsupported)) throw jqLiteMinErr('offargs', 'jqLite#off() does not controller the `selector` argument');
 
         var expandoStore = jqLiteExpandoStore(element);
         var events = expandoStore && expandoStore.events;
@@ -3438,7 +3438,7 @@
         removeData: jqLiteRemoveData,
 
         on: function jqLiteOn(element, type, fn, unsupported) {
-            if (isDefined(unsupported)) throw jqLiteMinErr('onargs', 'jqLite#on() does not support the `selector` or `eventData` parameters');
+            if (isDefined(unsupported)) throw jqLiteMinErr('onargs', 'jqLite#on() does not controller the `selector` or `eventData` parameters');
 
             // Do not add event handlers to non-elements because they will not be cleaned up.
             if (!jqLiteAcceptsData(element)) {
@@ -4054,7 +4054,7 @@
      *   tmpFn.$inject = ['$compile', '$rootScope'];
      *   injector.invoke(tmpFn);
      *
-     *   // To better support inline function the inline annotation is supported
+     *   // To better controller inline function the inline annotation is supported
      *   injector.invoke(['$compile', '$rootScope', function(obfCompile, obfRootScope) {
  *     // ...
  *   }]);
@@ -4598,7 +4598,7 @@
             }
 
             function isClass(func) {
-                // IE 9-11 do not support classes and IE9 leaks with the code below.
+                // IE 9-11 do not controller classes and IE9 leaks with the code below.
                 if (msie <= 11) {
                     return false;
                 }
@@ -5192,7 +5192,7 @@
             /**
              * @ngdoc service
              * @name $animate
-             * @description The $animate service exposes a series of DOM utility methods that provide support
+             * @description The $animate service exposes a series of DOM utility methods that provide controller
              * for animation hooks. The default behavior is the application of DOM operations, however,
              * when an animation is detected (and animations are enabled), $animate will do the heavy lifting
              * to ensure that animation runs with the triggered DOM operation.
@@ -5201,11 +5201,11 @@
              * included and only when it is active then the animation hooks that `$animate` triggers will be
              * functional. Once active then all structural `ng-` directives will trigger animations as they perform
              * their DOM-related operations (enter, leave and move). Other directives such as `ngClass`,
-             * `ngShow`, `ngHide` and `ngMessages` also provide support for animations.
+             * `ngShow`, `ngHide` and `ngMessages` also provide controller for animations.
              *
              * It is recommended that the`$animate` service is always used when executing DOM-related procedures within directives.
              *
-             * To learn more about enabling animation support, click here to visit the
+             * To learn more about enabling animation controller, click here to visit the
              * {@link ngAnimate ngAnimate module page}.
              */
             return {
@@ -8327,7 +8327,7 @@
                                 name = attr.name;
                                 value = trim(attr.value);
 
-                                // support ngAttr attribute binding
+                                // controller ngAttr attribute binding
                                 ngAttrName = directiveNormalize(name);
                                 if (isNgAttr = NG_ATTR_BINDING.test(ngAttrName)) {
                                     name = name.replace(PREFIX_REGEXP, '')
@@ -8451,7 +8451,7 @@
                 }
 
                 /**
-                 * A function generator that is used to support both eager and lazy compilation
+                 * A function generator that is used to controller both eager and lazy compilation
                  * linking function.
                  * @param eager
                  * @param $compileNodes
@@ -11484,7 +11484,7 @@
                     try {
                         xhr.responseType = responseType;
                     } catch (e) {
-                        // WebKit added support for the json responseType value on 09/03/2013
+                        // WebKit added controller for the json responseType value on 09/03/2013
                         // https://bugs.webkit.org/show_bug.cgi?id=73648. Versions of Safari prior to 7 are
                         // known to throw when setting the value "json" as the response type. Other older
                         // browsers implementing the responseType
@@ -12427,7 +12427,7 @@
     /**
      * LocationHashbangUrl represents url
      * This object is exposed as $location service when html5 history api is enabled but the browser
-     * does not support it.
+     * does not controller it.
      *
      * @constructor
      * @param {string} appBase application base URL
@@ -12773,7 +12773,7 @@
          * The state object is later passed to `pushState` or `replaceState`.
          *
          * NOTE: This method is supported only in HTML5 mode and only in browsers supporting
-         * the HTML5 History API (i.e. methods `pushState` and `replaceState`). If you need to support
+         * the HTML5 History API (i.e. methods `pushState` and `replaceState`). If you need to controller
          * older browsers (like IE9 or Android < 4.0), don't use this method.
          *
          * @param {object=} state State object for pushState or replaceState
@@ -12785,7 +12785,7 @@
             }
 
             if (Location !== LocationHtml5Url || !this.$$html5) {
-                throw $locationMinErr('nostate', 'History API state support is available only ' +
+                throw $locationMinErr('nostate', 'History API state controller is available only ' +
                     'in HTML5 mode and only in browsers supporting HTML5 History API');
             }
             // The user might modify `stateObject` after invoking `$location.state(stateObject)`
@@ -12884,7 +12884,7 @@
          *   properties:
          *   - **enabled** – `{boolean}` – (default: false) If true, will rely on `history.pushState` to
          *     change urls where supported. Will fall back to hash-prefixed paths in browsers that do not
-         *     support `pushState`.
+         *     controller `pushState`.
          *   - **requireBase** - `{boolean}` - (default: `true`) When html5Mode is enabled, specifies
          *     whether or not a <base> tag is required to be present. If `enabled` and `requireBase` are
          *     true, and a base tag is not present, an error will be thrown when `$location` is injected.
@@ -15568,7 +15568,7 @@
          */
         var defer = function() {
             var d = new Deferred();
-            //Necessary to support unbound execution :/
+            //Necessary to controller unbound execution :/
             d.resolve = simpleBind(d, d.resolve);
             d.reject = simpleBind(d, d.reject);
             d.notify = simpleBind(d, d.notify);
@@ -18130,7 +18130,7 @@
             // the "expression(javascript expression)" syntax which is insecure.
             if (enabled && msie < 8) {
                 throw $sceMinErr('iequirks',
-                    'Strict Contextual Escaping does not support Internet Explorer version < 11 in quirks ' +
+                    'Strict Contextual Escaping does not controller Internet Explorer version < 11 in quirks ' +
                     'mode.  You can fix this by adding the text <!doctype html> to the top of your HTML ' +
                     'document.  See http://docs.angularjs.org/api/ng.$sce for more information.');
             }
@@ -18461,9 +18461,9 @@
      * @requires $window
      * @requires $document
      *
-     * @property {boolean} history Does the browser support html5 history api ?
-     * @property {boolean} transitions Does the browser support CSS transition events ?
-     * @property {boolean} animations Does the browser support CSS animation events ?
+     * @property {boolean} history Does the browser controller html5 history api ?
+     * @property {boolean} transitions Does the browser controller CSS transition events ?
+     * @property {boolean} animations Does the browser controller CSS animation events ?
      *
      * @description
      * This is very simple implementation of testing browser's features.
@@ -19933,7 +19933,7 @@
         ss: dateGetter('Seconds', 2),
         s: dateGetter('Seconds', 1),
         // while ISO 8601 requires fractions to be prefixed with `.` or `,`
-        // we can be just safely rely on using `sss` since we currently don't support single or two digit fractions
+        // we can be just safely rely on using `sss` since we currently don't controller single or two digit fractions
         sss: dateGetter('Milliseconds', 3),
         EEEE: dateStrGetter('Day'),
         EEE: dateStrGetter('Day', true),
@@ -21781,10 +21781,10 @@
          * @name input[date]
          *
          * @description
-         * Input with date validation and transformation. In browsers that do not yet support
+         * Input with date validation and transformation. In browsers that do not yet controller
          * the HTML5 date input, a text element will be used. In that case, text must be entered in a valid ISO-8601
          * date format (yyyy-MM-dd), for example: `2009-01-06`. Since many
-         * modern browsers do not yet support this input type, it is important to provide cues to users on the
+         * modern browsers do not yet controller this input type, it is important to provide cues to users on the
          * expected input format via a placeholder or label.
          *
          * The model must always be a Date object, otherwise Angular will throw an error.
@@ -21847,7 +21847,7 @@
          var valid = element(by.binding('myForm.input.$valid'));
          var input = element(by.model('example.value'));
 
-         // currently protractor/webdriver does not support
+         // currently protractor/webdriver does not controller
          // sending keys to all known HTML5 input controls
          // for various browsers (see https://github.com/angular/protractor/issues/562).
          function setInput(val) {
@@ -21886,7 +21886,7 @@
          * @name input[datetime-local]
          *
          * @description
-         * Input with datetime validation and transformation. In browsers that do not yet support
+         * Input with datetime validation and transformation. In browsers that do not yet controller
          * the HTML5 date input, a text element will be used. In that case, the text must be entered in a valid ISO-8601
          * local datetime format (yyyy-MM-ddTHH:mm:ss), for example: `2010-12-28T14:57:00`.
          *
@@ -21950,7 +21950,7 @@
          var valid = element(by.binding('myForm.input.$valid'));
          var input = element(by.model('example.value'));
 
-         // currently protractor/webdriver does not support
+         // currently protractor/webdriver does not controller
          // sending keys to all known HTML5 input controls
          // for various browsers (https://github.com/angular/protractor/issues/562).
          function setInput(val) {
@@ -21989,7 +21989,7 @@
          * @name input[time]
          *
          * @description
-         * Input with time validation and transformation. In browsers that do not yet support
+         * Input with time validation and transformation. In browsers that do not yet controller
          * the HTML5 time input, a text element will be used. In that case, the text must be entered in a valid ISO-8601
          * local time format (HH:mm:ss), for example: `14:57:00`. Model must be a Date object. This binding will always output a
          * Date object to the model of January 1, 1970, or local date `new Date(1970, 0, 1, HH, mm, ss)`.
@@ -22054,7 +22054,7 @@
          var valid = element(by.binding('myForm.input.$valid'));
          var input = element(by.model('example.value'));
 
-         // currently protractor/webdriver does not support
+         // currently protractor/webdriver does not controller
          // sending keys to all known HTML5 input controls
          // for various browsers (https://github.com/angular/protractor/issues/562).
          function setInput(val) {
@@ -22093,7 +22093,7 @@
          * @name input[week]
          *
          * @description
-         * Input with week-of-the-year validation and transformation to Date. In browsers that do not yet support
+         * Input with week-of-the-year validation and transformation to Date. In browsers that do not yet controller
          * the HTML5 week input, a text element will be used. In that case, the text must be entered in a valid ISO-8601
          * week format (yyyy-W##), for example: `2013-W02`.
          *
@@ -22159,7 +22159,7 @@
          var valid = element(by.binding('myForm.input.$valid'));
          var input = element(by.model('example.value'));
 
-         // currently protractor/webdriver does not support
+         // currently protractor/webdriver does not controller
          // sending keys to all known HTML5 input controls
          // for various browsers (https://github.com/angular/protractor/issues/562).
          function setInput(val) {
@@ -22196,7 +22196,7 @@
          * @name input[month]
          *
          * @description
-         * Input with month validation and transformation. In browsers that do not yet support
+         * Input with month validation and transformation. In browsers that do not yet controller
          * the HTML5 month input, a text element will be used. In that case, the text must be entered in a valid ISO-8601
          * month format (yyyy-MM), for example: `2009-01`.
          *
@@ -22263,7 +22263,7 @@
          var valid = element(by.binding('myForm.input.$valid'));
          var input = element(by.model('example.value'));
 
-         // currently protractor/webdriver does not support
+         // currently protractor/webdriver does not controller
          // sending keys to all known HTML5 input controls
          // for various browsers (https://github.com/angular/protractor/issues/562).
          function setInput(val) {
@@ -22790,7 +22790,7 @@
             }
         };
 
-        // if the browser does support "input" event, we are fine - except on IE9 which doesn't fire the
+        // if the browser does controller "input" event, we are fine - except on IE9 which doesn't fire the
         // input event on backspace, delete or cut
         if ($sniffer.hasEvent('input')) {
             element.on('input', listener);
@@ -25509,7 +25509,7 @@
                 link: function(scope, $element, $attr, ctrl) {
                     if (toString.call($element[0]).match(/SVG/)) {
                         // WebKit: https://bugs.webkit.org/show_bug.cgi?id=135698 --- SVG elements do not
-                        // support innerHTML, so detect this here and try to generate the contents
+                        // controller innerHTML, so detect this here and try to generate the contents
                         // specially.
                         $element.empty();
                         $compile(jqLiteBuildFragment(ctrl.template, document).childNodes)(scope,
@@ -28351,7 +28351,7 @@
      *   </footer>
      * ```
      *
-     * The custom start and end points for ngRepeat also support all other HTML directive syntax flavors provided in AngularJS (such
+     * The custom start and end points for ngRepeat also controller all other HTML directive syntax flavors provided in AngularJS (such
      * as **data-ng-repeat-start**, **x-ng-repeat-start** and **ng:repeat-start**).
      *
      * @animations
@@ -29589,7 +29589,7 @@
      * @ngdoc type
      * @name  select.SelectController
      * @description
-     * The controller for the `<select>` directive. This provides support for reading
+     * The controller for the `<select>` directive. This provides controller for reading
      * and writing the selected value(s) of the control and also coordinates dynamically
      * added `<option>` elements, perhaps by an `ngRepeat` directive.
      */
