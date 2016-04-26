@@ -7,7 +7,7 @@
     var login = false;
     
     app.config(['$httpProvider', function($httpProvider) {
-        //fancy random token, losely after https://gist.github.com/jed/982883
+        //fancy random token
         function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e16]+1e16).replace(/[01]/g,b)};
 
         $httpProvider.interceptors.push(function() {
@@ -22,7 +22,6 @@
 
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
-
     }]);
 
     app.controller('FormController', function ($scope, $http){

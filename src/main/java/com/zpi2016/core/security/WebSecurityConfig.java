@@ -37,26 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.formLogin()
-					.loginPage("/")
-					.permitAll()
-				.and()
-//				.httpBasic()
-//				.and()
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.and()
-				.authorizeRequests()
-				.antMatchers("/**").access("hasRole('ADMIN')")
-				.anyRequest().authenticated()
-				.antMatchers("/users/**").access("hasRole('ADMIN')")
-				.anyRequest().authenticated()
-//				;
-				.and()
-				.csrf().disable().addFilterBefore(
-					new StatelessCSRFFilter(), CsrfFilter.class);
-				// 4 nao
-//				.and()
-//				.csrf().disable();
+				.formLogin().loginPage("/")	.permitAll()
+				.and().logout()	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.and().authorizeRequests()
+					.antMatchers("/**").access("hasRole('ADMIN')").anyRequest().authenticated()
+					.antMatchers("/users/**").access("hasRole('ADMIN')").anyRequest().authenticated()
+				.and().csrf().disable().addFilterBefore(new StatelessCSRFFilter(), CsrfFilter.class);
 	}
 
 	@Autowired
@@ -75,26 +61,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		protected void doFilterInternal(HttpServletRequest request,
 		                                HttpServletResponse response, FilterChain filterChain)
 				throws ServletException, IOException {
+			if (processTokenValidation(request, response)) return;
+			filterChain.doFilter(request, response);
+		}
 
+		private boolean processTokenValidation(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
 			if (requireCsrfProtectionMatcher.matches(request)) {
 				final String csrfTokenValue = request.getHeader(X_CSRF_TOKEN);
 				final Cookie[] cookies = request.getCookies();
 
-				String csrfCookieValue = null;
-				if (cookies != null) {
-					for (Cookie cookie : cookies) {
-						if (cookie.getName().equals(CSRF_TOKEN)) {
-							csrfCookieValue = cookie.getValue();
-						}
-					}
-				}
-				if (csrfTokenValue == null || !csrfTokenValue.equals(csrfCookieValue)) {
-					accessDeniedHandler.handle(request, response, new AccessDeniedException(
-							"Missing or non-matching CSRF-token"));
-					return;
-				}
+				String csrfCookieValue = getCsrfCookieValue(cookies);
+				if (handleBadToken(request, response, csrfTokenValue, csrfCookieValue)) return true;
 			}
-			filterChain.doFilter(request, response);
+			return false;
+		}
+
+		private String getCsrfCookieValue(final Cookie[] cookies) {
+			String csrfCookieValue = null;
+			if (cookies != null)
+				for (Cookie cookie : cookies)
+					if (cookie.getName().equals(CSRF_TOKEN))
+						csrfCookieValue = cookie.getValue();
+			return csrfCookieValue;
+		}
+
+		private boolean handleBadToken(final HttpServletRequest request, final HttpServletResponse response, final String csrfTokenValue, final String csrfCookieValue) throws IOException, ServletException {
+			if (csrfTokenValue == null || !csrfTokenValue.equals(csrfCookieValue)) {
+				accessDeniedHandler.handle(request, response, new AccessDeniedException(
+						"Missing or non-matching CSRF-token"));
+				return true;
+			}
+			return false;
 		}
 
 		public static final class DefaultRequiresCsrfMatcher implements RequestMatcher {
