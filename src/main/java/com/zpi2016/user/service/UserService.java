@@ -27,7 +27,7 @@ public class UserService implements GenericService<User>, UserDetailsService {
     @Autowired
     private UserRepository repository;
 
-    @Value("${salt}")
+    @Value("${com.zpi2016.m33tme.salt}")
     private String salt;
 
     @Override

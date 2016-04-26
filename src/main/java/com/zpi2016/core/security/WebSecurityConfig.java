@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserService userService;
 
-	@Value("${salt}")
+	@Value("${com.zpi2016.m33tme.salt}")
 	private String salt;
 
 	@Override

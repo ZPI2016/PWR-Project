@@ -5,12 +5,15 @@ import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
 import com.zpi2016.user.service.UserService;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.UUID;
@@ -35,6 +38,11 @@ public class UserServiceTest {
     private static final Date DOB = new Date();
     private static final Location ADDRESS = new Location(50.0f, 45.0f);
     private static final Float RADIUS = 23.0f;
+
+    @Before
+    public void setUp() {
+        ReflectionTestUtils.setField(userService, "salt", "salty");
+    }
 
     @Test
     public void shouldSaveNewUser() {

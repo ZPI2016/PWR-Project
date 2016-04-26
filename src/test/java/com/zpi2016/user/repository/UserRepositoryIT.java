@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class})
-@WebIntegrationTest
+@WebIntegrationTest({"com.zpi2016.m33tme.salt=salty"})
 public class UserRepositoryIT {
 
     @Autowired
