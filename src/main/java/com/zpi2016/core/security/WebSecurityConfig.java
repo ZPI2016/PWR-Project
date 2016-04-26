@@ -2,6 +2,7 @@ package com.zpi2016.core.security;
 
 import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -34,6 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserService userService;
 
+	@Value("${salt}")
+	private String salt;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -47,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(new StandardPasswordEncoder("m33tme"));
+		auth.userDetailsService(userService).passwordEncoder(new StandardPasswordEncoder(salt));
 	}
 
 	public static class StatelessCSRFFilter extends OncePerRequestFilter {

@@ -7,6 +7,7 @@ import com.zpi2016.core.common.service.GenericService;
 import com.zpi2016.user.support.UserAlreadyExistsException;
 import com.zpi2016.user.support.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,9 @@ public class UserService implements GenericService<User>, UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Value("${salt}")
+    private String salt;
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
@@ -88,7 +92,8 @@ public class UserService implements GenericService<User>, UserDetailsService {
     }
 
     private void encryptPassword(final User user) {
-        StandardPasswordEncoder encoder = new StandardPasswordEncoder("m33tme");
+
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
     }
