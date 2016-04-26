@@ -21,13 +21,27 @@ import java.util.Date;
 
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
-public class Application {
+public class Application{
+
+	@Autowired
+	UserService userService;
 
 	/**
 	 *	Starts the whole Spring boot application
 	 */
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
+	}
+
+	@PostConstruct
+	public void init() {
+		userService.save(
+				new User.Builder("nazwa", "haslo", "filip@ja.com",
+						new Date(), new Location(10.0f, 5.0f), 15.0f)
+						.withRole("ROLE_ADMIN").build());
+		userService.save(
+				new User.Builder("nazwa2", "haslo2", "filip2@ja.com",
+						new Date(), new Location(10.0f, 5.0f), 15.0f).build());
 	}
 
 }
