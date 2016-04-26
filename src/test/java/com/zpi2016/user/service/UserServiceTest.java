@@ -123,8 +123,8 @@ public class UserServiceTest
 
     private void setupLocation()
     {
-        when( sampleLocation.getGeoLatitude() ).thenReturn( 10.5f );
-        when( sampleLocation.getGeoLongitude() ).thenReturn( 20.5f );
+        when( sampleLocation.getGeoLatitude() ).thenReturn( 10.5 );
+        when( sampleLocation.getGeoLongitude() ).thenReturn( 20.5 );
     }
 
 
