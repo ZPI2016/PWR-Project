@@ -24,7 +24,11 @@
         Title:<br>
         <input type="text" name="title" ng-model="createEventForm.event.title"><br>
         Start Time:<br>
-        <input type="date" name="startTime" ng-model="createEventForm.event.startTime"><br>
+        <input type="datetime-local" name="startTime" ng-model="createEventForm.event.startTime"><br>
+        Maximum number of participants:<br>
+        <input type="text" name="maxParticipants" ng-model="createEventForm.event.maxParticipants"><br>
+        Maximum number of participants:<br>
+        <input type="text" name="minParticipants" ng-model="createEventForm.event.minParticipants"><br>
 
         <div class="form-group">
             GeoLongitude:<br>
