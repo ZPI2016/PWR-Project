@@ -1,0 +1,21 @@
+body {
+    background: url('../img/home_background.jpg') no-repeat left top fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+#form-holder{
+    margin: 2em 0 0 5em;
+    border-radius: 25px;
+    padding: 2em;
+    background-color: #0F0F54;
+    color: whitesmoke;
+}
+
+.nav{
+    margin-bottom: 1em;
+}
+
+

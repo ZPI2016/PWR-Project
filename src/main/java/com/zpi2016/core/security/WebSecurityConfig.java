@@ -41,11 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.formLogin().loginPage("/")	.permitAll()
+				.formLogin().loginPage("/").permitAll()
 				.and().logout()	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.and().authorizeRequests()
-					.antMatchers("/**").access("hasRole('ADMIN')").anyRequest().authenticated()
-					.antMatchers("/users/**").access("hasRole('ADMIN')").anyRequest().authenticated()
+					.antMatchers("/admin/**").access("hasRole('ADMIN')").anyRequest().authenticated()
+					.antMatchers("/users/**").access("hasAnyRole('ADMIN','USER')").anyRequest().authenticated()
+					.anyRequest().permitAll()
 				.and().csrf().disable().addFilterBefore(new StatelessCSRFFilter(), CsrfFilter.class);
 	}
 

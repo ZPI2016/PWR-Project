@@ -2,15 +2,11 @@
  * Created by Martyna on 21.03.2016.
  */
 
-angular.module('myApp', [ 'ngRoute' ])
+angular.module('index', [ 'ngRoute' ])
 
     .config(function($routeProvider, $httpProvider) {
 
-        $routeProvider.when('/', {
-            templateUrl : 'home.html',
-            controller : 'homeController',
-            controllerAs: 'homeCtrl'
-        }).when('/signin', {
+        $routeProvider.when('/home', {
             templateUrl : 'login.html',
             controller : 'loginController',
             controllerAs: 'loginCtrl'
@@ -18,7 +14,7 @@ angular.module('myApp', [ 'ngRoute' ])
             templateUrl : 'register.html',
             controller : 'registerController',
             controllerAs: 'registerCtrl'
-        }).otherwise('/')
+        }).otherwise('/home')
     })
 
     .config(['$httpProvider', function($httpProvider) {
@@ -68,8 +64,4 @@ angular.module('myApp', [ 'ngRoute' ])
                 data: user
             });
         };
-    })
-
-    .controller("homeController", function(){
-       // :) tu byłam! ~Iza Małysz
     });
