@@ -15,14 +15,28 @@
     </style>
 </head>
 <body ng-app="myApp" ng-cloak class="ng-cloak">
-<h2>Available events</h2>
-<br>
-<div ng-controller="EventsController as eventsCtrl" class="center-block container">
-    <div ng-repeat="event in events" class="img-thumbnail bg-info">
-        <p>{{event.title}}</p>
-        <p>{{event.category}}</p>
-        <p>{{event.startTime}}</p>
+<div class="container">
+    <div class="row">
+        <h2>Available events</h2>
+        Search: <input ng-model="query">
+        <br>
     </div>
+    <br><br>
+    <div class="row">
+        <div ng-controller="EventsController as eventsCtrl" class="center-block container">
+
+            <div ng-repeat="event in events | filter: {title: query||''}" class="img-thumbnail imq-responsive">
+                <button class="btn btn-default">
+                    <p>{{event.title}}</p>
+                    <p>{{event.category}}</p>
+                    <p>{{event.startTime}}</p>
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+
 </div>
 <div ng-view class="container"></div>
 </body>
