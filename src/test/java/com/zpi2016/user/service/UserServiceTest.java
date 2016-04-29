@@ -123,15 +123,15 @@ public class UserServiceTest
 
     private void setupLocation()
     {
-        when( sampleLocation.getGeoLatitude() ).thenReturn( 10.5f );
-        when( sampleLocation.getGeoLongitude() ).thenReturn( 20.5f );
+        when( sampleLocation.getGeoLatitude() ).thenReturn( 10.5 );
+        when( sampleLocation.getGeoLongitude() ).thenReturn( 20.5 );
     }
 
 
     private User stubRepositoryToReturnUserOnSave()
     {
         User user = new User();
-        when( userRepository.save( Mockito.any( User.class ) ) ).thenReturn( user );
+        when(userRepository.save(Mockito.any(User.class))).thenReturn( user );
         return user;
     }
 

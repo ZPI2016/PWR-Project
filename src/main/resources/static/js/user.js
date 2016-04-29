@@ -11,10 +11,5 @@
             $scope.users = result;
         });
         
-       /* $scope.user = {
-            username : "Martyna",
-            email : "m@l.com"
-        };*/
-        
     });
 })();

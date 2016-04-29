@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ZPI EVENT</title>
-    <link
-            href="/css/angular-bootstrap.css"
-            rel="stylesheet"/>
-    <script src="/js/angular-bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/event.js"></script>
     <style type="text/css">
         [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -14,22 +11,32 @@
         }
     </style>
 </head>
-<body ng-app="myApp" ng-cloak class="ng-cloak">
-    <h2>New Event</h2>
+<body ng-app="myApp" onload="loadMap()">
+<h2>New Event</h2>
 
-    <div ng-controller="CreateEventController as eventCtrl" class="container">
-        <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
-            Title:<br>
-            <input type="text" name="title" ng-model="createEventForm.event.title"><br>
-            Start Time:<br>
-            <input type="date" name="startTime" ng-model="createEventForm.event.startTime"><br>
-            geoLongitude:<br>
-            <input type="text" name="geoLongitude" class="form-control" ng-model="createEventForm.event.address.geoLongitude"><br>
-            geoLatitude:<br>
-            <input type="text" name="geoLatitude" class="form-control" ng-model="createEventForm.event.address.geoLatitude"><br>
+<div id="map_container"></div>
+<div ng-controller="CreateEventController as eventCtrl">
+    <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
+        Title:<br>
+        <input type="text" name="title" ng-model="createEventForm.event.title"><br>
+        Start Time:<br>
+        <input type="datetime-local" name="startTime" ng-model="createEventForm.event.startTime"><br>
+        Maximum number of participants:<br>
+        <input type="text" name="maxParticipants" ng-model="createEventForm.event.maxParticipants"><br>
+        Maximum number of participants:<br>
+        <input type="text" name="minParticipants" ng-model="createEventForm.event.minParticipants"><br>
+
+        <div class="form-group">
+            GeoLongitude:<br>
+            <input type="text" name="geoLongitude" id="geoLongitude" class="form-control"
+                   ng-model="createEventForm.event.address.geoLongitude"><br>
+            GeoLatitude:<br>
+            <input type="text" name="geoLatitude" id="geoLatitude" class="form-control"
+                   ng-model="createEventForm.event.address.geoLatitude"><br>
             <input type="submit" value="Submit" class="btn">
-        </form>
-    </div>
-    <div ng-view class="container"></div>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>

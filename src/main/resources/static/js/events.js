@@ -12,16 +12,5 @@
         $http.get('/events').success(function (result) {
             $scope.events = result;
         })
-
-        // $scope.events = [
-        //     {
-        //         title: "Afternoon Squash",
-        //         category: "SPORTS"
-        //     },
-        //     {
-        //         title: "Salsa class",
-        //         category: "DANCING"
-        //     }
-        // ];
     });
 })();

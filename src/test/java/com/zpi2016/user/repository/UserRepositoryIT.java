@@ -37,8 +37,8 @@ public class UserRepositoryIT {
     private static final Date DOB = new Date();
     private static final Date AFTER_DOB = new Date();
     private static final Date BEFORE_DOB = new Date();
-    private static final Location ADDRESS = new Location(50.0f, 45.0f);
-    private static final Location WRONG_ADDRESS = new Location(45.0f, 50.0f);
+    private static final Location ADDRESS = new Location(50.0, 45.0);
+    private static final Location WRONG_ADDRESS = new Location(45.0, 50.0);
     private static final Float RADIUS = 23.0f;
 
     @BeforeClass
