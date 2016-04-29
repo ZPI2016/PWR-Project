@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-    //TODO: implement index.html
     @RequestMapping("/")
     public String index(){
         return "/html/index.html";

@@ -1,0 +1,33 @@
+<form role="form" name="indexForm" ng-submit="formCtrl.onClick(indexForm.user)">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text"
+               class="form-control" id="username" name="username" ng-model="indexForm.user.username"/>
+    </div>
+    <div class="form-group">
+        <label for="username">Email:</label>
+        <input type="email"
+               class="form-control" id="email" name="email" ng-model="indexForm.user.email"/>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password"
+               class="form-control" id="password" name="password" ng-model="indexForm.user.password"/>
+    </div>
+    <div class="form-group">
+        <label for="geoLongitude">Longitude:</label>
+        <input type="text"
+               class="form-control" id="geoLongitude" name="geoLongitude" ng-model="indexForm.user.address.geoLongitude"/>
+    </div>
+    <div class="form-group">
+        <label for="geoLatitude">Latitude:</label>
+        <input type="text"
+               class="form-control" id="geoLatitude" name="geoLatitude" ng-model="indexForm.user.address.geoLatitude"/>
+    </div>
+    <div class="form-group">
+        <label for="geoLongitude">Date of birth:</label>
+        <input type="date"
+               class="form-control" id="dob" name="dob" ng-model="indexForm.user.dob"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

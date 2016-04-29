@@ -3,9 +3,26 @@
  */
 
 (function(){
-    var app = angular.module('myApp', []);
+    var app = angular.module('myApp', [ 'ngRoute' ]);
     var login = false;
-    
+
+    app.config(function($routeProvider, $httpProvider) {
+
+        $routeProvider.when('/', {
+            templateUrl : 'home.html',
+            controller : 'homeController',
+            controllerAs: 'homeCtrl'
+        }).when('/signin', {
+            templateUrl : 'login.html',
+            controller : 'loginController',
+            controllerAs: 'loginCtrl'
+        }).when('/register', {
+            templateUrl : 'register.html',
+            controller : 'registerController',
+            controllerAs: 'registerCtrl'
+        }).otherwise('/')
+    });
+
     app.config(['$httpProvider', function($httpProvider) {
         //fancy random token
         function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e16]+1e16).replace(/[01]/g,b)};
@@ -24,7 +41,7 @@
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
     }]);
 
-    app.controller('FormController', function ($scope, $http){
+    app.controller('registerController', function ($scope, $http){
         var myapp = this;
         this.onClick = function (user) {
             myapp.data = JSON.stringify({
@@ -38,7 +55,7 @@
         };
     });
 
-    app.controller('LoginController', function ($scope, $http) {
+    app.controller('loginController', function ($scope, $http) {
         this.onClick = function (user) {
             $http({
                 method: 'POST',
@@ -53,6 +70,10 @@
                 data: user
             });
         };
+    });
+
+    app.controller("homeController", function(){
+       // :) tu byłam! ~Iza Małysz
     });
 
 })();
