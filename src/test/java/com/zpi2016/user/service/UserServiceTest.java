@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.user.controller.UserNotFoundException;
+import com.zpi2016.user.support.UserNotFoundException;
 
 
 /**

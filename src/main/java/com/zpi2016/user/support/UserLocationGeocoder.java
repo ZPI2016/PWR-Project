@@ -1,4 +1,4 @@
-package com.zpi2016.user.controller;
+package com.zpi2016.user.support;
 
 /**
  * Created by Sandra on 2016-04-07.

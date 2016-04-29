@@ -1,4 +1,4 @@
-package com.zpi2016.user.controller;
+package com.zpi2016.user.support;
 
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.service.UserService;
