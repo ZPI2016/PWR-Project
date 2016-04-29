@@ -35,7 +35,7 @@ angular.module('index', [ 'ngRoute' ])
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
     }])
 
-    .controller('registerController', function ($scope, $http){
+    .controller('registerController', function ($scope, $http, $location){
         var myapp = this;
         this.onClick = function (user) {
             myapp.data = JSON.stringify({
@@ -45,11 +45,19 @@ angular.module('index', [ 'ngRoute' ])
                 address: user.address,
                 dob: user.dob
             });
-            $http.post('/users', myapp.data);
+            $http.post('/users', myapp.data)
+                .then(function success(response){
+                    $location.path("/home").search({registered: 'success'});
+                    $('#li-register').removeClass("active");
+                    $('#li-login').addClass("active");
+                }, function failure(response){
+                    $location.path("/register").search({registered: 'failure'});
+                });
         };
     })
 
-    .controller('loginController', function ($scope, $http) {
+    .controller('loginController', function ($scope, $http, $routeParams) {
+
         this.onClick = function (user) {
             $http({
                 method: 'POST',
@@ -62,6 +70,10 @@ angular.module('index', [ 'ngRoute' ])
                     return str.join("&");
                 },
                 data: user
+            }).then(function success(response){
+                // po zalogowaniu
+            }, function failure(response){
+                // po nieudanym zalogowaniu
             });
         };
     });

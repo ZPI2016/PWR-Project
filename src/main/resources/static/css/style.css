@@ -7,7 +7,7 @@ body {
 }
 
 #form-holder{
-    margin: 2em 0 0 5em;
+    margin: 5em 0 0 5em;
     border-radius: 25px;
     padding: 2em;
     background-color: #0F0F54;
@@ -15,7 +15,7 @@ body {
 }
 
 .nav{
-    margin-bottom: 1em;
+    padding-bottom: 1em;
 }
 
 
