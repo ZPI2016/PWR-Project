@@ -2,11 +2,9 @@
  * Created by Martyna on 21.03.2016.
  */
 
-(function(){
-    var app = angular.module('myApp', [ 'ngRoute' ]);
-    var login = false;
+angular.module('myApp', [ 'ngRoute' ])
 
-    app.config(function($routeProvider, $httpProvider) {
+    .config(function($routeProvider, $httpProvider) {
 
         $routeProvider.when('/', {
             templateUrl : 'home.html',
@@ -21,9 +19,9 @@
             controller : 'registerController',
             controllerAs: 'registerCtrl'
         }).otherwise('/')
-    });
+    })
 
-    app.config(['$httpProvider', function($httpProvider) {
+    .config(['$httpProvider', function($httpProvider) {
         //fancy random token
         function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e16]+1e16).replace(/[01]/g,b)};
 
@@ -39,9 +37,9 @@
 
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
-    }]);
+    }])
 
-    app.controller('registerController', function ($scope, $http){
+    .controller('registerController', function ($scope, $http){
         var myapp = this;
         this.onClick = function (user) {
             myapp.data = JSON.stringify({
@@ -53,9 +51,9 @@
             });
             $http.post('/users', myapp.data);
         };
-    });
+    })
 
-    app.controller('loginController', function ($scope, $http) {
+    .controller('loginController', function ($scope, $http) {
         this.onClick = function (user) {
             $http({
                 method: 'POST',
@@ -70,10 +68,8 @@
                 data: user
             });
         };
-    });
+    })
 
-    app.controller("homeController", function(){
+    .controller("homeController", function(){
        // :) tu byłam! ~Iza Małysz
     });
-
-})();
