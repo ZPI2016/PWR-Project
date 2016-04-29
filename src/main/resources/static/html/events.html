@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>ZPI EVENTS PAGE</title>
+    <style type="text/css">
+        div#map_container {
+            width: 50%;
+            height: 350px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="../js/map_loader.js"></script>
     <link
             href="../css/angular-bootstrap.css"
             rel="stylesheet"/>
@@ -14,18 +23,18 @@
         }
     </style>
 </head>
-<body ng-app="myApp" ng-cloak class="ng-cloak">
+<body ng-app="myApp" ng-cloak class="ng-cloak" onload="loadMap()">
 <div class="container">
     <div class="row">
         <h2>Available events</h2>
-        Search: <input ng-model="query">
+        Search: <input id="selectorId"  ng-model="query">
         <br>
     </div>
     <br><br>
     <div class="row">
-        <div ng-controller="EventsController as eventsCtrl" class="center-block container">
+        <div ng-controller="EventsController as eventsCtrl" class="col-md-8">
 
-            <div ng-repeat="event in events | filter: {title: query||''}" class="img-thumbnail imq-responsive">
+            <div ng-repeat="event in events | filter: {title:query||''}" class="img-thumbnail imq-responsive">
                 <button class="btn btn-default">
                     <p>{{event.title}}</p>
                     <p>{{event.category}}</p>
@@ -34,7 +43,7 @@
             </div>
         </div>
 
-
+        <div id="map_container" class="col-md-4"></div>
     </div>
 
 </div>
