@@ -1,3 +1,6 @@
+<div ng-show="registrationFailed" class="alert alert-danger">
+    <strong>Failure!</strong><br> There was a problem with registration, try again with different credentials
+</div>
 <form role="form" name="registerForm" ng-submit="registerCtrl.onClick(registerForm.user)">
     <div class="form-group">
         <label for="username">Username:</label>
@@ -5,7 +8,7 @@
                class="form-control" id="username" name="username" ng-model="registerForm.user.username"/>
     </div>
     <div class="form-group">
-        <label for="username">Email:</label>
+        <label for="email">Email:</label>
         <input type="email"
                class="form-control" id="email" name="email" ng-model="registerForm.user.email"/>
     </div>

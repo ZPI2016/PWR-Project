@@ -109,15 +109,16 @@ public class UserService implements GenericService<User>, UserDetailsService {
     }
 
     private void checkUniqueConstraints(final User user) {
-        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
-        if (existing != null)
+        User existingUsername = repository.findByUsername(user.getUsername());
+        User existingEmail = repository.findByEmail(user.getEmail());
+        if (existingUsername != null || existingEmail != null)
             throw new UserAlreadyExistsException(String.format(
                     "There already exists a user with username: %s or email: %s",
                     user.getUsername(), user.getEmail()));
     }
 
     private void checkUniqueConstraints(final User user, final UUID id) {
-        User existing = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        User existing = repository.findByUsername(user.getUsername());
         if (existing != null && !existing.getId().equals(id))
             throw new UserAlreadyExistsException(String.format(
                     "There already exists a user with username: %s or email: %s",

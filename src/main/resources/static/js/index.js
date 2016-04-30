@@ -35,28 +35,41 @@ angular.module('index', [ 'ngRoute' ])
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
     }])
 
-    .controller('registerController', function ($scope, $http, $location){
+    .service("AlertService", function(){
+        var justRegistered = false;
+
+        return{
+            isJustRegistered: function(){
+                return justRegistered;
+            },
+            setJustRegistered: function(val){
+                justRegistered = val;
+            },
+
+        };
+    })
+
+    .controller('registerController', function ($scope, $http, $location, AlertService){
         var myapp = this;
+
+        $scope.registationFailed = false;
+
         this.onClick = function (user) {
-            myapp.data = JSON.stringify({
-                username: user.username,
-                password: user.password,
-                email: user.email,
-                address: user.address,
-                dob: user.dob
-            });
-            $http.post('/users', myapp.data)
+            $http.post('/users', user)
                 .then(function success(response){
-                    $location.path("/home").search({registered: 'success'});
+                    $location.path("/home");
+                    AlertService.setJustRegistered(true);
                     $('#li-register').removeClass("active");
                     $('#li-login').addClass("active");
                 }, function failure(response){
-                    $location.path("/register").search({registered: 'failure'});
+                    $scope.registrationFailed = true;
                 });
         };
     })
 
-    .controller('loginController', function ($scope, $http, $routeParams) {
+    .controller('loginController', function ($scope, $http, $routeParams, AlertService) {
+
+        $scope.justRegistered = AlertService.isJustRegistered();
 
         this.onClick = function (user) {
             $http({
@@ -71,9 +84,11 @@ angular.module('index', [ 'ngRoute' ])
                 },
                 data: user
             }).then(function success(response){
-                // po zalogowaniu
+                console.log(response.headers());
+                console.log("SUCCESS");
             }, function failure(response){
-                // po nieudanym zalogowaniu
+                console.log(response.headers());
+                console.log("FAILURE");
             });
         };
     });
