@@ -3,7 +3,7 @@
  */
 
 (function () {
-    var app = angular.module("myApp",[]);
+    var app = angular.module("myApp", []);
 
     app.controller("EventsController", function ($http, $scope) {
 
@@ -13,8 +13,20 @@
             $scope.events = result;
         })
     });
-    
-    app.searchEvents = function (element) {
-        return element.title.match(angular.element('#selectorId').scope()) ? true:false;
-    }
+
+    app.filter('searchTitle', function () {
+        return function (item, query) {
+            // var filtered = [];
+            // if(items==null) return items;
+            // for( var i = 0; i<Object.keys(items).length; i++){
+            //     var item = items[0];
+            //     if(item.title.indexOf(query)!=-1){
+            //         filtered.push(item);
+            //     }
+            //     console.log(item.title);
+            // }
+            return item.title.indexOf(query)!=-1;
+        };
+    });
+
 })();

@@ -27,14 +27,14 @@
 <div class="container">
     <div class="row">
         <h2>Available events</h2>
-        Search: <input id="selectorId"  ng-model="query">
+        Search: <input id="selectorId"  ng-model="query" value="">
         <br>
     </div>
     <br><br>
     <div class="row">
         <div ng-controller="EventsController as eventsCtrl" class="col-md-8">
 
-            <div ng-repeat="event in events | filter: {title:query||''}" class="img-thumbnail imq-responsive">
+            <div ng-repeat="event in events | searchTitle:query" class="img-thumbnail imq-responsive">
                 <button class="btn btn-default">
                     <p>{{event.title}}</p>
                     <p>{{event.category}}</p>
