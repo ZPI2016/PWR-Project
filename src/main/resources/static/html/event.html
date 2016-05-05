@@ -11,14 +11,15 @@
     </style>
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="../js/map_loader.js"></script>
+    <!--<script type="text/javascript" src="../js/map_loader.js"></script>-->
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/event.js"></script>
 </head>
 <body ng-app="myApp" onload="loadMap()">
 <h2>New Event</h2>
 
-<div id="map_container"></div>
+<h3>Choose your home location</h3>
+
 <div ng-controller="CreateEventController as eventCtrl">
     <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
         Title:<br>
@@ -31,11 +32,15 @@
         <input type="text" name="minParticipants" ng-model="createEventForm.event.minParticipants"><br>
 
         <div class="form-group">
-            GeoLongitude:<br>
-            <input type="text" name="geoLongitude" id="geoLongitude" class="form-control"
+            Pin your event on map:<br>
+
+            <div id="map_container"></div>
+            <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
+                   placeholder="Your coordinates :)"
+                   ng-init="createEventForm.event.address.geoLongitude ='50.002'"
                    ng-model="createEventForm.event.address.geoLongitude"><br>
-            GeoLatitude:<br>
-            <input type="text" name="geoLatitude" id="geoLatitude" class="form-control"
+            <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control" placeholder="Your coordinates"
+                   ng-init="createEventForm.event.address.geoLatitude ='51.467'"
                    ng-model="createEventForm.event.address.geoLatitude"><br>
             <input type="submit" value="Submit" class="btn">
         </div>

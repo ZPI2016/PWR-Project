@@ -11,7 +11,7 @@
     </style>
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="../js/map_loader.js"></script>
+    <!--<script type="text/javascript" src="../js/map_loader.js"></script>-->
     <script type="text/javascript" src="../js/angular.js"></script>
     <script type="text/javascript" src="../js/index.js"></script>
     <script type="text/css" src="../bootstrap/css/bootstrap.min.css"></script>
@@ -51,15 +51,14 @@
             <input type="email" name="email" class="form-control" ng-model="indexForm.user.email"><br>
         </div>
         <div class="form-group">
-            <div id="map_container"></div>
-            GeoLongitude:<br>
-            <input type="text" name="geoLongitude" id="geoLongitude" class="form-control" ng-model="indexForm.user.address.geoLongitude"><br>
-            GeoLatitude:<br>
-            <input type="text" name="geoLatitude" id="geoLatitude" class="form-control"  ng-model="indexForm.user.address.geoLatitude"><br>
-        </div>
-        <div class="form-group">
             DOB:<br>
             <input type="date" name="dob" ng-model="indexForm.user.dob"><br>
+        </div>
+        <div class="form-group">
+            Choose your home location:<br>
+            <div id="map_container"></div>
+            <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control" ng-init="indexForm.user.address.geoLongitude ='51.467'" ng-model="indexForm.user.address.geoLongitude"><br>
+            <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control" ng-init="indexForm.user.address.geoLatitude ='51.467'" ng-model="indexForm.user.address.geoLatitude"><br>
         </div>
 
         <input type="submit" value="Submit" class="btn">
