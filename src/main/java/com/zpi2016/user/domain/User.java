@@ -81,11 +81,11 @@ public class User extends GenericEntity {
     }
 
     public void copy(User other) {
-        if (other.username != null && !this.username.equals(other.username))    this.username = other.username;
-        if (other.password != null && !this.password.equals(other.password))    this.password = other.password;
-        if (other.email != null && !this.email.equals(other.email))             this.email = other.email;
-        if (other.firstName != null && !this.firstName.equals(other.firstName)) this.firstName = other.firstName;
-        if (other.lastName != null && !this.lastName.equals(other.lastName))    this.lastName = other.lastName;
+        if (other.username != null && !other.username.trim().isEmpty() && !this.username.equals(other.username))    this.username = other.username;
+        if (other.password != null && !other.password.trim().isEmpty() && !this.password.equals(other.password))    this.password = other.password;
+        if (other.email != null && !other.email.trim().isEmpty() && !this.email.equals(other.email))             this.email = other.email;
+        if (other.firstName != null && !other.firstName.trim().isEmpty() && !this.firstName.equals(other.firstName)) this.firstName = other.firstName;
+        if (other.lastName != null && !other.lastName.trim().isEmpty() && !this.lastName.equals(other.lastName))    this.lastName = other.lastName;
         if (other.dob != null  && !this.dob.equals(other.dob))                  this.dob = other.dob;
         if (other.radius != null && !this.radius.equals(other.radius))          this.radius = other.radius;
         if (other.address != null) this.address.copy(other.address);
@@ -146,15 +146,15 @@ public class User extends GenericEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-	
+
 	public Float getRadius() {
 		return radius;
 	}
-	
+
 	public void setRadius(Float radius) {
 		this.radius = radius;
 	}
-	
+
     public Set<Event> getAttendedEvents() {
         return attendedEvents;
     }

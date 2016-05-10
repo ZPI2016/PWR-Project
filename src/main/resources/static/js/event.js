@@ -43,7 +43,7 @@ function loadMap() {
         this.onClick = function (event) {
             event.address.geoLatitude = endLat;
             event.address.geoLongitude = endLng;
-            $http.get('/users/username/martyna').success(function (result) {;
+            $http.get('/users/username/martyna').success(function (result) {
                 myapp.usr = result;
 
                 myapp.data = JSON.stringify({
