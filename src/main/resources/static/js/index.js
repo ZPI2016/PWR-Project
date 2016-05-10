@@ -35,10 +35,4 @@
 
     });
 
-    // app.selectTab = function (chosen){
-    //     this.login = chosen;
-    // };
-
-
-
 })();

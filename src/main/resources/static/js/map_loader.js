@@ -20,8 +20,8 @@ function loadMap() {
     google.maps.event.addListener(marker, 'dragend', function(a) {
         console.log(this.getPosition().lat());
         console.log(this.getPosition().lng());
-        document.getElementById("geoLongitude").value = this.getPosition().lat();
-        document.getElementById("geoLatitude").value = this.getPosition().lng();
+        document.getElementById("geoLongitude").value = this.getPosition().lng();
+        document.getElementById("geoLatitude").value = this.getPosition().lat();
 
     });
 
