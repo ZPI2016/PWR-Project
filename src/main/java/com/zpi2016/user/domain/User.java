@@ -73,6 +73,7 @@ public class User extends GenericEntity implements UserDetails {
     @NotNull
 	private Float radius = 10.0f;
 
+    @JsonIgnore
     @NotNull
     private SimpleGrantedAuthority role;
 

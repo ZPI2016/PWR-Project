@@ -21,11 +21,13 @@ angular.module('index', [ 'ngRoute' ])
         //fancy random token
         function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e16]+1e16).replace(/[01]/g,b)};
 
+        document.cookie = 'CSRF-TOKEN=' + b() + '; expires=' + new Date(0).toUTCString();
+
         $httpProvider.interceptors.push(function() {
             return {
                 'request': function(response) {
                     // put a new random secret into our CSRF-TOKEN Cookie before each request
-                    document.cookie = 'CSRF-TOKEN=' + b();
+                    document.cookie = 'CSRF-TOKEN=' + b() + ';path=/';
                     return response;
                 }
             };

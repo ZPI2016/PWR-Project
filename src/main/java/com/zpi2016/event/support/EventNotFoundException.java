@@ -1,4 +1,4 @@
-package com.zpi2016.event.utils;
+package com.zpi2016.event.support;
 
 /**
  * Created by Sandra on 2016-04-01.
