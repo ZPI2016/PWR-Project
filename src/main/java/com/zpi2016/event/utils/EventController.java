@@ -50,7 +50,6 @@ public class EventController {
         eventService.delete(id);
     }
 
-
     @RequestMapping(value = "/{id}/place", method = RequestMethod.GET)
     public Location getPlaceOfEventWithId(@PathVariable UUID id) throws EventNotFoundException {
         return eventService.findPlace(id);

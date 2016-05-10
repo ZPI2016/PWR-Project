@@ -1,11 +1,11 @@
 package com.zpi2016.event.service;
 
 import com.google.common.base.Preconditions;
+import com.zpi2016.core.common.service.GenericService;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.repository.EventRepository;
 import com.zpi2016.event.utils.EventNotFoundException;
 import com.zpi2016.location.domain.Location;
-import com.zpi2016.support.common.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class EventService implements GenericService<Event> {
     //todo: think about constraints when it comes to event creation (same name and creator as uniqe guarantee)
     @Override
     @Transactional
-    public Event save(final Event event) throws EventNotFoundException {
+    public Event save(final Event event) {
        return repository.save(event);
     }
 
@@ -48,7 +48,7 @@ public class EventService implements GenericService<Event> {
 
     @Override
     @Transactional
-    public Event update(Event event, UUID id) throws EventNotFoundException {
+    public Event update(Event event, UUID id) {
         checkIfEventExists(id);
         Event existing = findOne(id);
         existing.copy(event);
@@ -57,29 +57,27 @@ public class EventService implements GenericService<Event> {
 
     @Override
     @Transactional
-    public void delete(UUID id) throws EventNotFoundException {
+    public void delete(UUID id) {
         checkIfEventExists(id);
         repository.delete(id);
     }
 
     @Transactional
-    public Location findPlace(UUID id) throws EventNotFoundException {
+    public Location findPlace(UUID id) {
         checkIfEventExists(id);
         return findOne(id).getPlace();
     }
 
-    //why do we return new values?
     @Transactional
-    public Location updatePlace(Location newPlace, UUID id) throws EventNotFoundException {
+    public Location updatePlace(Location newPlace, UUID id) {
         checkIfEventExists(id);
         Location currentPlace = findOne(id).getPlace();
-        currentPlace.copy(newPlace);
+        currentPlace.updateWithPropertiesFrom(newPlace);
         return currentPlace;
     }
 
-
     @Transactional
-    public Date updateTime(Date newStartTime, UUID id) throws EventNotFoundException {
+    public Date updateTime(Date newStartTime, UUID id) {
         //todo: change this. Find a solution not to create object every time we want to update time.
         Preconditions.checkArgument(newStartTime.after(new Date()), "Date of event start cannot be past one!");
         checkIfEventExists(id);
@@ -87,9 +85,8 @@ public class EventService implements GenericService<Event> {
         return newStartTime;
     }
 
-
     @Transactional
-    public Event updateParticipantsNumber(int newMinParticipants, int newMaxParticipants, UUID id) throws EventNotFoundException {
+    public Event updateParticipantsNumber(int newMinParticipants, int newMaxParticipants, UUID id) {
         Preconditions.checkArgument(newMinParticipants>0, "Number of minimum participants must be a positive value");
         Preconditions.checkArgument(newMaxParticipants>0, "Number of maximum participants must be a positive value");
         checkIfEventExists(id);
@@ -99,15 +96,10 @@ public class EventService implements GenericService<Event> {
         return eventToUpdate;
     }
 
-    private void checkIfEventExists(UUID id) throws EventNotFoundException {
+    private void checkIfEventExists(UUID id) {
         if (!repository.exists(id)) {
             throw new EventNotFoundException(String.format("Could not find Event with id: %s", id));
         }
     }
-
-    private boolean eventExists(UUID id) throws EventNotFoundException {
-        return repository.exists(id);
-    }
-
 
 }

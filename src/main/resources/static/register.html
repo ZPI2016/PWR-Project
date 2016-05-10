@@ -1,0 +1,36 @@
+<div ng-show="registrationFailed" class="alert alert-danger">
+    <strong>Failure!</strong><br> There was a problem with registration, try again with different credentials
+</div>
+<form role="form" name="registerForm" ng-submit="registerCtrl.onClick(registerForm.user)">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text"
+               class="form-control" id="username" name="username" ng-model="registerForm.user.username"/>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email"
+               class="form-control" id="email" name="email" ng-model="registerForm.user.email"/>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password"
+               class="form-control" id="password" name="password" ng-model="registerForm.user.password"/>
+    </div>
+    <div class="form-group">
+        <label for="geoLongitude">Longitude:</label>
+        <input type="text"
+               class="form-control" id="geoLongitude" name="geoLongitude" ng-model="registerForm.user.address.geoLongitude"/>
+    </div>
+    <div class="form-group">
+        <label for="geoLatitude">Latitude:</label>
+        <input type="text"
+               class="form-control" id="geoLatitude" name="geoLatitude" ng-model="registerForm.user.address.geoLatitude"/>
+    </div>
+    <div class="form-group">
+        <label for="geoLongitude">Date of birth:</label>
+        <input type="date"
+               class="form-control" id="dob" name="dob" ng-model="registerForm.user.dob"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
