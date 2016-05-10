@@ -1,11 +1,9 @@
 
 package com.zpi2016.user.repository;
 
-import com.zpi2016.Application;
-import com.zpi2016.location.repository.LocationRepository;
-import com.zpi2016.location.domain.Location;
-import com.zpi2016.user.domain.User;
-import com.zpi2016.user.repository.UserRepository;
+import java.util.Date;
+import java.util.UUID;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.TransactionSystemException;
 
-import java.util.Date;
-import java.util.UUID;
+import com.zpi2016.Application;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.location.repository.LocationRepository;
+import com.zpi2016.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class})

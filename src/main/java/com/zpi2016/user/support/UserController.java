@@ -1,16 +1,18 @@
 package com.zpi2016.user.support;
 
-import com.zpi2016.location.domain.Location;
-import com.zpi2016.user.domain.User;
-import com.zpi2016.user.service.UserService;
+import java.util.UUID;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.UUID;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.service.UserService;
 
 /**
  * Created by aman on 13.03.16.

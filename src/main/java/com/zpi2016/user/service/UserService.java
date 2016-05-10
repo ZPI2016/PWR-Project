@@ -1,11 +1,7 @@
 package com.zpi2016.user.service;
 
-import com.zpi2016.location.domain.Location;
-import com.zpi2016.user.domain.User;
-import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.core.common.service.GenericService;
-import com.zpi2016.user.support.UserAlreadyExistsException;
-import com.zpi2016.user.support.UserNotFoundException;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -16,7 +12,12 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import com.zpi2016.core.common.service.GenericService;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.repository.UserRepository;
+import com.zpi2016.user.support.UserAlreadyExistsException;
+import com.zpi2016.user.support.UserNotFoundException;
 
 /**
  * Created by aman on 13.03.16.

@@ -1,9 +1,9 @@
 package com.zpi2016.location.domain;
 
-import com.zpi2016.core.common.domain.GenericEntity;
-
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+
+import com.zpi2016.core.common.domain.GenericEntity;
 
 /**
  * Created by filip on 26.02.2016.

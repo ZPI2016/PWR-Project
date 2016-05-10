@@ -1,16 +1,17 @@
 package com.zpi2016.event.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zpi2016.location.domain.Location;
-import com.zpi2016.rating.domain.EventRating;
-import com.zpi2016.core.common.domain.GenericEntity;
-import com.zpi2016.user.domain.User;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zpi2016.core.common.domain.GenericEntity;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.rating.domain.EventRating;
+import com.zpi2016.user.domain.User;
 
 /**
  * Created by filip on 26.02.2016.

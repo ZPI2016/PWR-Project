@@ -1,9 +1,11 @@
 package com.zpi2016.rating.domain;
 
-import com.zpi2016.event.domain.Event;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import com.zpi2016.event.domain.Event;
 
 /**
  * Created by filip on 27.02.2016.

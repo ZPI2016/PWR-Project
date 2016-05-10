@@ -1,10 +1,10 @@
 package com.zpi2016.rating.domain;
 
-import com.zpi2016.core.common.domain.GenericEntity;
-import com.zpi2016.user.domain.User;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.zpi2016.core.common.domain.GenericEntity;
+import com.zpi2016.user.domain.User;
 
 /**
  * Created by filip on 26.02.2016.

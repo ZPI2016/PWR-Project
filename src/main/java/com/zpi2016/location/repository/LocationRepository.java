@@ -1,9 +1,10 @@
 package com.zpi2016.location.repository;
 
-import com.zpi2016.location.domain.Location;
+import java.util.UUID;
+
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.UUID;
+import com.zpi2016.location.domain.Location;
 
 /**
  * Created by kuba on 28.02.16.

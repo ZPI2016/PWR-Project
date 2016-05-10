@@ -1,9 +1,10 @@
 package com.zpi2016.core.common.service;
 
-import com.zpi2016.core.common.domain.GenericEntity;
+import java.util.UUID;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.UUID;
+import com.zpi2016.core.common.domain.GenericEntity;
 
 /**
  * Created by aman on 13.03.16.

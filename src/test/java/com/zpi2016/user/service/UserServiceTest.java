@@ -1,12 +1,9 @@
 package com.zpi2016.user.service;
 
-import com.zpi2016.location.domain.Location;
-import com.zpi2016.user.domain.User;
-import com.zpi2016.user.repository.UserRepository;
-import com.zpi2016.user.service.UserService;
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,8 +12,9 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Date;
-import java.util.UUID;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.repository.UserRepository;
 
 /**
  * Created by aman on 13.03.16.

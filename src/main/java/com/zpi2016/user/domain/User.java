@@ -1,20 +1,22 @@
 package com.zpi2016.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.zpi2016.event.domain.Event;
-import com.zpi2016.rating.domain.EventRating;
-import com.zpi2016.location.domain.Location;
-import com.zpi2016.rating.domain.UserRating;
-import com.zpi2016.core.common.domain.GenericEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.*;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zpi2016.core.common.domain.GenericEntity;
+import com.zpi2016.event.domain.Event;
+import com.zpi2016.location.domain.Location;
+import com.zpi2016.rating.domain.EventRating;
+import com.zpi2016.rating.domain.UserRating;
 
 /**
  * Created by filip on 26.02.2016.

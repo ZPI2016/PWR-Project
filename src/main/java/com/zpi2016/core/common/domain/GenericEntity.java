@@ -1,12 +1,16 @@
 package com.zpi2016.core.common.domain;
 
+import java.util.Date;
+import java.util.UUID;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.*;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * Generic entity class.
