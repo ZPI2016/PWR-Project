@@ -34,6 +34,28 @@
 
     var gMap = new google.maps.Map(document.getElementById("map_container"), myOptions);
 
+    google.maps.event.addListener(gMap, 'zoom_changed', function() {
+        for (var m in markers){
+            check_is_in_or_out(markers[m]);
+        }
+    });
+
+    google.maps.event.addListener(gMap, 'dragend', function() {
+        for (var m in markers){
+            check_is_in_or_out(markers[m]);
+        }
+    });
+
+    function check_is_in_or_out(marker){
+        if( gMap.getBounds().contains(marker.getPosition())){
+            marker.setVisible(true);
+        }
+        else{
+            marker.setVisible(false);
+        }
+    }
+
+
     app.controller("EventsController", function ($http, $scope) {
 
 
@@ -66,6 +88,7 @@
             }
         });
     });
+
 
     app.filter('eventsFilter', function () {
         return function (events, options) {
