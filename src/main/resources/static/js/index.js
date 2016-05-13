@@ -29,7 +29,7 @@
 //    });
 //};
 (function(){
-    var app = angular.module('myApp', []);
+    var app = angular.module('myApp', ['ngRoute']);
     var login = false;
 
     app.controller('FormController', function ($http){

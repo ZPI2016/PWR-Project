@@ -13,4 +13,8 @@
             $scope.events = result;
         })
     });
+    
+    app.searchEvents = function (element) {
+        return element.title.match(angular.element('#selectorId').scope()) ? true:false;
+    }
 })();

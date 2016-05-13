@@ -2,7 +2,9 @@ package com.zpi2016.rating.domain;
 
 import com.zpi2016.user.domain.User;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**

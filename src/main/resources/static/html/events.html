@@ -1,18 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <title>ZPI EVENTS PAGE</title>
-    <script type="text/javascript" src="../js/angular.js"></script>
+    <style type="text/css">
+        div#map_container {
+            width: 50%;
+            height: 350px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="../js/map_loader.js"></script>
+    <link
+            href="../css/angular-bootstrap.css"
+            rel="stylesheet"/>
+    <script src="../js/angular-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="../js/events.js"></script>
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+            display: none !important;
+        }
+    </style>
 </head>
-<body>
-<h2>Available events</h2>
-<br>
-    <div ng-controller="EventsController as eventsCtrl">
-        <div ng-repeat="event in events">
-            <h4>{{event.id}}&nbsp;&nbsp;&nbsp;{{event.title}}&nbsp;&nbsp;&nbsp;{{event.category}}&nbsp;&nbsp;&nbsp;{{event.startTime}}&nbsp;&nbsp;&nbsp;</h4>
-        </div>
+<body ng-app="myApp" ng-cloak class="ng-cloak" onload="loadMap()">
+<div class="container">
+    <div class="row">
+        <h2>Available events</h2>
+        Search: <input id="selectorId"  ng-model="query">
+        <br>
     </div>
+    <br><br>
+    <div class="row">
+        <div ng-controller="EventsController as eventsCtrl" class="col-md-8">
+
+            <div ng-repeat="event in events | filter: {title:query||''}" class="img-thumbnail imq-responsive">
+                <button class="btn btn-default">
+                    <p>{{event.title}}</p>
+                    <p>{{event.category}}</p>
+                    <p>{{event.startTime}}</p>
+                </button>
+            </div>
+        </div>
+
+        <div id="map_container" class="col-md-4"></div>
+    </div>
+
+</div>
+<div ng-view class="container"></div>
 </body>
 </html>
