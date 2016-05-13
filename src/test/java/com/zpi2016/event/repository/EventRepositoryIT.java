@@ -1,5 +1,16 @@
 package com.zpi2016.event.repository;
 
+import java.util.Date;
+import java.util.UUID;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.TransactionSystemException;
+
 import com.zpi2016.Application;
 import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
@@ -7,16 +18,6 @@ import com.zpi2016.location.domain.Location;
 import com.zpi2016.location.repository.LocationRepository;
 import com.zpi2016.user.domain.User;
 import com.zpi2016.user.repository.UserRepository;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.TransactionSystemException;
-
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by kuba on 03.03.16.
@@ -24,6 +25,7 @@ import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class})
+@WebIntegrationTest({"com.zpi2016.m33tme.salt=salty"})
 public class EventRepositoryIT {
 
     private static final String SAMPLE_TITLE = "Sample title";

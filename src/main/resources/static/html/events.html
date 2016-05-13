@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>ZPI EVENTS PAGE</title>
@@ -11,42 +11,56 @@
     </style>
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="../js/map_loader.js"></script>
+    <!--<script type="text/javascript" src="../js/map_loader.js"></script>-->
     <link
             href="../css/angular-bootstrap.css"
             rel="stylesheet"/>
     <script src="../js/angular-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="../js/events.js"></script>
+
     <style type="text/css">
         [ng\:cloak], [ng-cloak], .ng-cloak {
             display: none !important;
         }
     </style>
 </head>
-<body ng-app="myApp" ng-cloak class="ng-cloak" onload="loadMap()">
+<body ng-app="myApp" ng-cloak class="ng-cloak">
 <div class="container">
     <div class="row">
         <h2>Available events</h2>
-        Search: <input id="selectorId"  ng-model="query">
+        Search: <input type="text" id="selectorId" ng-model="query" value="">
         <br>
     </div>
     <br><br>
     <div class="row">
-        <div ng-controller="EventsController as eventsCtrl" class="col-md-8">
+        <div ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
 
-            <div ng-repeat="event in events | filter: {title:query||''}" class="img-thumbnail imq-responsive">
-                <button class="btn btn-default">
-                    <p>{{event.title}}</p>
-                    <p>{{event.category}}</p>
-                    <p>{{event.startTime}}</p>
-                </button>
+            <div ng-repeat="event in events | eventsFilter: { search:query} ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <div data-toggle="collapse" href="#collapse{{$index}}">
+                                <p>{{event.title}}</p>
+                                <p>{{event.category}}</p>
+                                <p>{{event.startTime}}</p>
+                            </div>
+                        </h4>
+                    </div>
+                    <div id="collapse{{$index}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>Min participants: {{event.minParticipants}}</p>
+                            <p>Max participants: {{event.maxParticipants}}</p>
+                            <button class="btn btn-info pull-right">Edit</button>
+                            <button class="btn btn-info pull-right">Delete Event</button>
+                        </div></div>
+                </div>
+
             </div>
         </div>
-
-        <div id="map_container" class="col-md-4"></div>
+        <div id="map_container" class="col-md-8"></div>
     </div>
 
 </div>
 <div ng-view class="container"></div>
+<script type="text/javascript" src="../js/events.js"></script>
 </body>
 </html>

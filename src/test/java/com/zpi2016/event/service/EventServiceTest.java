@@ -2,7 +2,7 @@ package com.zpi2016.event.service;
 
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.repository.EventRepository;
-import com.zpi2016.event.utils.EventNotFoundException;
+import com.zpi2016.event.support.EventNotFoundException;
 import com.zpi2016.location.domain.Location;
 import org.junit.Assert;
 import org.junit.Before;

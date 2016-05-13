@@ -1,17 +1,14 @@
-package com.zpi2016.event.utils;
+package com.zpi2016.event.support;
 
-import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.service.EventService;
 import com.zpi2016.location.domain.Location;
-import com.zpi2016.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -26,12 +23,12 @@ public class EventController {
     private EventService eventService;
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Event createEvent(@RequestBody @Valid final Event Event) throws EventNotFoundException {
+    public Event createEvent(@RequestBody @Valid final Event Event) {
         return eventService.save(Event);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Event> getEvents() throws EventNotFoundException {
+    public Iterable<Event> getEvents() {
         return eventService.findAll();
     }
 
@@ -41,23 +38,22 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Event updateEventById(@RequestBody final Event event, @PathVariable UUID id) throws EventNotFoundException {
+    public Event updateEventById(@RequestBody final Event event, @PathVariable UUID id) {
         return eventService.update(event, id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteEventWithId(@PathVariable UUID id) throws EventNotFoundException {
+    public void deleteEventWithId(@PathVariable UUID id) {
         eventService.delete(id);
     }
 
-
     @RequestMapping(value = "/{id}/place", method = RequestMethod.GET)
-    public Location getPlaceOfEventWithId(@PathVariable UUID id) throws EventNotFoundException {
+    public Location getPlaceOfEventWithId(@PathVariable UUID id) {
         return eventService.findPlace(id);
     }
 
     @RequestMapping(value = "/{id}/eventPlace", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Location updateAddressOfEventWithId(@RequestBody final Location place, @PathVariable UUID id) throws EventNotFoundException {
+    public Location updateAddressOfEventWithId(@RequestBody final Location place, @PathVariable UUID id) {
         return eventService.updatePlace(place, id);
     }
 

@@ -1,15 +1,16 @@
 package com.zpi2016.event.repository;
 
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
 import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.user.domain.User;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by kuba on 28.02.16.

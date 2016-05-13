@@ -20,7 +20,7 @@
             });
         var myapp = this;
         this.onClick = function (user) {
-            $http.get('/users/username/' + user.username).success(function (result) {
+            $http.get('/users/security/logged').success(function (result) {
                 oldUserData = {
                     userID: result.id,
                     email: result.email,
@@ -44,7 +44,7 @@
                //lastName: user.lastName,
                 radius: user.radius
             });
-            $http.put('/users/568a25ba-daf8-4782-becd-f19bf0c00026', myapp.data).success(function (data, status, headers) {
+            $http.put('/users/security/logged', myapp.data).success(function (data, status, headers) {
                 console.log("SUCCESS");
                 $scope.ServerResponse = data;
 

@@ -1,9 +1,9 @@
 package com.zpi2016.location.domain;
 
-import com.zpi2016.support.common.GenericEntity;
-
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+
+import com.zpi2016.core.common.domain.GenericEntity;
 
 /**
  * Created by filip on 26.02.2016.
@@ -25,7 +25,7 @@ public class Location extends GenericEntity {
         this.geoLongitude = geoLongitude;
     }
 
-    public void copy(Location other) {
+    public void updateWithPropertiesFrom(Location other) {
         if (other.geoLatitude != null && !this.geoLatitude.equals(other.geoLatitude))  this.geoLatitude =  other.geoLatitude;
         if (other.geoLongitude != null && !this.geoLongitude.equals(other.geoLongitude)) this.geoLongitude = other.geoLongitude;
     }

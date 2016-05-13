@@ -48,6 +48,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+		<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
         <!-- Testing: spring test, junit, mockito, etc. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -66,7 +72,8 @@
             <artifactId>google-maps-services</artifactId>
             <version>0.1.12</version>
         </dependency>
-        <dependency>
+
+		<dependency>
             <groupId>com.google.code.geocoder-java</groupId>
             <artifactId>geocoder-java</artifactId>
             <version>0.16</version>
@@ -95,7 +102,6 @@
 		</resources>
 
 		<plugins>
-
             <!-- Project packaging -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -123,7 +129,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Resources (wro) -->
+			<!-- resources & wro -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
@@ -146,7 +152,6 @@
 				</executions>
 			</plugin>
 
-			<!-- wro4j -->
 			<plugin>
 				<groupId>ro.isdc.wro4j</groupId>
 				<artifactId>wro4j-maven-plugin</artifactId>

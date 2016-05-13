@@ -35,7 +35,27 @@ function loadMap() {
 
 (function () {
     var app = angular.module('myApp', []);
-    
+
+    app.config(['$httpProvider', function($httpProvider) {
+        //fancy random token
+        function b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e16]+1e16).replace(/[01]/g,b)};
+
+        document.cookie = 'CSRF-TOKEN=' + b() + '; expires=' + new Date(0).toUTCString();
+
+        $httpProvider.interceptors.push(function() {
+            return {
+                'request': function(response) {
+                    // put a new random secret into our CSRF-TOKEN Cookie before each request
+                    document.cookie = 'CSRF-TOKEN=' + b() + ';path=/';
+                    return response;
+                }
+            };
+        });
+
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+        $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
+    }]);
+
     app.controller('CreateEventController', function ($http) {
 
         var myapp = this;
@@ -52,6 +72,7 @@ function loadMap() {
                     place: event.address,
                     startTime: event.startTime,
                     creator: myapp.usr
+                    //minParticipants:
                 });
 
                 console.log(event.title);
