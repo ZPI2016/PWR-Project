@@ -22,7 +22,8 @@ public interface GenericService<T> {
     void delete(final UUID id);
 
     default GenericEntity getCurrentLoggedUser() {
-        return (GenericEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal instanceof GenericEntity ? (GenericEntity) principal : null;
     }
 
     default Boolean isAuthorized(UUID id) {

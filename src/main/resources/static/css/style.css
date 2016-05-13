@@ -10,7 +10,7 @@ body {
     margin: 2em 0 0 5em;
     border-radius: 25px;
     padding: 2em;
-    background-color: #0F0F54;
+    background-color: rgba(15, 15, 84, 0.7);
     color: whitesmoke;
 }
 

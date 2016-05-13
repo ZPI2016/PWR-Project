@@ -81,13 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				final Cookie[] cookies = request.getCookies();
 
 				String csrfCookieValue = getCsrfCookieValue(cookies);
-				System.out.println("--------------------------------------------------");
-				System.out.println("--------------------------------------------------");
-				System.out.println("COOKIE VALUE: " + csrfCookieValue);
-				System.out.println("--------------------------------------------------");
-				System.out.println("HEADER TOKEN VALUE: " + csrfTokenValue);
-				System.out.println("--------------------------------------------------");
-				System.out.println("--------------------------------------------------");
 				if (handleBadToken(request, response, csrfTokenValue, csrfCookieValue)) return true;
 			}
 			return false;
