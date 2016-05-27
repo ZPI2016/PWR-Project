@@ -34,7 +34,7 @@
     <div class="row">
         <div ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
 
-            <div ng-repeat="event in events | eventsFilter: { search:query} ">
+            <div id="{{event.id}}" ng-repeat="event in events | eventsFilter: { search:query} ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">

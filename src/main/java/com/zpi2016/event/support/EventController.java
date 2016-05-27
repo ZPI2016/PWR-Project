@@ -1,5 +1,6 @@
 package com.zpi2016.event.support;
 
+import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.service.EventService;
 import com.zpi2016.location.domain.Location;
@@ -30,6 +31,11 @@ public class EventController {
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Event> getEvents() {
         return eventService.findAll();
+    }
+
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    public Category[] getCategories() {
+        return Category.values();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

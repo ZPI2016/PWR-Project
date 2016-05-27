@@ -63,12 +63,12 @@ function loadMap() {
         this.onClick = function (event) {
             event.address.geoLatitude = endLat;
             event.address.geoLongitude = endLng;
-            $http.get('/users/username/martyna').success(function (result) {
+            $http.get('/users/security/logged').success(function (result) {
                 myapp.usr = result;
 
                 myapp.data = JSON.stringify({
                     title: event.title,
-                    category: 'DANCING',
+                    category: event.category,
                     place: event.address,
                     startTime: event.startTime,
                     creator: myapp.usr
