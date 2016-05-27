@@ -46,7 +46,7 @@
         angular.forEach(infos, function (element) {
             element.close();
             if ($('#collapse' + i).is( ":visible" )) {
-                $('#collapse' + i).toggle()
+                $('#collapse' + i).collapse('hide');
             }
             i += 1;
         });
@@ -88,13 +88,14 @@
                 var i = 0;
                 angular.forEach(infos, function (element) {
                     element.close();
-                    if ($('#collapse' + i).is( ':visible' )) {
-                        $('#collapse' + i).toggle();
+                    if ($('#collapse' + i).is( ':visible' ) && i != index) {
+                        $('#collapse' + i).collapse('hide');
                     }
                     i += 1;
                 });
                 infowindow.open(gMap, this);
-                $('#collapse' + index).toggle();
+                if (!$('#collapse' + index).is( ':visible' ))
+                    $('#collapse' + index).collapse('show');
             });
         };
 
@@ -120,6 +121,7 @@
             angular.forEach(events, function (element) {
                 if (element.title.toUpperCase().indexOf(query.toUpperCase()) >= 0) {
                     markers[element.id].setVisible(true);
+                    element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase();
                     filtered.push(element);
                 }
                 else {

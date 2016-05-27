@@ -22,7 +22,6 @@ function loadMap() {
         title:"Wroclove"
     });
     google.maps.event.addListener(marker, 'dragend', function(a) {
-
         initLng = this.getPosition().lng();
         initLat = this.getPosition().lat();
         document.getElementById("geoLongitude").value = this.getPosition().lng();
@@ -56,10 +55,13 @@ function loadMap() {
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
     }]);
 
-    app.controller('CreateEventController', function ($http) {
-
+    app.controller('CreateEventController', function ($http, $scope) {
         var myapp = this;
-        
+
+        $http.get('/events/categories').success(function (result) {
+            $scope.categories = result;
+        });
+
         this.onClick = function (event) {
             event.address.geoLatitude = endLat;
             event.address.geoLongitude = endLng;
@@ -68,11 +70,12 @@ function loadMap() {
 
                 myapp.data = JSON.stringify({
                     title: event.title,
-                    category: event.category,
+                    category: event.category.toUpperCase(),
                     place: event.address,
                     startTime: event.startTime,
-                    creator: myapp.usr
-                    //minParticipants:
+                    creator: myapp.usr,
+                    minParticipants: event.minParticipants,
+                    maxParticipants: event.maxParticipants
                 });
 
                 console.log(event.title);
@@ -80,6 +83,16 @@ function loadMap() {
 
                 $http.post('/events', myapp.data);
             });
+        };
+    });
+
+    app.filter('categoryFormatter', function () {
+        return function (categories) {
+            var filtered=[];
+            angular.forEach(categories, function (element) {
+                filtered.push(element.charAt(0).toUpperCase() + element.slice(1).toLowerCase());
+            });
+            return filtered;
         };
     });
     

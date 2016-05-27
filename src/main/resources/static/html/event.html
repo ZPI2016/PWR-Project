@@ -36,8 +36,7 @@
                 <input type="text" name="title" class="form-control" ng-model="createEventForm.event.title"><br>
                 Category:<br>
                 <select name="category" class="form-control" ng-model="createEventForm.event.category">
-                    <option value="SPORTS">Sports</option>
-                    <option value="DANCING">Dancing</option>
+                    <option ng-repeat="c in categories | categoryFormatter" value="{{c}}">{{c}}</option>
                 </select><br>
                 Start Time:<br>
                 <input type="datetime-local" name="startTime" class="form-control" ng-model="createEventForm.event.startTime"><br>
