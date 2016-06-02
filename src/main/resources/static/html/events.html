@@ -32,7 +32,7 @@
     </div>
     <br><br>
     <div class="row">
-        <div ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
+        <div id="eventsCtrlId" ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
             <input type="checkbox" checked id="show-mine"><br/>
             <input type="checkbox" checked id="show-others"><br/>
             <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-on="{{c}}"

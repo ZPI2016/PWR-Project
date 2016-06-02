@@ -11,6 +11,7 @@
     var markerListener;
     var draggableMarker;
     var loggedUser;
+    var query;
 
     var initLng = 17.0215279802915;
     var initLat = 51.1080158802915;
@@ -26,11 +27,11 @@
     var gMap = new google.maps.Map(document.getElementById("map_container"), myOptions);
 
     function checkFiltering(event) {
-        var notFiltered;
+        var notFiltered = event.title.toUpperCase().indexOf(query.toUpperCase()) >= 0;
         if (event.creator.id === loggedUser.id) {
-            notFiltered = $('#show-mine').is(':checked');
+            notFiltered = notFiltered && $('#show-mine').is(':checked');
         } else {
-            notFiltered = $('#show-others').is(':checked');
+            notFiltered = notFiltered && $('#show-others').is(':checked');
         }
         var category = event.category.charAt(0).toUpperCase() + event.category.slice(1).toLowerCase().replace("_", " ");
         notFiltered = notFiltered && ($('[data-on="' + category + '"]').is(':checked'));
@@ -76,14 +77,14 @@
                 off: 'Created events'
             });
             $('#show-mine').change(function() {
-                checkEvents();
+                $scope.checkEvents();
             });
             $('#show-others').bootstrapToggle({
                 on: 'Show other events',
                 off: 'Show other events'
             });
             $('#show-others').change(function() {
-                checkEvents();
+                $scope.checkEvents();
             });
             angular.forEach($scope.categories, function (element) {
                 element = element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replace("_", " ");
@@ -92,12 +93,12 @@
                     off: element
                 })
                 $('[data-on="' + element + '"]').change(function() {
-                    checkEvents();
+                    $scope.checkEvents();
                 })
             });
         });
 
-        function checkEvents() {
+        $scope.checkEvents = function () {
             angular.forEach($scope.events, function (element) {
                     if (checkFiltering(element)) {
                         check_is_in_or_out(element.id, markers[element.id]);
@@ -107,7 +108,7 @@
                         $('#' + element.id).hide();
                     }
             });
-        }
+        };
         
         google.maps.event.addListener(gMap, 'bounds_changed', function() {
             for (var m in markers){
@@ -313,18 +314,13 @@
 
     app.filter('eventsFilter', function () {
         return function (events, options) {
-            var query = options["search"] || "";
+            query = options["search"] || "";
             var filtered=[];
-            angular.forEach(events, function (element) {
-                if (element.title.toUpperCase().indexOf(query.toUpperCase()) >= 0 && checkFiltering(element)) {
-                    check_is_in_or_out(element.id, markers[element.id]);
-                    element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase().replace("_", " ");
-                    filtered.push(element);
-                }
-                else {
-                    markers[element.id].setVisible(false);
-                }
+            angular.forEach(events, function(element) {
+                element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase().replace("_", " ");
+                filtered.push(element);
             });
+            $('#eventsCtrlId').scope().checkEvents();
             return filtered;
         };
     });
