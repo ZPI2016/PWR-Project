@@ -5,11 +5,13 @@ import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.service.EventService;
 import com.zpi2016.location.domain.Location;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -31,6 +33,11 @@ public class EventController {
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Event> getEvents() {
         return eventService.findAll();
+    }
+
+    @RequestMapping(value = "/startTime", method = RequestMethod.GET)
+    public Iterable<Event> getEvents(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date date) {
+        return eventService.findAllAfter(date);
     }
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)

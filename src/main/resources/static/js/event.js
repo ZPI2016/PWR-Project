@@ -3,8 +3,8 @@
  */
 var initLng = 17.0215279802915;
 var initLat = 51.1080158802915;
-var endLng =0.0;
-var endLat =0.0;
+var endLng = initLng;
+var endLat = initLat;
 function loadMap() {
     //here we put some outside logic to resolve user's home/event location coordinates
     var latlng = new google.maps.LatLng(51.1080158802915, 17.0215279802915);
@@ -63,14 +63,13 @@ function loadMap() {
         });
 
         this.onClick = function (event) {
-            event.address.geoLatitude = endLat;
-            event.address.geoLongitude = endLng;
             $http.get('/users/security/logged').success(function (result) {
                 myapp.usr = result;
-
+                event.address.geoLongitude = endLng;
+                event.address.geoLatitude = endLat;
                 myapp.data = JSON.stringify({
                     title: event.title,
-                    category: event.category.toUpperCase(),
+                    category: event.category.toUpperCase().replace(" ", "_"),
                     place: event.address,
                     startTime: event.startTime,
                     creator: myapp.usr,
@@ -90,7 +89,7 @@ function loadMap() {
         return function (categories) {
             var filtered=[];
             angular.forEach(categories, function (element) {
-                filtered.push(element.charAt(0).toUpperCase() + element.slice(1).toLowerCase());
+                filtered.push(element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replace("_", " "));
             });
             return filtered;
         };

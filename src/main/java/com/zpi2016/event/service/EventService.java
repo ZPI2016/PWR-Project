@@ -40,10 +40,13 @@ public class EventService implements GenericService<Event> {
         return repository.findOne(id);
     }
 
-
     @Override
     public Iterable<Event> findAll() {
         return repository.findAll();
+    }
+
+    public Iterable<Event> findAllAfter(Date date) {
+        return repository.findByStartTimeAfter(date);
     }
 
     @Override

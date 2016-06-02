@@ -63,7 +63,7 @@
         }
     }
 
-    app.controller("EventsController", function ($http, $scope) {
+    app.controller("EventsController", function ($http, $scope, $filter) {
 
         var showpin = function (element, index) {
             // return function (scope, element, attrs) {
@@ -99,7 +99,11 @@
             });
         };
 
-        $http.get('/events').success(function (result) {
+        $http.get('/events/startTime', {
+            params: {
+                date: new Date()
+            }
+        }).success(function (result) {
             $scope.events = result;
             var len = $scope.events.length;
 
@@ -121,7 +125,7 @@
             angular.forEach(events, function (element) {
                 if (element.title.toUpperCase().indexOf(query.toUpperCase()) >= 0) {
                     markers[element.id].setVisible(true);
-                    element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase();
+                    element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase().replace("_", " ");
                     filtered.push(element);
                 }
                 else {
