@@ -10,6 +10,7 @@
     var events = [];
     var markerListener;
     var draggableMarker;
+    var loggedUser;
 
     var initLng = 17.0215279802915;
     var initLat = 51.1080158802915;
@@ -24,9 +25,16 @@
 
     var gMap = new google.maps.Map(document.getElementById("map_container"), myOptions);
 
-    function checkCategory(event) {
+    function checkFiltering(event) {
+        var notFiltered;
+        if (event.creator.id === loggedUser.id) {
+            notFiltered = $('#show-mine').is(':checked');
+        } else {
+            notFiltered = $('#show-others').is(':checked');
+        }
         var category = event.category.charAt(0).toUpperCase() + event.category.slice(1).toLowerCase().replace("_", " ");
-        return ($('[data-on="' + category + '"]').is(':checked'));
+        notFiltered = notFiltered && ($('[data-on="' + category + '"]').is(':checked'));
+        return notFiltered;
     }
 
     function check_is_in_or_out(id, marker){
@@ -63,6 +71,20 @@
     app.controller("EventsController", function ($http, $scope) {
 
         $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            $('#show-mine').bootstrapToggle({
+                on: 'Created events',
+                off: 'Created events'
+            });
+            $('#show-mine').change(function() {
+                checkEvents();
+            });
+            $('#show-others').bootstrapToggle({
+                on: 'Show other events',
+                off: 'Show other events'
+            });
+            $('#show-others').change(function() {
+                checkEvents();
+            });
             angular.forEach($scope.categories, function (element) {
                 element = element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replace("_", " ");
                 $('[data-on="' + element + '"]').bootstrapToggle({
@@ -77,7 +99,7 @@
 
         function checkEvents() {
             angular.forEach($scope.events, function (element) {
-                    if (checkCategory(element)) {
+                    if (checkFiltering(element)) {
                         check_is_in_or_out(element.id, markers[element.id]);
                     }
                     else {
@@ -91,7 +113,7 @@
             for (var m in markers){
                 angular.forEach($scope.events, function (element) {
                    if (element.id == m) {
-                       if (checkCategory(element)) check_is_in_or_out(m, markers[m]);
+                       if (checkFiltering(element)) check_is_in_or_out(m, markers[m]);
                        else markers[m].setVisible(false);
                    }
                 });
@@ -146,12 +168,12 @@
             });
         };
 
+        $http.get('/users/security/logged').success(function (result) {
+            loggedUser = result;
+        });
+
         $http.get('/events/categories').success(function (result) {
             $scope.categories = result;
-
-            // angular.forEach($scope.categories, function (element) {
-            //     $('[data-on="' + element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replace("_", " ") + '"]').bootstrapToggle();
-            // });
         });
         
         $http.get('/events/startTime', {
@@ -294,7 +316,7 @@
             var query = options["search"] || "";
             var filtered=[];
             angular.forEach(events, function (element) {
-                if (element.title.toUpperCase().indexOf(query.toUpperCase()) >= 0 && checkCategory(element)) {
+                if (element.title.toUpperCase().indexOf(query.toUpperCase()) >= 0 && checkFiltering(element)) {
                     check_is_in_or_out(element.id, markers[element.id]);
                     element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase().replace("_", " ");
                     filtered.push(element);
