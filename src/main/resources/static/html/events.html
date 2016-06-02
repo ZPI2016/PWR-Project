@@ -51,9 +51,51 @@
                         <div class="panel-body">
                             <p>Min participants: {{event.minParticipants}}</p>
                             <p>Max participants: {{event.maxParticipants}}</p>
-                            <button class="btn btn-info pull-right">Edit</button>
-                            <button class="btn btn-info pull-right">Delete Event</button>
-                        </div></div>
+                            <p>Lat: {{event.place.geoLatitude}}</p>
+                            <p>Long: {{event.place.geoLongitude}}</p>
+                            <button class="btn btn-info pull-right" ng-click="eventsCtrl.editEvent(event)">Edit</button>
+                            <button class="btn btn-info pull-right" ng-click="eventsCtrl.deleteEvent(event)">Delete Event</button>
+                        </div>
+                        <div class="panel-body" ng-show="editing">
+                            <form name="updateEvent" ng-submit="eventsCtrl.onClick(event.id, updateEvent.event)">
+                                <div class="form-group">
+
+                                </div>
+                                Title:<br>
+                                <input type="text" name="title" class="form-control"
+                                       ng-init="updateEvent.event.title=event.title" ng-model="updateEvent.event.title"><br>
+
+                                <div class="form-group">
+                                    Category:<br>
+                                    <input type="category" ng-init="updateEvent.event.category=event.category" name="category" ng-model="updateEvent.event.category"><br>
+                                </div>
+                                <div class="form-group">
+                                    Start time:<br>
+                                    <input type="date" ng-init="updateEvent.event.startTime=event.startTime" name="startTime" class="form-control"
+                                           ng-model="updateEvent.event.startTime"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    Min participants:<br>
+                                    <input type="input" name="minParticipants" ng-init="updateEvent.event.minParticipants=event.minParticipants" ng-model="updateEvent.event.minParticipants"><br>
+                                </div>
+                                <div class="form-group">
+                                    Max participants:<br>
+                                    <input type="input" name="maxParticipants" ng-init="updateEvent.event.maxParticipants=event.maxParticipants" ng-model="updateEvent.event.maxParticipants"><br>
+                                </div>
+                                <!--<div class="form-group">-->
+
+                                    <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
+                                           ng-model="updateEvent.event.place.geoLongitude"><br>
+                                    <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
+                                           ng-model="updateEvent.event.place.geoLatitude"><br>
+                                <!--</div>-->
+
+                                <input type="submit" value="Submit" class="btn">
+                                <button ng-click="eventsCtrl.cancelEditing(event)" class="btn">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
             </div>
