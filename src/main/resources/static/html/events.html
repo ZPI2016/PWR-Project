@@ -33,7 +33,9 @@
     <br><br>
     <div class="row">
         <div ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
-
+            <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-toggle="toggle"
+                   data-on="{{c}}" data-off="{{c}}" ng-click="eventsCtrl.checkEvents()"
+                   on-finish-render="ngRepeatFinished"><br/><br/>
             <div id="{{event.id}}" ng-repeat="event in events | eventsFilter: { search:query} ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
