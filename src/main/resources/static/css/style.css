@@ -17,5 +17,9 @@ body {
 .nav{
     padding-bottom: 1em;
 }
+div#map_container {
+    width: 50%;
+    height: 350px;
+}
 
 

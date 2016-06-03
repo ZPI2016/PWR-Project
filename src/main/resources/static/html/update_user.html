@@ -9,8 +9,10 @@
     <script src="../js/angular-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="../js/map_loader.js"></script>
     <script type="text/javascript" src="../js/update_user.js"></script>
+    <link href="../css/style.css" rel="stylesheet">
 </head>
-<body ng-cloak class="ng-cloak" onload="loadMap()">
+<body ng-cloak ng-app="myApp" onload="loadMap()">
+<!--<body ng-cloak class="ng-cloak" onload="loadMap()">-->
 <h1>
     Hi my dear!
 </h1>
@@ -18,57 +20,54 @@
     Update user data
 </h4>
 
-<div class="container" ng-controller="UserUpdateController as formCtrl">
-    <form name="indexForm" ng-submit="formCtrl.onClick(indexForm.user)" role="form">
-        <div class="form-group">
+<div id="form-holder" ng-controller="UserUpdateController as formCtrl" class="container">
+    <form name="updateUserForm" ng-submit="formCtrl.onClick(updateUserForm.user)" role="form">
+        <div class="row">
 
-        </div>
-        Username:<br>
-        <input type="text" id="username" name="username" class="form-control" value={{ formCtrl.userData.username }}
-               ng-model="indexForm.user.username"><br>
+            <div class="col-md-4 form-group">
+                Username:<br>
+                <input type="text" id="username" name="username" class="form-control" value={{
+                       formCtrl.userData.username }}
+                       ng-model="updateUserForm.user.username"><br>
+                Password:<br>
+                <input type="password" id="password" name="password"
+                       ng-init="updateUserForm.user.password=formCtrl.userData.password"
+                       ng-model="updateUserForm.user.password" required><br>
 
-        <div class="form-group">
-            Password:<br>
-            <input type="password" id="password" name="password"
-                   ng-init="indexForm.user.password=formCtrl.userData.password" ng-model="indexForm.user.password"><br>
-        </div>
-        <div class="form-group">
-            Email:<br>
-            <input type="email" id="email" name="email" class="form-control" ng-model="indexForm.user.email"><br>
-        </div>
-        <div class="form-group">
-            DOB:<br>
-            <input type="date" id="dob" name="dob" class="form-control" ng-model="indexForm.user.dob"><br>
-        </div>
-        <div class="form-group">
-            First name:<br>
-            <input type="input" id="firstName" name="firstName" class="form-control"
-                   ng-model="indexForm.user.firstName"><br>
-        </div>
-        <div class="form-group">
-            Last name:<br>
-            <input type="input" id="lastName" name="lastName" class="form-control"
-                   ng-model="indexForm.user.lastName"><br>
-        </div>
-        <div class="form-group">
-            Radius:<br>
-            <input type="input" id="radius" name="radius" class="form-control" ng-model="indexForm.user.radius"><br>
-        </div>
 
-        <div class="form-group">
-            <div id="map_container"></div>
-            Choose your home location:<br>
+                Email:<br>
+                <input type="email" id="email" name="email" class="form-control"
+                       ng-model="updateUserForm.user.email"><br>
+
+
+                DOB:<br>
+                <input type="date" id="dob" name="dob" class="form-control" ng-model="updateUserForm.user.dob"><br>
+                First name:<br>
+                <input type="input" id="firstName" name="firstName" class="form-control"
+                       ng-model="updateUserForm.user.firstName"><br>
+
+                Last name:<br>
+                <input type="input" id="lastName" name="lastName" class="form-control"
+                       ng-model="updateUserForm.user.lastName"><br>
+                Radius:<br>
+                <input type="input" id="radius" name="radius" class="form-control"
+                       ng-model="updateUserForm.user.radius"><br>
+
+
+                <input type="submit" value="Submit" class="btn">
+                <input type="submit" value="Submit" class="btn">
+            </div>
+
+            <div class="col-md-10 form-group" id="map_container" style="width: 700px;
+    height: 500px;">
+                 Choose your home location:<br>
             <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
-                   ng-model="indexForm.user.address.geoLongitude"><br>
+                   ng-model="updateUserForm.user.address.geoLongitude"><br>
             <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
-                   ng-model="indexForm.user.address.geoLatitude"><br>
+                   ng-model="updateUserForm.user.address.geoLatitude"><br>
+            </div>
         </div>
-
-        <input type="submit" value="Submit" class="btn">
     </form>
-
 </div>
-
-
 </body>
 </html>

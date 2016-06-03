@@ -1,23 +1,21 @@
 package com.zpi2016.user.domain;
 
-import java.util.*;
-import com.zpi2016.rating.domain.EventRating;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 import com.zpi2016.core.common.domain.GenericEntity;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.location.domain.Location;
 import com.zpi2016.rating.domain.EventRating;
 import com.zpi2016.rating.domain.UserRating;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 /**
  * Created by filip on 26.02.2016.
@@ -41,15 +39,15 @@ public class User extends GenericEntity implements UserDetails {
     private final Set<Event> createdEvents = new HashSet<Event>(0);
 
     @JsonIgnore
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<UserRating> ratings = new HashSet<UserRating>(0);
 
     @JsonIgnore
-	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<UserRating> givenUserRatings = new HashSet<UserRating>(0);
 
     @JsonIgnore
-	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private final Set<EventRating> givenEventRatings = new HashSet<EventRating>(0);
 
     @JsonIgnore
@@ -71,7 +69,7 @@ public class User extends GenericEntity implements UserDetails {
     private Location address;
 
     @NotNull
-	private Float radius = 10.0f;
+    private Float radius = 10.0f;
 
     @JsonIgnore
     @NotNull
@@ -94,15 +92,14 @@ public class User extends GenericEntity implements UserDetails {
     }
 
     public void updateWithPropertiesFrom(User other) {
-        if (other.username != null && !this.username.equals(other.username))    this.username = other.username;
-        if (other.password != null && !this.password.equals(other.password))    this.password = other.password;
-        if (other.email != null && !this.email.equals(other.email))             this.email = other.email;
-        if (other.firstName != null && !this.firstName.equals(other.firstName)) this.firstName = other.firstName;
-        if (this.firstName.isEmpty())                                           this.firstName = null;
-        if (other.lastName != null && !this.lastName.equals(other.lastName))    this.lastName = other.lastName;
-        if (this.lastName.isEmpty())                                            this.lastName = null;
-        if (other.dob != null  && !this.dob.equals(other.dob))                  this.dob = other.dob;
-        if (other.radius != null && !this.radius.equals(other.radius))          this.radius = other.radius;
+        //todo: warunki są źle podefiniowane.
+        if (!Strings.isNullOrEmpty(other.username)) this.username = other.username;
+        if (!Strings.isNullOrEmpty(other.password)) this.password = other.password;
+        if (!Strings.isNullOrEmpty(other.email)) this.email = other.email;
+        this.firstName = (other.firstName != null ? other.firstName : null);
+        this.lastName = (other.lastName != null ? other.lastName : null);
+        if (other.dob != null && !this.dob.equals(other.dob)) this.dob = other.dob;
+        if (other.radius != null && !this.radius.equals(other.radius)) this.radius = other.radius;
         if (other.address != null) this.address.updateWithPropertiesFrom(other.address);
     }
 
@@ -193,14 +190,14 @@ public class User extends GenericEntity implements UserDetails {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-	
-	public Float getRadius() {
-		return radius;
-	}
-	
-	public void setRadius(Float radius) {
-		this.radius = radius;
-	}
+
+    public Float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Float radius) {
+        this.radius = radius;
+    }
 
     public SimpleGrantedAuthority getRole() {
         return role;
