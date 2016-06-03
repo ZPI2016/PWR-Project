@@ -20,6 +20,11 @@ public class HomeController {
         return "/html/events.html";
     }
 
+    @RequestMapping("/main/add-event")
+    public String event(){
+        return "/html/event.html";
+    }
+
     @RequestMapping("/user")
     public String showMockedUser() {
         return "/html/user.html";
