@@ -18,4 +18,22 @@ body {
     padding-bottom: 1em;
 }
 
+#map_container {
+    width: 50%;
+    height: 350px;
+}
+
+#form_map_container {
+    width: 440px;
+    height: 500px;
+}
+
+#register_map_container {
+    width: 60%;
+    height: 480px;
+    margin-left: 5%;
+    border: thick solid #0F0F54;
+}
+
+
 

@@ -42,6 +42,8 @@
     };
 
     var gMap = new google.maps.Map(document.getElementById("map_container"), myOptions);
+    var formMap;
+    
 
     google.maps.event.addListener(gMap, 'bounds_changed', function() {
         for (var m in markers){
@@ -171,42 +173,11 @@
             });
         };
 
-        eventsCtrl.editEvent = function (event) {
-            console.log("click: " + event.id);
-            $scope.editing = true;
-            console.log("click: " + $scope.editing);
-            // $rootScope.EventToUpdate = null;
-            $scope.EventToUpdate = event.id;
-            // $window.location.href ="/html/update_event.html";
-            var marker = markers[event.id];
-            marker.setDraggable(true);
-            draggableMarker = marker;
-            markerListener = google.maps.event.addListener(marker, 'dragend', function(a) {
-                console.log(this.getPosition().lat());
-                console.log(this.getPosition().lng());
-                document.getElementById("geoLongitude").value = this.getPosition().lng();
-                document.getElementById("geoLatitude").value = this.getPosition().lat();
-                endLng = this.getPosition().lng();
-                endLat= this.getPosition().lat();
-
-            });
-
-        };
-
-        eventsCtrl.cancelEditing=function (event) {
-            $scope.editing = false;
-            draggableMarker.setDraggable(false);
-            var latlng = new google.maps.LatLng(event.place.geoLatitude, event.place.geoLongitude);
-            draggableMarker.setPosition(latlng);
-            google.maps.event.removeListener(markerListener);
-
-        };
-
         eventsCtrl.onClick = function (eventId, event) {
 
             console.log("click: "+eventId);
             event.id = eventId;
-            event.category = event.category.toUpperCase().replace(" ", "_");
+            event.category = $('#category').val().toUpperCase().replace(" ", "_");
             var place = {
                 geoLongitude: endLng,
                 geoLatitude: endLat
@@ -218,7 +189,17 @@
                 // $scope.events;
                 console.log("SUCCESS");
                 $scope.ServerResponse = data;
-                eventsCtrl.cancelEditing(event);
+                data.startTime = new Date(data.startTime);
+                var len = $scope.events.length;
+                for (var i = 0; i < len; i++)
+                {
+                    if ($scope.events[i].id === data.id) {
+                        $scope.events[i] = data;
+                        var latlng = new google.maps.LatLng(data.place.geoLatitude, data.place.geoLongitude);
+                        markers[data.id].setPosition(latlng);
+                    }
+                }
+                $('#editModal').modal('hide');
             })
                 .error(function (data, status, header, config) {
                     console.log("Error during updating event data.");
@@ -226,7 +207,53 @@
 
 
         };
+
+        eventsCtrl.updateMap=function (event) {
+
+            $('#title').val(event.title);
+            $('#category').val(event.category);
+            $('#startTime').val(event.startTime.toISOString().slice(0, 19));
+            $('#minParticipants').val(event.minParticipants);
+            $('#maxParticipants').val(event.maxParticipants);
+            $('#geoLongitude').val(event.place.geoLongitude);
+            $('#geoLatitude').val(event.place.geoLatitude);
+
+            formMap = new google.maps.Map(document.getElementById("form_map_container"), myOptions);
+            console.log("setting map");
+
+            var latlng = new google.maps.LatLng(event.place.geoLatitude, event.place.geoLongitude);
+
+            var marker = new google.maps.Marker({
+                position: latlng,
+                map: formMap,
+                title: event.title,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            });
+            marker.setDraggable(true);
+            draggableMarker = marker;
+            markerListener = google.maps.event.addListener(marker, 'dragend', function(a) {
+                console.log(this.getPosition().lat());
+                console.log(this.getPosition().lng());
+                document.getElementById("geoLongitude").value = this.getPosition().lng();
+                document.getElementById("geoLatitude").value = this.getPosition().lat();
+                endLng = this.getPosition().lng();
+                endLat= this.getPosition().lat();
+
+            });
+            $('#editModal').on('shown.bs.modal', function () {
+                var currCenter = formMap.getCenter();
+                google.maps.event.trigger(formMap, 'resize');
+                formMap.setCenter(currCenter);
+            });
+
+
+        };
+
+
     });
+
+
+
 
     app.controller('PopupCont', ['$scope', '$uiModal', function ($scope, $uibModalInstance) {
         $scope.cancel = function () {
