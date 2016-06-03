@@ -3,22 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>ZPI EVENTS PAGE</title>
-    <style type="text/css">
-        div#map_container {
-            width: 50%;
-            height: 350px;
-        }
-        div#form_map_container {
-            width: 440px;
-            height: 500px;
-        }
-    </style>
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <!--<script type="text/javascript" src="../js/map_loader.js"></script>-->
     <link
             href="../css/angular-bootstrap.css"
             rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet">
     <script src="../js/angular-bootstrap.js" type="text/javascript"></script>
 
     <style type="text/css">
@@ -64,14 +55,14 @@
                             <button class="btn btn-info pull-right" ng-show="eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
 
                             <button type="button" class="btn btn-info " data-toggle="modal"
-                                    data-target="#deleteModal">Delete
+                                    data-target="#deleteModal{{event.id}}">Delete
                             </button>
                             <button type="button" class="btn btn-info " data-toggle="modal"
-                                    data-target="#editModal" ng-click="eventsCtrl.updateMap(event)" >Edit
+                                    data-target="#editModal{{event.id}}" ng-click="eventsCtrl.updateMap(event)" >Edit
                             </button>
                         </div>
                     </div>
-                    <div class="modal" id="editModal" role="dialog">
+                    <div class="modal" id="editModal{{event.id}}" role="dialog">
                         <div class="modal-dialog modal-lg">
 
                             <!-- Modal content-->
@@ -91,45 +82,52 @@
                                                     </div>
                                                     Title:<br>
                                                     <input type="text" name="title" id="title"  class="form-control"
+                                                           ng-init="updateEvent.event.title=event.title"
                                                            ng-model="updateEvent.event.title"><br>
 
                                                     <div class="form-group">
                                                         Category:<br>
                                                         <input type="category" class="form-control"
                                                                name="category" id="category"
+                                                               ng-init="updateEvent.event.category=event.category"
                                                                ng-model="updateEvent.event.category"><br>
                                                     </div>
                                                     <div class="form-group">
                                                         Start time:<br>
                                                         <input type="datetime-local"
                                                                name="startTime" id="startTime" class="form-control"
+                                                               ng-init="updateEvent.event.startTime=event.startTime"
                                                                ng-model="updateEvent.event.startTime"><br>
                                                     </div>
 
                                                     <div class="form-group">
                                                         Min participants:<br>
                                                         <input type="input" class="form-control" name="minParticipants" id="minParticipants"
+                                                               ng-init="updateEvent.event.minParticipants=event.minParticipants"
                                                                ng-model="updateEvent.event.minParticipants"><br>
                                                     </div>
                                                     <div class="form-group">
                                                         Max participants:<br>
                                                         <input type="input" class="form-control" name="maxParticipants" id="maxParticipants"
+                                                               ng-init="updateEvent.event.maxParticipants=event.maxParticipants"
                                                                ng-model="updateEvent.event.maxParticipants"><br>
                                                     </div>
                                                     <!--<div class="form-group">-->
 
                                                     <input type="hidden" name="geoLongitude" id="geoLongitude"
                                                            class="form-control"
+                                                           ng-init="updateEvent.event.place.geoLongitude=event.place.geoLongitude"
                                                            ng-model="updateEvent.event.place.geoLongitude"><br>
                                                     <input type="hidden" name="geoLatitude" id="geoLatitude"
                                                            class="form-control"
+                                                           ng-init="updateEvent.event.place.geoLatitude=event.place.geoLatitude"
                                                            ng-model="updateEvent.event.place.geoLatitude"><br>
                                                     <!--</div>-->
 
                                                     <input type="submit" value="Submit" class="btn">
                                                 </form>
                                             </div>
-                                            <div id="form_map_container" class="col-md-8"></div>
+                                            <div id="form_map_container{{event.id}}" class="col-md-8"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +138,7 @@
                         </div>
                     </div>
 
-                    <div id="deleteModal" class="modal" role="dialog">
+                    <div id="deleteModal{{event.id}}" class="modal" role="dialog">
                         <div class="modal-dialog">
 
                             <!-- Modal content-->

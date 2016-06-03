@@ -27,9 +27,9 @@ div#map_container {
     height: 350px;
 }
 
-#form_map_container {
-    width: 440px;
-    height: 500px;
+[id^="form_map_container"] {
+    width: 40%;
+    height: 550px;
 }
 
 #register_map_container {

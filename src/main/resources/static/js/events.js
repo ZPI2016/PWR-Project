@@ -157,6 +157,7 @@
 
         var eventsCtrl = this;
         $scope.editing = false;
+
         var showpin = function (element, index) {
             // return function (scope, element, attrs) {
             var latlng = new google.maps.LatLng(element.place.geoLatitude, element.place.geoLongitude);
@@ -186,7 +187,7 @@
                     }
                     i += 1;
                 });
-                infowindow.open(gMap, this);
+                infos[element.id].open(gMap, this);
                 if (!$('#collapse' + index).is( ':visible' ))
                     $('#collapse' + index).collapse('show');
             });
@@ -304,12 +305,6 @@
 
         eventsCtrl.onClick = function (eventId, event) {
 
-            /*event.title = $('#title').val();
-            event.startTime = $('#startTime').val();
-            event.minParticipants = $('#minParticipants').val();
-            event.maxParticipants = $('#maxParticipants').val();
-            event.place.geoLongitude = $('#geoLongitude').val();
-            event.place.geoLatitude = $('#geoLatitude').val();*/
             console.log("click: "+eventId);
             event.id = eventId;
             event.category = $('#category').val().toUpperCase().replace(" ", "_");
@@ -332,9 +327,10 @@
                         $scope.events[i] = data;
                         var latlng = new google.maps.LatLng(data.place.geoLatitude, data.place.geoLongitude);
                         markers[data.id].setPosition(latlng);
+                        infos[data.id].content = '<b>' + data.title + '</b><br />' + data.startTime;
                     }
                 }
-                $('#editModal').modal('hide');
+                $('#editModal' + eventId).modal('hide');
             })
                 .error(function (data, status, header, config) {
                     console.log("Error during updating event data.");
@@ -345,19 +341,20 @@
 
         eventsCtrl.updateMap=function (event) {
 
-            $('#title').val(event.title);
-            $('#category').val(event.category);
-            $('#startTime').val(event.startTime.toISOString().slice(0, 19));
-            $('#minParticipants').val(event.minParticipants);
-            $('#maxParticipants').val(event.maxParticipants);
-            $('#geoLongitude').val(event.place.geoLongitude);
-            $('#geoLatitude').val(event.place.geoLatitude);
+            // $('#title').val(event.title);
+            // $('#category').val(event.category);
+            // $('#startTime').val(event.startTime.toISOString().slice(0, 19));
+            // $('#minParticipants').val(event.minParticipants);
+            // $('#maxParticipants').val(event.maxParticipants);
+            // $('#geoLongitude').val(event.place.geoLongitude);
+            // $('#geoLatitude').val(event.place.geoLatitude);
 
-            formMap = new google.maps.Map(document.getElementById("form_map_container"), myOptions);
+            formMap = new google.maps.Map(document.getElementById("form_map_container" + event.id), myOptions);
             console.log("setting map");
 
             var latlng = new google.maps.LatLng(event.place.geoLatitude, event.place.geoLongitude);
-
+            endLat = event.place.geoLatitude;
+            endLng = event.place.geoLongitude;
             var marker = new google.maps.Marker({
                 position: latlng,
                 map: formMap,
@@ -369,13 +366,13 @@
             markerListener = google.maps.event.addListener(marker, 'dragend', function(a) {
                 console.log(this.getPosition().lat());
                 console.log(this.getPosition().lng());
-                document.getElementById("geoLongitude").value = this.getPosition().lng();
-                document.getElementById("geoLatitude").value = this.getPosition().lat();
+                // $("#editModal" + event.id + " #geoLongitude").val(this.getPosition().lng());
+                // $("#editModal" + event.id + " #geoLatitude").val(this.getPosition().lat());
                 endLng = this.getPosition().lng();
                 endLat= this.getPosition().lat();
 
             });
-            $('#editModal').on('shown.bs.modal', function () {
+            $('#editModal' + event.id).on('shown.bs.modal', function () {
                 var currCenter = formMap.getCenter();
                 google.maps.event.trigger(formMap, 'resize');
                 formMap.setCenter(currCenter);
