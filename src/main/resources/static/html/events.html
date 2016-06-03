@@ -54,6 +54,8 @@
                             <p>Max participants: {{event.maxParticipants}}</p>
                             <p>Lat: {{event.place.geoLatitude}}</p>
                             <p>Long: {{event.place.geoLongitude}}</p>
+                            <button class="btn btn-info pull-right" ng-show="!eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.unregisterParticipant(event)">Leave</button>
+                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
                             <button class="btn btn-info pull-right" ng-click="eventsCtrl.editEvent(event)">Edit</button>
                             <button class="btn btn-info pull-right" ng-click="eventsCtrl.deleteEvent(event)">Delete Event</button>
                         </div>

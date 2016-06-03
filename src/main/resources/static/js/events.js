@@ -230,6 +230,44 @@
             }
         };
 
+        eventsCtrl.doesNotTakePartIn = function (event) {
+            var len = event.participants.length;
+            var doesNotTakePartIn = true;
+            for (var i = 0; i < len; i++) {
+                if(event.participants[i].id === loggedUser.id) {
+                    doesNotTakePartIn = false;
+                    break;
+                }
+            }
+            return doesNotTakePartIn;
+        };
+
+        eventsCtrl.unregisterParticipant = function (event) {
+            $http.delete('/events/' + event.id + '/participants/' + loggedUser.id).success(function (result) {
+                var len = $scope.events.length;
+                result.startTime = new Date(result.startTime);
+                for (var i = 0; i < len; i++) {
+                    if ($scope.events[i].id === result.id) {
+                        $scope.events[i] = result;
+                        break;
+                    }
+                }
+            });
+        };
+
+        eventsCtrl.registerParticipant = function (event) {
+            $http.post('/events/' + event.id + '/participants', loggedUser).success(function (result) {
+                var len = $scope.events.length;
+                result.startTime = new Date(result.startTime);
+                for (var i = 0; i < len; i++) {
+                    if ($scope.events[i].id === result.id) {
+                        $scope.events[i] = result;
+                        break;
+                    }
+                }
+            });
+        };
+
         eventsCtrl.deleteEvent = function (event) {
             var mapping = '/events/' + event.id.toString();
             $http.delete(mapping).success(function () {

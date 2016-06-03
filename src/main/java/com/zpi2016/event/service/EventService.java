@@ -6,11 +6,14 @@ import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.repository.EventRepository;
 import com.zpi2016.event.support.EventNotFoundException;
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
+import com.zpi2016.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -21,8 +24,8 @@ import java.util.UUID;
 @Service
 public class EventService implements GenericService<Event> {
 
-
-    //todo: think about sending notifications for people of interest that event details has changed
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EventRepository repository;
@@ -77,6 +80,33 @@ public class EventService implements GenericService<Event> {
         Location currentPlace = findOne(id).getPlace();
         currentPlace.updateWithPropertiesFrom(newPlace);
         return currentPlace;
+    }
+
+    @Transactional
+    public Event unregisterParticipant(UUID id, UUID userId) {
+        checkIfEventExists(id);
+        Event event = findOne(id);
+        final Set<User> participants = event.getParticipants();
+        User toDelete = null;
+        for (User user : participants) {
+            if (user.getId().equals(userId)) {
+                toDelete = user;
+                break;
+            }
+        }
+        participants.remove(toDelete);
+        return event;
+    }
+
+    @Transactional
+    public Event registerParticipant(User user, UUID id) {
+        checkIfEventExists(id);
+        Event event = findOne(id);
+        User fromDB = userRepository.findOne(user.getId());
+        final Set<User> participants = event.getParticipants();
+        if (!participants.contains(fromDB))
+            participants.add(fromDB);
+        return event;
     }
 
     @Transactional
