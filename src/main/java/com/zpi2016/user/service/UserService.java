@@ -102,6 +102,7 @@ public class UserService implements GenericService<User>, UserDetailsService {
         user.setPassword(encodedPassword);
     }
 
+
     private void checkIfAuthorized(final UUID id) {
         if (!isAuthorized(id))
             throw new InsufficientAuthenticationException(String.format("You have no rights to manage user with id: %s", id));

@@ -4,16 +4,65 @@
 
 (function () {
     var app = angular.module("myApp", []);
+
     var markers = {};
     var infos = {};
     var events = [];
     var markerListener;
     var draggableMarker;
+    var loggedUser;
+    var query;
 
     var initLng = 17.0215279802915;
     var initLat = 51.1080158802915;
     var endLng = initLng;
     var endLat = initLat;
+
+    var myOptions = {
+        zoom: 10,
+        center: new google.maps.LatLng(51.1080158802915, 17.0215279802915),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var gMap = new google.maps.Map(document.getElementById("map_container"), myOptions);
+
+    function checkFiltering(event) {
+        var notFiltered = event.title.toUpperCase().indexOf(query.toUpperCase()) >= 0;
+
+        var len = event.participants.length;
+        var doesNotTakePartIn = true;
+        for (var i = 0; i < len; i++) {
+            if(event.participants[i].id === loggedUser.id) {
+                doesNotTakePartIn = false;
+                break;
+            }
+        }
+
+        if (!$('#takes-part').is(':checked') && !doesNotTakePartIn) {
+            return false;
+        }
+
+        if (event.creator.id === loggedUser.id) {
+            notFiltered = notFiltered && $('#show-mine').is(':checked');
+        } else {
+            notFiltered = notFiltered && $('#show-others').is(':checked');
+        }
+
+        var category = event.category.charAt(0).toUpperCase() + event.category.slice(1).toLowerCase().replace("_", " ");
+        notFiltered = notFiltered && ($('[data-on="' + category + '"]').is(':checked'));
+        return notFiltered;
+    }
+
+    function check_is_in_or_out(id, marker){
+        if( gMap.getBounds() != undefined && gMap.getBounds().contains(marker.getPosition())){
+            marker.setVisible(true);
+            $('#' + id).show();
+        }
+        else{
+            marker.setVisible(false);
+            $('#' + id).hide();
+        }
+    }
 
     app.config(['$httpProvider', function($httpProvider) {
         //fancy random token
@@ -35,45 +84,77 @@
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
     }]);
 
-    var myOptions = {
-        zoom: 10,
-        center: new google.maps.LatLng(51.1080158802915, 17.0215279802915),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+    app.controller("EventsController", function ($http, $scope) {
 
-    var gMap = new google.maps.Map(document.getElementById("map_container"), myOptions);
     var formMap;
-    
-
-    google.maps.event.addListener(gMap, 'bounds_changed', function() {
-        for (var m in markers){
-            check_is_in_or_out(m, markers[m]);
-        }
-    });
-
-    google.maps.event.addListener(gMap, 'click', function() {
-        var i = 0;
-        angular.forEach(infos, function (element) {
-            element.close();
-            if ($('#collapse' + i).is( ":visible" )) {
-                $('#collapse' + i).collapse('hide');
-            }
-            i += 1;
+        $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            $('#show-mine').bootstrapToggle({
+                on: 'Created events',
+                off: 'Created events'
+            });
+            $('#show-mine').change(function() {
+                $scope.checkEvents();
+            });
+            $('#show-others').bootstrapToggle({
+                on: 'Show other events',
+                off: 'Show other events'
+            });
+            $('#show-others').change(function() {
+                $scope.checkEvents();
+            });
+            $('#takes-part').bootstrapToggle({
+                on: 'Upcoming events',
+                off: 'Upcoming events'
+            });
+            $('#takes-part').change(function() {
+                $scope.checkEvents();
+            });
+            angular.forEach($scope.categories, function (element) {
+                element = element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replace("_", " ");
+                $('[data-on="' + element + '"]').bootstrapToggle({
+                    on: element,
+                    off: element
+                })
+                $('[data-on="' + element + '"]').change(function() {
+                    $scope.checkEvents();
+                })
+            });
         });
-    });
 
-    function check_is_in_or_out(id, marker){
-        if( gMap.getBounds().contains(marker.getPosition())){
-            marker.setVisible(true);
-            $('#' + id).show();
-        }
-        else{
-            marker.setVisible(false);
-            $('#' + id).hide();
-        }
-    }
+        $scope.checkEvents = function () {
+            angular.forEach($scope.events, function (element) {
+                    if (checkFiltering(element)) {
+                        check_is_in_or_out(element.id, markers[element.id]);
+                    }
+                    else {
+                        markers[element.id].setVisible(false);
+                        $('#' + element.id).hide();
+                    }
+            });
+        };
+        
+        google.maps.event.addListener(gMap, 'bounds_changed', function() {
+            for (var m in markers){
+                angular.forEach($scope.events, function (element) {
+                   if (element.id == m) {
+                       if (checkFiltering(element)) check_is_in_or_out(m, markers[m]);
+                       else markers[m].setVisible(false);
+                   }
+                });
+            }
+        });
 
-    app.controller("EventsController", function ($http, $scope, $filter) {
+        google.maps.event.addListener(gMap, 'click', function() {
+            var i = 0;
+            angular.forEach(infos, function (element) {
+                element.close();
+                if ($('#collapse' + i).is( ":visible" )) {
+                    $('#collapse' + i).collapse('hide');
+                }
+                i += 1;
+            });
+        });
+
         var eventsCtrl = this;
         $scope.editing = false;
         var showpin = function (element, index) {
@@ -111,6 +192,14 @@
             });
         };
 
+        $http.get('/users/security/logged').success(function (result) {
+            loggedUser = result;
+        });
+
+        $http.get('/events/categories').success(function (result) {
+            $scope.categories = result;
+        });
+        
         $http.get('/events/startTime', {
             params: {
                 date: new Date()
@@ -164,17 +253,63 @@
             }
         };
 
+        eventsCtrl.doesNotTakePartIn = function (event) {
+            var len = event.participants.length;
+            var doesNotTakePartIn = true;
+            for (var i = 0; i < len; i++) {
+                if(event.participants[i].id === loggedUser.id) {
+                    doesNotTakePartIn = false;
+                    break;
+                }
+            }
+            return doesNotTakePartIn;
+        };
+
+        eventsCtrl.unregisterParticipant = function (event) {
+            $http.delete('/events/' + event.id + '/participants/' + loggedUser.id).success(function (result) {
+                var len = $scope.events.length;
+                result.startTime = new Date(result.startTime);
+                for (var i = 0; i < len; i++) {
+                    if ($scope.events[i].id === result.id) {
+                        $scope.events[i] = result;
+                        break;
+                    }
+                }
+            });
+        };
+
+        eventsCtrl.registerParticipant = function (event) {
+            $http.post('/events/' + event.id + '/participants', loggedUser).success(function (result) {
+                var len = $scope.events.length;
+                result.startTime = new Date(result.startTime);
+                for (var i = 0; i < len; i++) {
+                    if ($scope.events[i].id === result.id) {
+                        $scope.events[i] = result;
+                        break;
+                    }
+                }
+            });
+        };
+
         eventsCtrl.deleteEvent = function (event) {
             var mapping = '/events/' + event.id.toString();
             $http.delete(mapping).success(function () {
                 console.log("event deleted");
                 $scope.events.splice($scope.events.indexOf(event), 1);
                 events.splice($scope.events.indexOf(event), 1);
+                markers[event.id].setMap(null);
+                delete markers[event.id];
             });
         };
 
         eventsCtrl.onClick = function (eventId, event) {
 
+            /*event.title = $('#title').val();
+            event.startTime = $('#startTime').val();
+            event.minParticipants = $('#minParticipants').val();
+            event.maxParticipants = $('#maxParticipants').val();
+            event.place.geoLongitude = $('#geoLongitude').val();
+            event.place.geoLatitude = $('#geoLatitude').val();*/
             console.log("click: "+eventId);
             event.id = eventId;
             event.category = $('#category').val().toUpperCase().replace(" ", "_");
@@ -261,22 +396,40 @@
         };
     }]);
 
-    app.filter('eventsFilter', function () {
-        return function (events, options) {
-            var query = options["search"] || "";
+    app.filter('categoryFormatter', function () {
+        return function (categories) {
             var filtered=[];
-            angular.forEach(events, function (element) {
-                if (element.title.toUpperCase().indexOf(query.toUpperCase()) >= 0) {
-                    markers[element.id].setVisible(true);
-                    element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase().replace("_", " ");
-                    filtered.push(element);
-                }
-                else {
-                    markers[element.id].setVisible(false);
-                }
+            angular.forEach(categories, function (element) {
+                filtered.push(element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replace("_", " "));
             });
             return filtered;
         };
+    });
+
+    app.filter('eventsFilter', function () {
+        return function (events, options) {
+            query = options["search"] || "";
+            var filtered=[];
+            angular.forEach(events, function(element) {
+                element.category = element.category.charAt(0).toUpperCase() + element.category.slice(1).toLowerCase().replace("_", " ");
+                filtered.push(element);
+            });
+            $('#eventsCtrlId').scope().checkEvents();
+            return filtered;
+        };
+    });
+
+    app.directive('onFinishRender', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('ngRepeatFinished');
+                    });
+                }
+            }
+        }
     });
 
 })();

@@ -13,10 +13,6 @@ angular.module('index', ['ngRoute'])
             templateUrl: 'register.html',
             controller: 'registerController',
             controllerAs: 'registerCtrl'
-        }).when('/events', {
-            templateUrl: '/html/events.html'
-            // controller : 'registerController',
-            // controllerAs: 'registerCtrl'
         }).otherwise('/home')
     })
 
@@ -111,7 +107,7 @@ angular.module('index', ['ngRoute'])
         };
     })
 
-    .controller('loginController', function ($scope, $http, $location, $routeParams, AlertService) {
+    .controller('loginController', function ($scope, $http, $location, $routeParams, $window, AlertService) {
         $scope.justRegistered = AlertService.isJustRegistered();
 
         this.onClick = function (user) {
@@ -127,9 +123,10 @@ angular.module('index', ['ngRoute'])
                 },
                 data: user
             }).then(function success(response) {
-                $location.path("/events");
+//                $location.path("/events");
                 console.log(response.headers());
                 console.log("SUCCESS");
+                $window.location.href = '/main';
             }, function failure(response) {
                 console.log(response.headers());
                 console.log("FAILURE");
