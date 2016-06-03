@@ -15,6 +15,11 @@ public class HomeController {
         return "/index.html";
     }
 
+    @RequestMapping("/main")
+    public String events(){
+        return "/html/events.html";
+    }
+
     @RequestMapping("/user")
     public String showMockedUser() {
         return "/html/user.html";
