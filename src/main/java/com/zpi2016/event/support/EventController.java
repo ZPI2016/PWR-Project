@@ -4,6 +4,7 @@ import com.zpi2016.event.domain.Category;
 import com.zpi2016.event.domain.Event;
 import com.zpi2016.event.service.EventService;
 import com.zpi2016.location.domain.Location;
+import com.zpi2016.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -55,9 +56,19 @@ public class EventController {
         return eventService.update(event, id);
     }
 
+    @RequestMapping(value = "/{id}/participants", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Event registerParticipant(@RequestBody final User user, @PathVariable UUID id) {
+        return eventService.registerParticipant(user, id);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteEventWithId(@PathVariable UUID id) {
         eventService.delete(id);
+    }
+
+    @RequestMapping(value = "/{id}/participants/{userId}", method = RequestMethod.DELETE)
+    public Event unregisterParticipant(@PathVariable UUID id, @PathVariable UUID userId) {
+        return eventService.unregisterParticipant(id, userId);
     }
 
     @RequestMapping(value = "/{id}/place", method = RequestMethod.GET)

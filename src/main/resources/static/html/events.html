@@ -28,12 +28,17 @@
     <div class="row">
         <h2>Available events</h2>
         Search: <input type="text" id="selectorId" ng-model="query" value="">
+        <button onclick="window.location.href = '/main/add-event';">Add event</button>
         <br>
     </div>
     <br><br>
     <div class="row">
-        <div ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
-
+        <div id="eventsCtrlId" ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
+            <input type="checkbox" checked id="show-mine"><br/>
+            <input type="checkbox" checked id="show-others"><br/>
+            <input type="checkbox" checked id="takes-part"><br/>
+            <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-on="{{c}}"
+                   on-finish-render="ngRepeatFinished"><br/><br/>
             <div id="{{event.id}}" ng-repeat="event in events | eventsFilter: { search:query} ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -51,6 +56,8 @@
                             <p>Max participants: {{event.maxParticipants}}</p>
                             <p>Lat: {{event.place.geoLatitude}}</p>
                             <p>Long: {{event.place.geoLongitude}}</p>
+                            <button class="btn btn-info pull-right" ng-show="!eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.unregisterParticipant(event)">Leave</button>
+                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
                             <button class="btn btn-info pull-right" ng-click="eventsCtrl.editEvent(event)">Edit</button>
                             <button class="btn btn-info pull-right" ng-click="eventsCtrl.deleteEvent(event)">Delete Event</button>
                         </div>

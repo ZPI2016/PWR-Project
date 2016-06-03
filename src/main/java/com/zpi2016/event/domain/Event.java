@@ -38,7 +38,6 @@ public class Event extends GenericEntity {
     @NotNull
     private User creator;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable
     private final Set<User> participants = new HashSet<User>(0);

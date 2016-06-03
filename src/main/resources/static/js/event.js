@@ -55,7 +55,7 @@ function loadMap() {
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
     }]);
 
-    app.controller('CreateEventController', function ($http, $scope) {
+    app.controller('CreateEventController', function ($http, $scope, $window) {
         var myapp = this;
 
         $http.get('/events/categories').success(function (result) {
@@ -80,7 +80,9 @@ function loadMap() {
                 console.log(event.title);
                 console.log(event.usr);
 
-                $http.post('/events', myapp.data);
+                $http.post('/events', myapp.data).success(function (result) {
+                    $window.location.href = '/main';
+                });
             });
         };
     });
