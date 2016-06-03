@@ -296,6 +296,8 @@
                 console.log("event deleted");
                 $scope.events.splice($scope.events.indexOf(event), 1);
                 events.splice($scope.events.indexOf(event), 1);
+                markers[event.id].setMap(null);
+                delete markers[event.id];
             });
         };
 
