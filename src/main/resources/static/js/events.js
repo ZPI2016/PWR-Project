@@ -28,11 +28,26 @@
 
     function checkFiltering(event) {
         var notFiltered = event.title.toUpperCase().indexOf(query.toUpperCase()) >= 0;
+
+        var len = event.participants.length;
+        var doesNotTakePartIn = true;
+        for (var i = 0; i < len; i++) {
+            if(event.participants[i].id === loggedUser.id) {
+                doesNotTakePartIn = false;
+                break;
+            }
+        }
+
+        if (!$('#takes-part').is(':checked') && !doesNotTakePartIn) {
+            return false;
+        }
+
         if (event.creator.id === loggedUser.id) {
             notFiltered = notFiltered && $('#show-mine').is(':checked');
         } else {
             notFiltered = notFiltered && $('#show-others').is(':checked');
         }
+
         var category = event.category.charAt(0).toUpperCase() + event.category.slice(1).toLowerCase().replace("_", " ");
         notFiltered = notFiltered && ($('[data-on="' + category + '"]').is(':checked'));
         return notFiltered;
@@ -84,6 +99,13 @@
                 off: 'Show other events'
             });
             $('#show-others').change(function() {
+                $scope.checkEvents();
+            });
+            $('#takes-part').bootstrapToggle({
+                on: 'Upcoming events',
+                off: 'Upcoming events'
+            });
+            $('#takes-part').change(function() {
                 $scope.checkEvents();
             });
             angular.forEach($scope.categories, function (element) {

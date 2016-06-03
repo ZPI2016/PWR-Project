@@ -35,6 +35,7 @@
         <div id="eventsCtrlId" ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
             <input type="checkbox" checked id="show-mine"><br/>
             <input type="checkbox" checked id="show-others"><br/>
+            <input type="checkbox" checked id="takes-part"><br/>
             <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-on="{{c}}"
                    on-finish-render="ngRepeatFinished"><br/><br/>
             <div id="{{event.id}}" ng-repeat="event in events | eventsFilter: { search:query} ">
