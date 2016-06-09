@@ -39,7 +39,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <div data-toggle="collapse" data-target="#collapse{{$index}}">
-                                <p>{{event.title}}</p>
+                                <p>{{event.title}}&nbsp;&nbsp;<span ng-show="event.participants.length >= event.maxParticipants" style="color: #ff0000; font-weight: 700;">full!</span></p>
                                 <p>{{event.category}}</p>
                                 <p>{{event.startTime}}</p>
                             </div>
@@ -47,17 +47,18 @@
                     </div>
                     <div id="collapse{{$index}}" class="panel-collapse collapse">
                         <div class="panel-body">
+                            <p>Participants: {{event.participants.length}}</p>
                             <p>Min participants: {{event.minParticipants}}</p>
                             <p>Max participants: {{event.maxParticipants}}</p>
-                            <p>Lat: {{event.place.geoLatitude}}</p>
-                            <p>Long: {{event.place.geoLongitude}}</p>
-                            <button class="btn btn-info pull-right" ng-show="!eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.unregisterParticipant(event)">Leave</button>
-                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.doesNotTakePartIn(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
+                            <!--<p>Lat: {{event.place.geoLatitude}}</p>-->
+                            <!--<p>Long: {{event.place.geoLongitude}}</p>-->
+                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.shouldShowLeave(event)" ng-click="eventsCtrl.unregisterParticipant(event)">Leave</button>
+                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.shouldShowRegister(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
 
-                            <button type="button" class="btn btn-info " data-toggle="modal"
+                            <button type="button" ng-show="eventsCtrl.shouldShowCRUDButtons(event)" class="btn btn-info " data-toggle="modal"
                                     data-target="#deleteModal{{event.id}}">Delete
                             </button>
-                            <button type="button" class="btn btn-info " data-toggle="modal"
+                            <button type="button" ng-show="eventsCtrl.shouldShowCRUDButtons(event)" class="btn btn-info " data-toggle="modal"
                                     data-target="#editModal{{event.id}}" ng-click="eventsCtrl.updateMap(event)" >Edit
                             </button>
                         </div>

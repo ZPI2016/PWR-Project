@@ -195,6 +195,7 @@
 
         $http.get('/users/security/logged').success(function (result) {
             loggedUser = result;
+            $scope.loggedUser = result;
         });
 
         $http.get('/events/categories').success(function (result) {
@@ -253,6 +254,18 @@
                 }
             }
         };
+
+        eventsCtrl.shouldShowRegister = function (event) {
+            return loggedUser && eventsCtrl.doesNotTakePartIn(event) && event.participants.length < event.maxParticipants;
+        }
+
+        eventsCtrl.shouldShowLeave = function (event) {
+            return loggedUser && !eventsCtrl.doesNotTakePartIn(event);
+        }
+
+        eventsCtrl.shouldShowCRUDButtons = function (event) {
+            return loggedUser.id === event.creator.id;
+        }
 
         eventsCtrl.doesNotTakePartIn = function (event) {
             var len = event.participants.length;
