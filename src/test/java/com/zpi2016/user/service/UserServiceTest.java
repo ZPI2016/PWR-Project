@@ -71,7 +71,6 @@ public class UserServiceTest
         Assert.assertEquals("Returned user should come from the repository", savedUser, returnedUser);
     }
 
-    @Ignore
     @Test
     public void whenFoundSampleUser_shouldDeleteUser()
     {
@@ -80,7 +79,6 @@ public class UserServiceTest
         verify( userRepository ).delete( SAMPLE_USER_ID );
     }
 
-    @Ignore
     @Test
     public void whenUpdateNotExistingUser_shouldThrowException()
     {
@@ -90,7 +88,6 @@ public class UserServiceTest
         verify( userRepository ).delete( SAMPLE_USER_ID );
     }
 
-    @Ignore
     @Test
     public void whenUpdateExistingUser_shouldUpdateUserData()
     {
@@ -103,7 +100,6 @@ public class UserServiceTest
         Assert.assertEquals( existing, returned );
     }
 
-    @Ignore
     @Test( expected = UserNotFoundException.class )
     public void whenNotFoundSampleUser_shouldThrowException()
     {
