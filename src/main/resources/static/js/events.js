@@ -196,6 +196,22 @@
         $http.get('/users/security/logged').success(function (result) {
             loggedUser = result;
             $scope.loggedUser = result;
+            var latlng = new google.maps.LatLng(result.address.geoLatitude, result.address.geoLongitude);
+            var userMarker = new google.maps.Marker({
+                position: latlng,
+                map: gMap,
+                title: "Your location",
+                icon: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png'
+            });
+            userMarker.setVisible(true);
+
+            var window =  new google.maps.InfoWindow({
+                content: '<b>Your location</b>'
+            });
+
+            google.maps.event.addListener(userMarker, 'click', function() {
+               window.open(gMap, this);
+            });
         });
 
         $http.get('/events/categories').success(function (result) {
