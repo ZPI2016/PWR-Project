@@ -10,13 +10,12 @@
             src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="/js/angular-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="../js/event.js"></script>
+    <link href="../css/style.css" rel="stylesheet">
     <style type="text/css">
         [ng\:cloak], [ng-cloak], .ng-cloak {
             display: none !important;
         }
-        .container-form{
-            width: 60%;
-        }
+
         div#map_container {
             width: 50%;
             height: 350px;
@@ -25,33 +24,58 @@
 </head>
 <body ng-cloak ng-app="myApp" onload="loadMap()">
 
-<div ng-controller="CreateEventController as eventCtrl" class="container">
-    <h2>New Event</h2>
-    <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
-
-        <div class="row">
-            <div class="col-md-4 form-group">
-                Title:<br>
-                <input type="text" name="title" class="form-control" ng-model="createEventForm.event.title"><br>
-                Category:<br>
-                <select name="category" class="form-control" ng-model="createEventForm.event.category">
-                    <option ng-repeat="c in categories | categoryFormatter" value="{{c}}">{{c}}</option>
-                </select><br>
-                Start Time:<br>
-                <input type="datetime-local" name="startTime" class="form-control" ng-model="createEventForm.event.startTime"><br>
-                Minimum number of participants:<br>
-                <input type="text" name="minParticipants" class="form-control" ng-model="createEventForm.event.minParticipants"><br>
-                Maximum number of participants:<br>
-                <input type="text" name="maxParticipants" class="form-control" ng-model="createEventForm.event.maxParticipants"><br>
-                <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control" ng-init="createEventForm.event.address.geoLongitude ='17.02'"
-                       ng-model="createEventForm.event.place.geoLongitude"><br>
-                <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control" ng-init="createEventForm.event.address.geoLatitude ='51.10'"
-                       ng-model="createEventForm.event.place.geoLatitude"><br>
-                <input type="submit" value="Submit" class="btn">
+<div class="container">
+    <div class="row" id="navbar-div">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="dropdown navbar-right">
+                <button class="btn btn-default dropdown-toggle nav-toggle" type="button" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/html/update_user.html">Profile</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
             </div>
-            <div class="col-md-8" id="map_container"></div>
+            <button class="btn-collapse btn navbar-right" onclick="window.location.href = '/main/add-event';">Add
+                event
+            </button>
+        </nav>
+    </div>
+    <div id="form-holder">
+    <div class="row" ng-controller="CreateEventController as eventCtrl" >
+        <h2>New Event</h2>
+        <form name="createEventForm" ng-submit="eventCtrl.onClick(createEventForm.event)">
+
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    Title:<br>
+                    <input type="text" name="title" class="form-control" ng-model="createEventForm.event.title"><br>
+                    Category:<br>
+                    <select name="category" class="form-control" ng-model="createEventForm.event.category">
+                        <option ng-repeat="c in categories | categoryFormatter" value="{{c}}">{{c}}</option>
+                    </select><br>
+                    Start Time:<br>
+                    <input type="datetime-local" name="startTime" class="form-control"
+                           ng-model="createEventForm.event.startTime"><br>
+                    Minimum number of participants:<br>
+                    <input type="text" name="minParticipants" class="form-control"
+                           ng-model="createEventForm.event.minParticipants"><br>
+                    Maximum number of participants:<br>
+                    <input type="text" name="maxParticipants" class="form-control"
+                           ng-model="createEventForm.event.maxParticipants"><br>
+                    <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
+                           ng-init="createEventForm.event.address.geoLongitude ='17.02'"
+                           ng-model="createEventForm.event.place.geoLongitude"><br>
+                    <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
+                           ng-init="createEventForm.event.address.geoLatitude ='51.10'"
+                           ng-model="createEventForm.event.place.geoLatitude"><br>
+                    <input type="submit" value="Submit" class="btn">
+                </div>
+                <div class="col-md-8" id="map_container"></div>
+            </div>
+        </form>
+    </div>
         </div>
-    </form>
 </div>
 
 </body>

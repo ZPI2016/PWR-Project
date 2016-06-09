@@ -34,7 +34,6 @@
             }
         );
         var myApp = this;
-
         myApp.submitData = function (user) {
             myApp.data = JSON.stringify({
                 id: oldUserData.id,

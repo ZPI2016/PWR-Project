@@ -11,6 +11,7 @@
     var markerListener;
     var draggableMarker;
     var loggedUser;
+    var logged = false;
     var query;
 
     var initLng = 17.0215279802915;
@@ -86,6 +87,7 @@
 
     app.controller("EventsController", function ($http, $scope) {
 
+    var formMap;
         $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
             $('#show-mine').bootstrapToggle({
                 on: 'Created events',
@@ -156,6 +158,7 @@
 
         var eventsCtrl = this;
         $scope.editing = false;
+
         var showpin = function (element, index) {
             // return function (scope, element, attrs) {
             var latlng = new google.maps.LatLng(element.place.geoLatitude, element.place.geoLongitude);
@@ -185,14 +188,16 @@
                     }
                     i += 1;
                 });
-                infowindow.open(gMap, this);
+                infos[element.id].open(gMap, this);
                 if (!$('#collapse' + index).is( ':visible' ))
                     $('#collapse' + index).collapse('show');
             });
         };
 
         $http.get('/users/security/logged').success(function (result) {
+            $scope.logged = true;
             loggedUser = result;
+            $scope.loggedUser = result;
         });
 
         $http.get('/events/categories').success(function (result) {
@@ -252,6 +257,18 @@
             }
         };
 
+        eventsCtrl.shouldShowRegister = function (event) {
+            return loggedUser && eventsCtrl.doesNotTakePartIn(event) && event.participants.length < event.maxParticipants;
+        }
+
+        eventsCtrl.shouldShowLeave = function (event) {
+            return loggedUser && !eventsCtrl.doesNotTakePartIn(event);
+        }
+
+        eventsCtrl.shouldShowCRUDButtons = function (event) {
+            return loggedUser.id === event.creator.id;
+        }
+
         eventsCtrl.doesNotTakePartIn = function (event) {
             var len = event.participants.length;
             var doesNotTakePartIn = true;
@@ -301,42 +318,11 @@
             });
         };
 
-        eventsCtrl.editEvent = function (event) {
-            console.log("click: " + event.id);
-            $scope.editing = true;
-            console.log("click: " + $scope.editing);
-            // $rootScope.EventToUpdate = null;
-            $scope.EventToUpdate = event.id;
-            // $window.location.href ="/html/update_event.html";
-            var marker = markers[event.id];
-            marker.setDraggable(true);
-            draggableMarker = marker;
-            markerListener = google.maps.event.addListener(marker, 'dragend', function(a) {
-                console.log(this.getPosition().lat());
-                console.log(this.getPosition().lng());
-                document.getElementById("geoLongitude").value = this.getPosition().lng();
-                document.getElementById("geoLatitude").value = this.getPosition().lat();
-                endLng = this.getPosition().lng();
-                endLat= this.getPosition().lat();
-
-            });
-
-        };
-
-        eventsCtrl.cancelEditing=function (event) {
-            $scope.editing = false;
-            draggableMarker.setDraggable(false);
-            var latlng = new google.maps.LatLng(event.place.geoLatitude, event.place.geoLongitude);
-            draggableMarker.setPosition(latlng);
-            google.maps.event.removeListener(markerListener);
-
-        };
-
         eventsCtrl.onClick = function (eventId, event) {
 
             console.log("click: "+eventId);
             event.id = eventId;
-            event.category = event.category.toUpperCase().replace(" ", "_");
+            event.category = $('#category').val().toUpperCase().replace(" ", "_");
             var place = {
                 geoLongitude: endLng,
                 geoLatitude: endLat
@@ -348,7 +334,18 @@
                 // $scope.events;
                 console.log("SUCCESS");
                 $scope.ServerResponse = data;
-                eventsCtrl.cancelEditing(event);
+                data.startTime = new Date(data.startTime);
+                var len = $scope.events.length;
+                for (var i = 0; i < len; i++)
+                {
+                    if ($scope.events[i].id === data.id) {
+                        $scope.events[i] = data;
+                        var latlng = new google.maps.LatLng(data.place.geoLatitude, data.place.geoLongitude);
+                        markers[data.id].setPosition(latlng);
+                        infos[data.id].content = '<b>' + data.title + '</b><br />' + data.startTime;
+                    }
+                }
+                $('#editModal' + eventId).modal('hide');
             })
                 .error(function (data, status, header, config) {
                     console.log("Error during updating event data.");
@@ -356,7 +353,54 @@
 
 
         };
+
+        eventsCtrl.updateMap=function (event) {
+
+            // $('#title').val(event.title);
+            // $('#category').val(event.category);
+            // $('#startTime').val(event.startTime.toISOString().slice(0, 19));
+            // $('#minParticipants').val(event.minParticipants);
+            // $('#maxParticipants').val(event.maxParticipants);
+            // $('#geoLongitude').val(event.place.geoLongitude);
+            // $('#geoLatitude').val(event.place.geoLatitude);
+
+            formMap = new google.maps.Map(document.getElementById("form_map_container" + event.id), myOptions);
+            console.log("setting map");
+
+            var latlng = new google.maps.LatLng(event.place.geoLatitude, event.place.geoLongitude);
+            endLat = event.place.geoLatitude;
+            endLng = event.place.geoLongitude;
+            var marker = new google.maps.Marker({
+                position: latlng,
+                map: formMap,
+                title: event.title,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            });
+            marker.setDraggable(true);
+            draggableMarker = marker;
+            markerListener = google.maps.event.addListener(marker, 'dragend', function(a) {
+                console.log(this.getPosition().lat());
+                console.log(this.getPosition().lng());
+                // $("#editModal" + event.id + " #geoLongitude").val(this.getPosition().lng());
+                // $("#editModal" + event.id + " #geoLatitude").val(this.getPosition().lat());
+                endLng = this.getPosition().lng();
+                endLat= this.getPosition().lat();
+
+            });
+            $('#editModal' + event.id).on('shown.bs.modal', function () {
+                var currCenter = formMap.getCenter();
+                google.maps.event.trigger(formMap, 'resize');
+                formMap.setCenter(currCenter);
+            });
+
+
+        };
+
+
     });
+
+
+
 
     app.controller('PopupCont', ['$scope', '$uiModal', function ($scope, $uibModalInstance) {
         $scope.cancel = function () {
