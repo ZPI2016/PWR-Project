@@ -19,7 +19,8 @@ function loadMap() {
         position: latlng,
         map: map,
         draggable: true,
-        title:"Wroclove"
+        title:"Wroclove",
+        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
     });
     google.maps.event.addListener(marker, 'dragend', function(a) {
         initLng = this.getPosition().lng();

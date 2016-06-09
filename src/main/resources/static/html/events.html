@@ -20,28 +20,56 @@
 </head>
 <body ng-app="myApp" ng-cloak class="ng-cloak">
 <div class="container">
+    <div class="row" id="navbar-div">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="dropdown navbar-right">
+                <button class="btn btn-default dropdown-toggle nav-toggle" type="button" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/html/update_user.html">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+            <button class="btn-collapse btn navbar-right" onclick="window.location.href = '/main/add-event';">Add event</button>
+        </nav>
+    </div>
+    <div id="form-holder">
     <div class="row">
-        <h2>Available events</h2>
-        Search: <input type="text" id="selectorId" ng-model="query" value="">
-        <button onclick="window.location.href = '/main/add-event';">Add event</button>
-        <br>
+            <h2>Available events</h2>
+            Search: <input type="text" id="selectorId" ng-model="query" value="">
+            <br>
     </div>
     <br><br>
     <div class="row">
-        <div id="eventsCtrlId" ng-controller="EventsController as eventsCtrl" class="panel-group col-md-4">
-            <input type="checkbox" checked id="show-mine"><br/>
-            <input type="checkbox" checked id="show-others"><br/>
-            <input type="checkbox" checked id="takes-part"><br/>
-            <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-on="{{c}}"
-                   on-finish-render="ngRepeatFinished"><br/><br/>
+        <div id="eventsCtrlId" ng-controller="EventsController as eventsCtrl" class="panel-group col-md-5">
+            <div class="container">
+                <div class="row">
+                    <input type="checkbox" checked id="show-mine" class="show-events-toggle">
+                    <input type="checkbox" checked id="show-others">
+                    <input type="checkbox" checked id="takes-part">
+                </div>
+                <div class="row">
+                    <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-on="{{c}}"
+                                        on-finish-render="ngRepeatFinished"><br/><br/>
+                </div>
+            </div>
             <div id="{{event.id}}" ng-repeat="event in events | eventsFilter: { search:query} ">
-                <div class="panel panel-default">
+                <div class="event-collapse panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <div data-toggle="collapse" data-target="#collapse{{$index}}">
-                                <p>{{event.title}}&nbsp;&nbsp;<span ng-show="event.participants.length >= event.maxParticipants" style="color: #ff0000; font-weight: 700;">full!</span></p>
-                                <p>{{event.category}}</p>
-                                <p>{{event.startTime}}</p>
+                                <div class="container">
+                                    <div class="row" >
+                                        <div class="col-md-2"><p class="font-category">{{event.category}}</p></div>
+                                        <div class="col-md-1 panel-title-col"><p class="font-time" ng-bind="{{event.startTime}} | date:'dd.MM.yyyy'"></p></div>
+                                    </div>
+                                    <div class="row panel-title-col">
+                                        <div class="col-md-2"><p class="font-title">{{event.title}}</p>
+                                            <p>&nbsp;&nbsp;<span ng-show="event.participants.length >= event.maxParticipants" style="color: #ff0000; font-weight: 700;">full!</span></p></div>
+                                        <div class="col-md-1 panel-title-col"><p class="font-time" ng-bind="{{event.startTime}} | date:'hh:mm'"></p></div>
+                                    </div>
+                                </div>
                             </div>
                         </h4>
                     </div>
@@ -50,123 +78,122 @@
                             <p>Participants: {{event.participants.length}}</p>
                             <p>Min participants: {{event.minParticipants}}</p>
                             <p>Max participants: {{event.maxParticipants}}</p>
-                            <!--<p>Lat: {{event.place.geoLatitude}}</p>-->
-                            <!--<p>Long: {{event.place.geoLongitude}}</p>-->
-                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.shouldShowLeave(event)" ng-click="eventsCtrl.unregisterParticipant(event)">Leave</button>
-                            <button class="btn btn-info pull-right" ng-show="eventsCtrl.shouldShowRegister(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
+                            <button class="btn-collapse btn pull-right" ng-show="eventsCtrl.shouldShowLeave(event)" ng-click="eventsCtrl.unregisterParticipant(event)">Leave</button>
+                            <button class="btn-collapse btn pull-right" ng-show="eventsCtrl.shouldShowRegister(event)" ng-click="eventsCtrl.registerParticipant(event)">Register</button>
 
-                            <button type="button" ng-show="eventsCtrl.shouldShowCRUDButtons(event)" class="btn btn-info " data-toggle="modal"
+                            <button type="button" ng-show="eventsCtrl.shouldShowCRUDButtons(event)" class="btn-collapse btn" data-toggle="modal"
                                     data-target="#deleteModal{{event.id}}">Delete
                             </button>
-                            <button type="button" ng-show="eventsCtrl.shouldShowCRUDButtons(event)" class="btn btn-info " data-toggle="modal"
+                            <button type="button" ng-show="eventsCtrl.shouldShowCRUDButtons(event)" class="btn-collapse btn" data-toggle="modal"
                                     data-target="#editModal{{event.id}}" ng-click="eventsCtrl.updateMap(event)" >Edit
                             </button>
                         </div>
                     </div>
-                    <div class="modal" id="editModal{{event.id}}" role="dialog">
+                    <div class="modal font-form-modal" id="editModal{{event.id}}" role="dialog">
                         <div class="modal-dialog modal-lg">
 
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Edit event</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <form name="updateEvent"
-                                                      ng-submit="eventsCtrl.onClick(event.id, updateEvent.event)">
-                                                    <div class="form-group">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Edit event</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <form name="updateEvent"
+                                                          ng-submit="eventsCtrl.onClick(event.id, updateEvent.event)">
+                                                        <div class="form-group">
 
-                                                    </div>
-                                                    Title:<br>
-                                                    <input type="text" name="title" id="title"  class="form-control"
-                                                           ng-init="updateEvent.event.title=event.title"
-                                                           ng-model="updateEvent.event.title"><br>
+                                                        </div>
+                                                        Title:<br>
+                                                        <input type="text" name="title" id="title"  class="form-control"
+                                                               ng-init="updateEvent.event.title=event.title"
+                                                               ng-model="updateEvent.event.title"><br>
 
-                                                    <div class="form-group">
-                                                        Category:<br>
-                                                        <input type="category" class="form-control"
-                                                               name="category" id="category"
-                                                               ng-init="updateEvent.event.category=event.category"
-                                                               ng-model="updateEvent.event.category"><br>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        Start time:<br>
-                                                        <input type="datetime-local"
-                                                               name="startTime" id="startTime" class="form-control"
-                                                               ng-init="updateEvent.event.startTime=event.startTime"
-                                                               ng-model="updateEvent.event.startTime"><br>
-                                                    </div>
+                                                        <div class="form-group">
+                                                            Category:<br>
+                                                            <input type="category" class="form-control"
+                                                                   name="category" id="category"
+                                                                   ng-init="updateEvent.event.category=event.category"
+                                                                   ng-model="updateEvent.event.category"><br>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            Start time:<br>
+                                                            <input type="datetime-local"
+                                                                   name="startTime" id="startTime" class="form-control"
+                                                                   ng-init="updateEvent.event.startTime=event.startTime"
+                                                                   ng-model="updateEvent.event.startTime"><br>
+                                                        </div>
 
-                                                    <div class="form-group">
-                                                        Min participants:<br>
-                                                        <input type="input" class="form-control" name="minParticipants" id="minParticipants"
-                                                               ng-init="updateEvent.event.minParticipants=event.minParticipants"
-                                                               ng-model="updateEvent.event.minParticipants"><br>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        Max participants:<br>
-                                                        <input type="input" class="form-control" name="maxParticipants" id="maxParticipants"
-                                                               ng-init="updateEvent.event.maxParticipants=event.maxParticipants"
-                                                               ng-model="updateEvent.event.maxParticipants"><br>
-                                                    </div>
-                                                    <!--<div class="form-group">-->
+                                                        <div class="form-group">
+                                                            Min participants:<br>
+                                                            <input type="input" class="form-control" name="minParticipants" id="minParticipants"
+                                                                   ng-init="updateEvent.event.minParticipants=event.minParticipants"
+                                                                   ng-model="updateEvent.event.minParticipants"><br>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            Max participants:<br>
+                                                            <input type="input" class="form-control" name="maxParticipants" id="maxParticipants"
+                                                                   ng-init="updateEvent.event.maxParticipants=event.maxParticipants"
+                                                                   ng-model="updateEvent.event.maxParticipants"><br>
+                                                        </div>
+                                                        <!--<div class="form-group">-->
 
-                                                    <input type="hidden" name="geoLongitude" id="geoLongitude"
-                                                           class="form-control"
-                                                           ng-init="updateEvent.event.place.geoLongitude=event.place.geoLongitude"
-                                                           ng-model="updateEvent.event.place.geoLongitude"><br>
-                                                    <input type="hidden" name="geoLatitude" id="geoLatitude"
-                                                           class="form-control"
-                                                           ng-init="updateEvent.event.place.geoLatitude=event.place.geoLatitude"
-                                                           ng-model="updateEvent.event.place.geoLatitude"><br>
-                                                    <!--</div>-->
+                                                        <input type="hidden" name="geoLongitude" id="geoLongitude"
+                                                               class="form-control"
+                                                               ng-init="updateEvent.event.place.geoLongitude=event.place.geoLongitude"
+                                                               ng-model="updateEvent.event.place.geoLongitude"><br>
+                                                        <input type="hidden" name="geoLatitude" id="geoLatitude"
+                                                               class="form-control"
+                                                               ng-init="updateEvent.event.place.geoLatitude=event.place.geoLatitude"
+                                                               ng-model="updateEvent.event.place.geoLatitude"><br>
+                                                        <!--</div>-->
 
-                                                    <input type="submit" value="Submit" class="btn">
-                                                </form>
+                                                        <input type="submit" value="Submit" class="btn">
+                                                    </form>
+                                                </div>
+                                                <div id="form_map_container{{event.id}}" class="col-md-8 map-bordered"></div>
                                             </div>
-                                            <div id="form_map_container{{event.id}}" class="col-md-8"></div>
                                         </div>
                                     </div>
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                </div>
+
                             </div>
-
                         </div>
-                    </div>
 
-                    <div id="deleteModal{{event.id}}" class="modal" role="dialog">
-                        <div class="modal-dialog">
+                        <div id="deleteModal{{event.id}}" class="modal font-form-modal" role="dialog">
+                            <div class="modal-dialog">
 
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Delete event</h4>
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Delete event</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h2>{{event.title}}</h2>
+                                        <p>Are you sure you want to delete this event?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal"
+                                                ng-click="eventsCtrl.deleteEvent(event)">Delete Event
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                    <h2>{{event.title}}</h2>
-                                    <p>Are you sure you want to delete this event?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal"
-                                            ng-click="eventsCtrl.deleteEvent(event)">Delete Event
-                                    </button>
-                                </div>
+
                             </div>
-
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <div id="map_container" class="col-md-8"></div>
+            </div>
+            <div id="map_container" class="col-md-7 map-bordered font-form-modal"></div>
+
     </div>
 </div>
 

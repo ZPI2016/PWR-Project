@@ -53,7 +53,7 @@ public class EventRepositoryIT {
     private static final Date BEFORE_DEADLINE = new Date();
     private static final Location ADDRESS = new Location(50.0, 45.0);
     private static final Category CATEGORY = Category.DANCING;
-    private static final Category WRONG_CATEGORY = Category.SPORTS;
+    private static final Category WRONG_CATEGORY = Category.SPORT;
     private static final Integer MIN_PARTICIPANTS = new Integer(5);
     private static final Integer MAX_PARTICIPANTS = new Integer(7);
     private static final Float RADIUS = 23.0f;

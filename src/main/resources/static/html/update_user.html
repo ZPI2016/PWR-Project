@@ -12,7 +12,6 @@
     <link href="../css/style.css" rel="stylesheet">
 </head>
 <body ng-cloak ng-app="myApp" onload="loadMap()">
-<!--<body ng-cloak class="ng-cloak" onload="loadMap()">-->
 <h1>
     Hi my dear!
 </h1>
@@ -30,15 +29,12 @@
                        formCtrl.userData.username }}
                        ng-model="updateUserForm.user.username"><br>
                 Password:<br>
-                <input type="password" id="password" name="password"
+                <input type="password" id="password" name="password" class="form-control"
                        ng-init="updateUserForm.user.password=formCtrl.userData.password"
                        ng-model="updateUserForm.user.password" required><br>
-
-
                 Email:<br>
                 <input type="email" id="email" name="email" class="form-control"
                        ng-model="updateUserForm.user.email"><br>
-
 
                 DOB:<br>
                 <input type="date" id="dob" name="dob" class="form-control" ng-model="updateUserForm.user.dob"><br>
@@ -49,22 +45,16 @@
                 Last name:<br>
                 <input type="input" id="lastName" name="lastName" class="form-control"
                        ng-model="updateUserForm.user.lastName"><br>
-                Radius:<br>
-                <input type="input" id="radius" name="radius" class="form-control"
-                       ng-model="updateUserForm.user.radius"><br>
-
-
-                <input type="submit" value="Submit" class="btn">
-                <input type="submit" value="Submit" class="btn">
+                <button ng-click="formCtrl.submitData(updateUserForm.user)" class="btn">Submit</button>
+                <button onclick="window.location.href = '/main';" class="btn">Cancel</button>
             </div>
 
-            <div class="col-md-10 form-group" id="map_container" style="width: 700px;
-    height: 500px;">
-                 Choose your home location:<br>
-            <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
-                   ng-model="updateUserForm.user.address.geoLongitude"><br>
-            <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
-                   ng-model="updateUserForm.user.address.geoLatitude"><br>
+            <div class="col-md-10 form-group" id="map_container" class="map-bordered">
+                Choose your home location:<br>
+                <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
+                       ng-model="updateUserForm.user.address.geoLongitude"><br>
+                <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
+                       ng-model="updateUserForm.user.address.geoLatitude"><br>
             </div>
         </div>
     </form>

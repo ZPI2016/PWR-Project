@@ -11,6 +11,7 @@
     var markerListener;
     var draggableMarker;
     var loggedUser;
+    var logged = false;
     var query;
     var userWindow;
 
@@ -196,6 +197,7 @@
         };
 
         $http.get('/users/security/logged').success(function (result) {
+            $scope.logged = true;
             loggedUser = result;
             $scope.loggedUser = result;
             var latlng = new google.maps.LatLng(result.address.geoLatitude, result.address.geoLongitude);
