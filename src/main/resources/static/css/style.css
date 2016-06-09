@@ -74,3 +74,22 @@ div#map_container {
 
 }
 
+input[type="checkbox"].show-events-toggle  {
+    color: #11115f;
+}
+
+.font-category{
+    color: #11115f;
+    font-size: medium;
+}
+
+.font-time{
+    color: #008cb4;
+    font-size: medium;
+}
+
+.font-title{
+    color: #11115f;
+    font-size: medium;
+    font-weight: 600;
+}
