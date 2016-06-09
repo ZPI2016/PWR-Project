@@ -1,8 +1,8 @@
 /**
  * Created by Sandra on 2016-04-07.
  */
-endLng =0.0;
-endLat =0.0;
+endLng =17.00;
+endLat =51.00;
 function loadMap() {
     //here we put some outside logic to resolve user's home/event location coordinates
     var initLng = 17.0215279802915;

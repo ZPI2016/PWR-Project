@@ -29,32 +29,14 @@
     app.controller('UserUpdateController', function ($scope, $http) {
         var oldUserData;
         $http.get('/users/security/logged').success(function (result) {
-            initializeFormFields(result);
-            oldUserData = result;
-        });
-        var myapp = this;
-        this.onClick = function (user) {
-            $http.get('/users/security/logged').success(function (result) {
-                // initializeFormFields(result);
-                oldUserData = {
-                    id: result.id,
-                    email: result.email,
-                    geoLatitude: result.geoLatitude,
-                    geoLongitude: result.geoLongitude,
-                    password: result.password,
-                    firstName: result.firstName,
-                    lastName: result.lastName,
-                    dob: result.dob
-                };
-            })
-                .error(function (result) {
-                    console.log("Error during getting user data.");
-                });
-            if(!user.password){
-                console.log(oldUserData.password);
-                user.password = oldUserData.password;
+                initializeFormFields(result);
+                oldUserData = result;
             }
-            myapp.data = JSON.stringify({
+        );
+        var myApp = this;
+
+        myApp.submitData = function (user) {
+            myApp.data = JSON.stringify({
                 id: oldUserData.id,
                 username: user.username,
                 password: user.password,
@@ -68,7 +50,7 @@
                 lastName: user.lastName,
                 radius: user.radius
             });
-            $http.put('/users/' + oldUserData.id, myapp.data).success(function (data) {
+            $http.put('/users/' + oldUserData.id, myApp.data).success(function (data) {
                 console.log("SUCCESS");
                 $scope.ServerResponse = data;
 
@@ -76,25 +58,22 @@
                 .error(function (data) {
 
                     console.log("Error during updating user data.");
-                    //$scope.ServerResponse = htmlDecode("Data: " + data +
-                    //"\n\n\n\nstatus: " + status +
-                    //"\n\n\n\nheaders: " + header +
-                    //"\n\n\n\nconfig: " + config);
                 });
         };
 
 
     })
     function initializeFormFields(result) {
-        console.log(result.username);
+        console.log(result.id);
+        console.log(result.address.geoLatitude)
+        console.log(result.address.geoLongitude)
         document.getElementById("username").value = result.username;
         document.getElementById("email").value = result.email;
-        document.getElementById("geoLatitude").value = result.geoLatitude;
-        document.getElementById("geoLongitude").value = result.geoLongitude;
+        document.getElementById("geoLatitude").value = result.address.geoLatitude;
+        document.getElementById("geoLongitude").value = result.address.geoLongitude;
         document.getElementById("dob").value = result.dob;
         document.getElementById("firstName").value = result.firstName;
         document.getElementById("lastName").value = result.lastName;
-        document.getElementById("radius").value = result.radius;
     }
 }
 ());
