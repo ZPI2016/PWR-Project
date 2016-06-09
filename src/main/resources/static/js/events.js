@@ -91,22 +91,22 @@
     var formMap;
         $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
             $('#show-mine').bootstrapToggle({
-                on: 'Created events',
-                off: 'Created events'
+                on: 'Hide mine',
+                off: 'Show mine'
             });
             $('#show-mine').change(function() {
                 $scope.checkEvents();
             });
             $('#show-others').bootstrapToggle({
-                on: 'Show other events',
-                off: 'Show other events'
+                on: 'Hide not mine',
+                off: 'Show not mine'
             });
             $('#show-others').change(function() {
                 $scope.checkEvents();
             });
             $('#takes-part').bootstrapToggle({
-                on: 'Upcoming events',
-                off: 'Upcoming events'
+                on: 'Hide upcoming',
+                off: 'Show upcoming'
             });
             $('#takes-part').change(function() {
                 $scope.checkEvents();

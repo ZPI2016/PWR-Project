@@ -49,6 +49,7 @@
                     <input type="checkbox" checked id="show-others">
                     <input type="checkbox" checked id="takes-part">
                 </div>
+                <br />
                 <div class="row">
                     <input ng-repeat="c in categories | categoryFormatter" type="checkbox" checked data-on="{{c}}"
                                         on-finish-render="ngRepeatFinished"><br/><br/>
