@@ -1,6 +1,9 @@
 <div class="col-md-3">
     <div ng-show="justRegistered" class="alert alert-success" >
-    <strong>Successful registration!</strong><br> You can now log in using your credentials
+    <strong>Successful registration!</strong><br>You can now log in using your credentials
+    </div>
+    <div ng-show="loggingError" class="alert alert-danger" >
+        <strong>Login failed!</strong><br>Incorrect login and password combination
     </div>
     <form role="form" name="loginForm" ng-submit="loginCtrl.onClick(loginForm.user)">
         <div class="form-group">

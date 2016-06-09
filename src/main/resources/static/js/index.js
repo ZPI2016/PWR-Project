@@ -40,15 +40,20 @@ angular.module('index', ['ngRoute'])
 
     .service("AlertService", function () {
         var justRegistered = false;
-
+        var loggingError = false;
         return {
             isJustRegistered: function () {
                 return justRegistered;
             },
             setJustRegistered: function (val) {
                 justRegistered = val;
+            },
+            hasLoginFailed: function () {
+                return loggingError;
+            },
+            setLoggingError: function (val) {
+                loggingError = val;
             }
-
         };
     })
 
@@ -98,7 +103,8 @@ angular.module('index', ['ngRoute'])
             $http.post('/users', user)
                 .then(function success(response) {
                     $location.path("/home");
-                    AlertService.setJustRegistered(true);
+                    AlertService.setJustRegistered(true);;
+                    AlertService.setLoggingError(false);
                     $('#li-register').removeClass("active");
                     $('#li-login').addClass("active");
                 }, function failure(response) {
@@ -109,11 +115,14 @@ angular.module('index', ['ngRoute'])
 
     .controller('loginController', function ($scope, $http, $location, $routeParams, $window, AlertService) {
         $scope.justRegistered = AlertService.isJustRegistered();
+        $scope.loggingError = AlertService.hasLoginFailed();
 
         this.onClick = function (user) {
+            AlertService.setJustRegistered(false);
+            $scope.justRegistered = AlertService.isJustRegistered();
             $http({
                 method: 'POST',
-                url: '/',
+                url: '/login',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function (obj) {
                     var str = [];
@@ -123,13 +132,13 @@ angular.module('index', ['ngRoute'])
                 },
                 data: user
             }).then(function success(response) {
-//                $location.path("/events");
-                console.log(response.headers());
-                console.log("SUCCESS");
-                $window.location.href = '/main';
+                window.location.href ="/main";
+                AlertService.setLoggingError(false);
+                $scope.loggingError = AlertService.hasLoginFailed();
             }, function failure(response) {
-                console.log(response.headers());
-                console.log("FAILURE");
+                $location.path("/home");
+                AlertService.setLoggingError(true);
+                $scope.loggingError = AlertService.hasLoginFailed();
             });
         };
     })
