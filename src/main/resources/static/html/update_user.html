@@ -12,14 +12,9 @@
     <link href="../css/style.css" rel="stylesheet">
 </head>
 <body ng-cloak ng-app="myApp" onload="loadMap()">
-<h1>
-    Hi my dear!
-</h1>
-<h4>
-    Update user data
-</h4>
 
 <div id="form-holder" ng-controller="UserUpdateController as formCtrl" class="container">
+    <h1>Update user data</h1>
     <form name="updateUserForm" ng-submit="formCtrl.onClick(updateUserForm.user)" role="form">
         <div class="row">
 
@@ -49,7 +44,7 @@
                 <button onclick="window.location.href = '/main';" class="btn">Cancel</button>
             </div>
 
-            <div class="col-md-10 form-group" id="map_container" class="map-bordered">
+            <div class="col-md-10 form-group" id="map_container" class="usrmap-bordered">
                 Choose your home location:<br>
                 <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
                        ng-model="updateUserForm.user.address.geoLongitude"><br>

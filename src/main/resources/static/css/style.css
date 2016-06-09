@@ -69,6 +69,14 @@ div#map_container {
     position: fixed;
 }
 
+.usrmap-bordered-{
+    width: 500px;
+    height: 300px;
+    margin-left: 5%;
+    border: thick solid #0f0f54;
+    position: fixed;
+}
+
 .panel-title-col{
     margin-right: 0;
 
