@@ -7,7 +7,7 @@ body {
 }
 
 #form-holder{
-    margin: 2em 0 0 5em;
+    margin: 5em 0 0 5em;
     border-radius: 25px;
     padding: 2em;
     background-color: rgba(15, 15, 84, 0.7);
@@ -30,14 +30,47 @@ div#map_container {
 [id^="form_map_container"] {
     width: 40%;
     height: 550px;
+    margin-left: 5%;
 }
 
 #register_map_container {
     width: 60%;
     height: 480px;
     margin-left: 5%;
-    border: thick solid #0F0F54;
+    border: thick solid #0f0f54;
 }
 
+.navbar{
+    height: 2em;
+    background: #11115f;
+    border-bottom: thin solid rgba(255, 255, 255, 0.51);
+}
 
+.nav-toggle{
+    background: rgba(255, 255, 255, 0.27);
+    width: 4em;
+    margin-right: 15%!important;
+    margin-bottom: 0!important;
+}
+
+.btn-collapse{
+    background: rgba(255, 255, 255, 0.27);
+    color: white;
+    border: thin solid white;
+}
+
+.event-collapse{
+    background: #11115f;
+}
+
+.map-bordered{
+    margin-left: 5%;
+    border: thick solid #0f0f54;
+    position: fixed;
+}
+
+.panel-title-col{
+    margin-right: 0;
+
+}
 

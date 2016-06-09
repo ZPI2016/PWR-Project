@@ -11,6 +11,7 @@
     var markerListener;
     var draggableMarker;
     var loggedUser;
+    var logged = false;
     var query;
 
     var initLng = 17.0215279802915;
@@ -194,6 +195,7 @@
         };
 
         $http.get('/users/security/logged').success(function (result) {
+            $scope.logged = true;
             loggedUser = result;
             $scope.loggedUser = result;
         });
