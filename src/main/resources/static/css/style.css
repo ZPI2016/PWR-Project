@@ -28,7 +28,7 @@ div#map_container {
 }
 
 [id^="form_map_container"] {
-    width: 40%;
+    width: 30%;
     height: 550px;
     margin-left: 5%;
 }
@@ -92,4 +92,8 @@ input[type="checkbox"].show-events-toggle  {
     color: #11115f;
     font-size: medium;
     font-weight: 600;
+}
+
+.font-form-modal{
+    color: #11115f;
 }

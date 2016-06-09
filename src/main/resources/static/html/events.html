@@ -65,7 +65,8 @@
                                         <div class="col-md-1 panel-title-col"><p class="font-time" ng-bind="{{event.startTime}} | date:'dd.MM.yyyy'"></p></div>
                                     </div>
                                     <div class="row panel-title-col">
-                                        <div class="col-md-2"><p class="font-title">{{event.title}}</p></div>
+                                        <div class="col-md-2"><p class="font-title">{{event.title}}</p>
+                                            <p>&nbsp;&nbsp;<span ng-show="event.participants.length >= event.maxParticipants" style="color: #ff0000; font-weight: 700;">full!</span></p></div>
                                         <div class="col-md-1 panel-title-col"><p class="font-time" ng-bind="{{event.startTime}} | date:'hh:mm'"></p></div>
                                     </div>
                                 </div>
@@ -88,7 +89,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="modal" id="editModal{{event.id}}" role="dialog">
+                    <div class="modal font-form-modal" id="editModal{{event.id}}" role="dialog">
                         <div class="modal-dialog modal-lg">
 
                                 <!-- Modal content-->
@@ -153,7 +154,7 @@
                                                         <input type="submit" value="Submit" class="btn">
                                                     </form>
                                                 </div>
-                                                <div id="form_map_container{{event.id}}" class="col-md-8"></div>
+                                                <div id="form_map_container{{event.id}}" class="col-md-8 map-bordered"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -164,7 +165,7 @@
                             </div>
                         </div>
 
-                        <div id="deleteModal{{event.id}}" class="modal" role="dialog">
+                        <div id="deleteModal{{event.id}}" class="modal font-form-modal" role="dialog">
                             <div class="modal-dialog">
 
                                 <!-- Modal content-->
@@ -191,7 +192,7 @@
                 </div>
 
             </div>
-            <div id="map_container" class="col-md-7 map-bordered"></div>
+            <div id="map_container" class="col-md-7 map-bordered font-form-modal"></div>
 
     </div>
 </div>
