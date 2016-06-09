@@ -12,6 +12,7 @@
     var draggableMarker;
     var loggedUser;
     var query;
+    var userWindow;
 
     var initLng = 17.0215279802915;
     var initLat = 51.1080158802915;
@@ -145,6 +146,7 @@
         });
 
         google.maps.event.addListener(gMap, 'click', function() {
+            userWindow.close();
             var i = 0;
             angular.forEach(infos, function (element) {
                 element.close();
@@ -205,12 +207,12 @@
             });
             userMarker.setVisible(true);
 
-            var window =  new google.maps.InfoWindow({
+            userWindow =  new google.maps.InfoWindow({
                 content: '<b>Your location</b>'
             });
 
             google.maps.event.addListener(userMarker, 'click', function() {
-               window.open(gMap, this);
+                userWindow.open(gMap, this);
             });
         });
 
