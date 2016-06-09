@@ -12,69 +12,47 @@
     <link href="../css/style.css" rel="stylesheet">
 </head>
 <body ng-cloak ng-app="myApp" onload="loadMap()">
-<div class="container">
-    <div class="row" id="navbar-div">
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="dropdown navbar-right">
-                <button class="btn btn-default dropdown-toggle nav-toggle" type="button" data-toggle="dropdown">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="/html/update_user.html">Profile</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
+
+<div id="form-holder" ng-controller="UserUpdateController as formCtrl" class="container">
+    <h1>Update user data</h1>
+    <form name="updateUserForm" ng-submit="formCtrl.onClick(updateUserForm.user)" role="form">
+        <div class="row">
+
+            <div class="col-md-4 form-group">
+                Username:<br>
+                <input type="text" id="username" name="username" class="form-control" value={{
+                       formCtrl.userData.username }}
+                       ng-model="updateUserForm.user.username"><br>
+                Password:<br>
+                <input type="password" id="password" name="password" class="form-control"
+                       ng-init="updateUserForm.user.password=formCtrl.userData.password"
+                       ng-model="updateUserForm.user.password" required><br>
+                Email:<br>
+                <input type="email" id="email" name="email" class="form-control"
+                       ng-model="updateUserForm.user.email"><br>
+
+                DOB:<br>
+                <input type="date" id="dob" name="dob" class="form-control" ng-model="updateUserForm.user.dob"><br>
+                First name:<br>
+                <input type="input" id="firstName" name="firstName" class="form-control"
+                       ng-model="updateUserForm.user.firstName"><br>
+
+                Last name:<br>
+                <input type="input" id="lastName" name="lastName" class="form-control"
+                       ng-model="updateUserForm.user.lastName"><br>
+                <button ng-click="formCtrl.submitData(updateUserForm.user)" class="btn">Submit</button>
+                <button onclick="window.location.href = '/main';" class="btn">Cancel</button>
             </div>
-            <button class="btn-collapse btn navbar-right" onclick="window.location.href = '/main/add-event';">Add
-                event
-            </button>
-        </nav>
-    </div>
-    <div id="form-holder">
-        <h1>
-            Update user data
-        </h1>
 
-        <div ng-controller="UserUpdateController as formCtrl" class="container">
-            <form name="updateUserForm" ng-submit="formCtrl.onClick(updateUserForm.user)" role="form">
-                <div class="row">
-
-                    <div class="col-md-4 form-group">
-                        Username:<br>
-                        <input type="text" id="username" name="username" class="form-control" value={{
-                               formCtrl.userData.username }}
-                               ng-model="updateUserForm.user.username"><br>
-                        Password:<br>
-                        <input type="password" id="password" name="password" class="form-control"
-                               ng-init="updateUserForm.user.password=formCtrl.userData.password"
-                               ng-model="updateUserForm.user.password" required><br>
-                        Email:<br>
-                        <input type="email" id="email" name="email" class="form-control"
-                               ng-model="updateUserForm.user.email"><br>
-
-                        DOB:<br>
-                        <input type="date" id="dob" name="dob" class="form-control" ng-model="updateUserForm.user.dob"><br>
-                        First name:<br>
-                        <input type="input" id="firstName" name="firstName" class="form-control"
-                               ng-model="updateUserForm.user.firstName"><br>
-
-                        Last name:<br>
-                        <input type="input" id="lastName" name="lastName" class="form-control"
-                               ng-model="updateUserForm.user.lastName"><br>
-                        <button ng-click="formCtrl.submitData(updateUserForm.user)" class="btn-collapse btn">Submit</button>
-                        <button onclick="window.location.href = '/main';" class="btn-collapse btn">Cancel</button>
-                    </div>
-
-                    <div class="col-md-7 form-group map-bordered" id="map_container">
-                        Choose your home location:<br>
-                        <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
-                               ng-model="updateUserForm.user.address.geoLongitude"><br>
-                        <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
-                               ng-model="updateUserForm.user.address.geoLatitude"><br>
-                    </div>
-                </div>
-            </form>
+            <div class="col-md-10 form-group" id="map_container" class="usrmap-bordered">
+                Choose your home location:<br>
+                <input type="hidden" name="geoLongitude" id="geoLongitude" class="form-control"
+                       ng-model="updateUserForm.user.address.geoLongitude"><br>
+                <input type="hidden" name="geoLatitude" id="geoLatitude" class="form-control"
+                       ng-model="updateUserForm.user.address.geoLatitude"><br>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 </body>
 </html>

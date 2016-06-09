@@ -63,13 +63,8 @@
 
     })
     function initializeFormFields(result) {
-        console.log(result.id);
-        console.log(result.address.geoLatitude)
-        console.log(result.address.geoLongitude)
         document.getElementById("username").value = result.username;
         document.getElementById("email").value = result.email;
-        document.getElementById("geoLatitude").value = result.address.geoLatitude;
-        document.getElementById("geoLongitude").value = result.address.geoLongitude;
         document.getElementById("dob").value = result.dob;
         document.getElementById("firstName").value = result.firstName;
         document.getElementById("lastName").value = result.lastName;
