@@ -52,7 +52,7 @@
             $http.put('/users/' + oldUserData.id, myApp.data).success(function (data) {
                 console.log("SUCCESS");
                 $scope.ServerResponse = data;
-
+                window.location.href='/main';
             })
                 .error(function (data) {
 

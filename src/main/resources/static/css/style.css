@@ -101,3 +101,7 @@ input[type="checkbox"].show-events-toggle  {
     font-size: medium;
     font-weight: 600;
 }
+
+.font-form-modal {
+    color: #11115f;
+}
